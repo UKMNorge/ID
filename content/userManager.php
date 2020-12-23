@@ -2,7 +2,9 @@
 
 require_once('UKM/Autoloader.php');
 
-ini_set("display_errors", true);
+ini_set("display_errors", true); //
+ini_set('session.cookie_lifetime', 2592000); // 30 days
+        
 
 use UKMNorge\OAuth2\ServerMain;
 use UKMNorge\OAuth2\User;
@@ -25,17 +27,20 @@ class UserManager {
 
     // Check if session is active
     public static function isSessionActive() {
+        session_start();
         return static::$storage->isUserLoggedin();
     }
 
     public static function userLogout() {
         if(!isset($_SESSION)) { 
             session_start(); 
-        }   
+        }
 
-        unset($_SESSION["valid"]);
-        unset($_SESSION["timeout"]);
-        unset($_SESSION["tel_nr"]);    
+        // $_SESSION['user_ref'] = new User('');
+        
+        // Unset all session variables
+        $_SESSION = array();
+        session_destroy();
     }
 
     public static function userLogin(string $tel_nr, string $password) : bool {
@@ -48,7 +53,6 @@ class UserManager {
             if(static::$storage->checkUserCredentials($tel_nr, $password)) {
                 // create Session
                 $_SESSION['valid'] = true;
-                $_SESSION['timeout'] = time() + 38000;
                 $_SESSION['tel_nr'] = $tel_nr;
                 return true;
             }
