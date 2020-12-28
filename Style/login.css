@@ -1,0 +1,168 @@
+.nop {
+    padding: 0 !important;
+}
+.top-background .div-radius {
+    position: absolute;
+    width: 150%;
+    background: #a0aec0;
+    border-bottom-right-radius: 80%;
+    border-bottom-left-radius: 80%;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+.top-background .div-radius,
+.top-background .background-space {
+    height: 265px;
+}
+.top-background .background-space {
+    height: calc(256px - 50px);
+}
+.login-box-style {
+    position: relative;
+    border-radius: 10px;
+    background: #f7fafc;
+    padding: 25px 30px;
+    text-align: center;
+    box-shadow: 0px 3px 6px 3px rgba(0, 0, 0, 19%);
+}
+.login-box-style .title {
+    margin-top: 0;
+    font-weight: 600;
+}
+.login-box-style .login {
+    margin-top: 50px;
+}
+.login-input-style {
+    width: 100%;
+    border: none;
+    padding: 20px;
+    border-radius: 8px;
+}
+.login-box-style .login button.login-with-facebook {
+    display: flex;
+    text-align: left;
+    background: #e2e8f0;
+    box-shadow: 0 4px 7px 3px rgba(0, 0, 0, 0.116);
+}
+.login-box-style .login .login-with-facebook .logo-fb {
+    width: 25px;
+    border-radius: 2px;
+}
+.login-box-style .login .login-with-facebook .title {
+    font-size: 15px;
+    margin: auto;
+    margin-left: 20px;
+    color: #718096;
+    font-weight: 300;
+}
+.login-box-style .login .separator {
+    margin-top: 30px;
+    margin-bottom: calc(30px - 13px);
+    text-align: center;
+}
+.login-box-style .login .separator .line  {
+    background: #edf2f7;
+    width: 100%;
+    height: 3px;
+}
+.login-box-style .login .separator .text {
+    margin-top: -13px;
+}
+.login-box-style .login .separator .text span {
+    background: #f7fafc;
+    padding: 0 15px;
+    color: #718096;
+}
+
+.login-box-style .login .input-div {
+    background: #edf2f7;
+    position: relative;
+    overflow: hidden;
+}
+.login-box-style .login .input-div .info {
+    background: #edf2f7;
+    position: absolute;
+    display: flex;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    padding: 21px;
+    transition: all .2s;
+}
+.login-box-style .login .input-div .info.focused {
+    height: 21px;
+    padding: 21px;
+    padding-top: 5px;
+    padding-bottom: 3px;
+    transition: all .2s;
+}
+.login-box-style .login .input-div .info.focused .text {
+    font-size: 1vh;
+    margin-left: 6px;
+}
+.login-box-style .login .input-div .info img.tel-icon {
+    width: auto;
+    height: 100%;
+    margin: auto 0;
+    max-height: 20px;
+}
+.login-box-style .login .input-div .info .text {
+    margin: auto;
+    margin-left: 15px;
+    color: #a0aec0;
+
+}
+.login-box-style .login .input-div input {
+    background: transparent;
+    width: 100%;
+    border: none;
+    margin-top: 10px;
+    outline: none;
+}
+
+.login-box-style .login .info-feil {
+    text-align: left;
+    display: flex;
+}
+.login-box-style .login .info-feil .icon {
+    background: #a0aec0;
+    padding: 1px;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    font-weight: 700;
+    color: #fff;
+}
+.login-box-style .login .info-feil .text {
+    margin: auto;
+    margin-left: 15px;
+    font-size: 14px;
+    color: #313b4c;
+}
+
+.login-box-style .next-button button {
+    display: flex;
+    margin: auto;
+    margin-top: 50px;
+    box-shadow: 0px 3px 19px -5px rgb(0 0 0 / 62%);
+}
+.login-box-style .next-button button .text {
+    margin-right: 10px;
+    font-size: 23px;
+}
+.login-box-style .next-button button .icon {
+    width: 12px;
+    margin: auto;
+}
+
+.login-button-style-1 {
+    color: #fff;
+    background: #a0aec0;
+    font-size: 20px;
+    padding: 25px 30px;
+    border: none;
+    border-radius: 40px;
+}

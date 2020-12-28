@@ -8,7 +8,7 @@
 <html lang = "en">
    
    <head>
-      <title>ID UKM Login</title>      
+      <title>ID UKM Login</title>   
    </head>
 
    <style>
@@ -18,6 +18,12 @@
         padding: 20px;
         margin: auto;
     }
+
+    .page-1 .header .header-background {
+        background: #a0aec0;
+        width: 100%;
+    }
+
     </style>
 	
    <body>
@@ -54,5 +60,14 @@
         <a href = "logout.php" tite = "Logout">Logout</a>
       </div> 
       
+
+      <div class="page-one-page page-1" pageId="1">
+        <div class="header">
+            <div class="header-background">
+                
+            </div>
+        </div>
+      </div>
+
    </body>
 </html>
