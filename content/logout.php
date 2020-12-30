@@ -3,5 +3,5 @@
     
     UserManager::userLogout();
     
-    header('Refresh: 2; URL = login.php');
+    header('Refresh: 1; URL = /login-one-page.php');
 ?>

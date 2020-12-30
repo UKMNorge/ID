@@ -1,6 +1,13 @@
+* {
+    font-family: 'Poppins', sans-serif !important;
+}
 .nop {
     padding: 0 !important;
 }
+.hide {
+    display: none !important;
+}
+
 .top-background .div-radius {
     position: absolute;
     width: 150%;
@@ -18,6 +25,19 @@
 .top-background .background-space {
     height: calc(256px - 50px);
 }
+
+/* .one-page-container {
+    position: relative;
+}
+.one-page-container .login {
+    position: relative;
+}
+.one-page-page {
+    position: absolute;
+    top: 0;
+    width: 100%;
+} */
+
 .login-box-style {
     position: relative;
     border-radius: 10px;
@@ -26,39 +46,114 @@
     text-align: center;
     box-shadow: 0px 3px 6px 3px rgba(0, 0, 0, 19%);
 }
+.login-box-style .progress-steps {
+    display: flex;
+    margin-bottom: 10px;
+}
+.login-box-style .progress-steps .progress-div {
+    display: flex;
+    margin: auto;
+}
+.login-box-style .progress-steps .progress-div .step {
+    background: #cbd5e0;
+    margin: auto 0;
+    border-radius: 50%;
+    height: 10px;
+    width: 10px;
+}
+.login-box-style .progress-steps .progress-div .step .icon {
+    display: none;
+}
+.login-box-style .progress-steps .progress-div .step.active .icon{
+    display: inline;
+}
+.login-box-style .progress-steps .progress-div .space {
+    background: #cbd5e0;
+    height: 2px;
+    width: 10px;
+    margin: auto 0;
+    margin-left: -1px;
+}
+.login-box-style .progress-steps .progress-div .step .icon {
+    padding: 3px 2px;
+}
 .login-box-style .title {
     margin-top: 0;
     font-weight: 600;
+    font-size: 24px;
+}
+.login-box-style .under-title {
+    font-size: 10px;
+    color: #718096;
 }
 .login-box-style .login {
-    margin-top: 50px;
+    margin-top: 40px;
 }
+.login-box-style .login .input-chain {
+    display: flex;
+    margin: 20px 0;
+}
+.login-box-style .login .input-chain .inputs {
+    margin: auto;
+    display: flex;
+    position: relative;
+}
+.login-box-style .login .input-chain .inputs input {
+    width: 42px;
+    height: 50px;
+    margin: 0 5px;
+    border: none;
+    background: #edf2f7;
+    border-radius: 6px;
+    font-size: 19px;
+    text-align: center;
+}
+.login-box-style .login .input-chain .inputs .icon {
+    position: absolute;
+    right: -4px;
+    top: -4px;
+    background: #cbd5e0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    color: #fff;
+    display: flex;
+    border: none;
+    padding: 0;
+}
+.login-box-style .login .input-chain .inputs .icon span {
+    font-size: 14px;
+    margin-left: 7px;
+    margin-top: -1px;
+}
+
 .login-input-style {
     width: 100%;
     border: none;
-    padding: 20px;
+    padding: 10px 16px;
     border-radius: 8px;
 }
-.login-box-style .login button.login-with-facebook {
+.login-box-style .login .button.login-with-facebook {
     display: flex;
     text-align: left;
     background: #e2e8f0;
     box-shadow: 0 4px 7px 3px rgba(0, 0, 0, 0.116);
 }
 .login-box-style .login .login-with-facebook .logo-fb {
-    width: 25px;
+    width: 18px;
     border-radius: 2px;
+    margin: auto 0;
 }
 .login-box-style .login .login-with-facebook .title {
     font-size: 15px;
     margin: auto;
-    margin-left: 20px;
+    margin-left: 15px;
     color: #718096;
     font-weight: 300;
 }
 .login-box-style .login .separator {
-    margin-top: 30px;
-    margin-bottom: calc(30px - 13px);
+    margin-top: 20px;
+    margin-bottom: calc(20px - 13px);
     text-align: center;
 }
 .login-box-style .login .separator .line  {
@@ -73,6 +168,7 @@
     background: #f7fafc;
     padding: 0 15px;
     color: #718096;
+    font-size: 11px;
 }
 
 .login-box-style .login .input-div {
@@ -88,12 +184,12 @@
     top: 0;
     width: 100%;
     height: 100%;
-    padding: 21px;
+    padding: 17px;
     transition: all .2s;
 }
 .login-box-style .login .input-div .info.focused {
     height: 21px;
-    padding: 21px;
+    padding: 0 16px;
     padding-top: 5px;
     padding-bottom: 3px;
     transition: all .2s;
@@ -106,13 +202,16 @@
     width: auto;
     height: 100%;
     margin: auto 0;
-    max-height: 20px;
+    max-height: 17px;
+}
+.login-box-style .login .input-div .info.focused img.tel-icon {
+    max-height: 8px;
 }
 .login-box-style .login .input-div .info .text {
     margin: auto;
     margin-left: 15px;
     color: #a0aec0;
-
+    font-size: 15px;
 }
 .login-box-style .login .input-div input {
     background: transparent;
@@ -125,44 +224,141 @@
 .login-box-style .login .info-feil {
     text-align: left;
     display: flex;
+    margin-top: 5px;
+    opacity: 1;
+    transition: opacity .2s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
-.login-box-style .login .info-feil .icon {
-    background: #a0aec0;
-    padding: 1px;
-    border-radius: 50%;
-    width: 25px;
-    height: 25px;
-    text-align: center;
-    font-weight: 700;
-    color: #fff;
-}
-.login-box-style .login .info-feil .text {
-    margin: auto;
-    margin-left: 15px;
-    font-size: 14px;
-    color: #313b4c;
+.login-box-style .login .info-feil.not-visible {
+    opacity: 0;
+    transition: opacity .2s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
-.login-box-style .next-button button {
+.login-box-style .login .info-feil .icon {
+    background: #a0aec0;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    font-weight: 600;
+    color: #fff;
+    font-size: 13px;
+    margin: 0;
+}
+.login-box-style .login .info-feil.error .icon {
+    background: red;
+}
+.login-box-style .login .info-feil .text {
+    margin: 0;
+    margin-left: 10px;
+    font-size: 12px;
+    color: #313b4c;
+}
+.login-box-style .login .info-feil.error .text {
+    color: red;
+}
+
+.login-box-style .next-button .button {
     display: flex;
     margin: auto;
-    margin-top: 50px;
+    margin-top: 22px;
     box-shadow: 0px 3px 19px -5px rgb(0 0 0 / 62%);
+    min-height: 54px;
+    min-width: 54px;
 }
-.login-box-style .next-button button .text {
+.login-box-style .next-button .button .text {
     margin-right: 10px;
-    font-size: 23px;
+    font-size: 15px;
 }
-.login-box-style .next-button button .icon {
-    width: 12px;
+.login-box-style .next-button .button .icon {
+    width: 8px;
     margin: auto;
+}
+.login-box-style .next-button {
+    display: flex;
+}
+.login-box-style .next-button .button.left {
+    margin-right: 8px;
+}
+.login-box-style .next-button .button.right {
+    margin-left: 8px;
+}
+.login-box-style .login .show-hide {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex
+}
+
+.mini-round-style {
+    border-radius: 50px;
+    background: #cbd5e0;
+    min-width: 43px;
+    height: 24px;
+    margin: auto;
+    margin-right: 15px;
+    color: #fff;
+    border: none;
+    font-size: 12px;
 }
 
 .login-button-style-1 {
     color: #fff;
     background: #a0aec0;
     font-size: 20px;
-    padding: 25px 30px;
+    padding: 15px 18px;
     border: none;
     border-radius: 40px;
+}
+.login-button-style-1 .text {
+    color: #fff;
+}
+.login-button-style-1.half-color {
+    background: #cbd5e0;
+}
+
+
+.login-box-style .login .buttons-div {
+    display: flex;
+}
+.login-box-style .login .buttons-div .send-new-password {
+    margin: auto;
+    margin-right: 0;
+    font-size: 10px;
+    border: none;
+    background: transparent;
+    color: #a0aec0;
+}
+
+
+/* General */
+.login-message {
+    position: relative;
+    padding: 15px 20px;
+    background: #f2f6f9;
+    border-radius: 5px;
+    border-left: solid 5px #edf2f7;
+}
+.login-message .text {
+    margin: 0;
+    text-align: left;
+    font-size: 12px;
+}
+.login-message .icon {
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    padding: 6px;
+    background: #f7fafc;
+    border-radius: 50%;
+}
+.login-message .icon .char {
+    border: solid 3px #edf2f7;
+    height: 24px;
+    width: 24px;
+    border-radius: 50%;
+    font-weight: 600;
+    margin: 0;
+    font-size: 14px;
+    color: #edf2f7;
 }

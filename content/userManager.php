@@ -5,6 +5,7 @@ require_once('UKM/Autoloader.php');
 ini_set("display_errors", true); //
 ini_set('session.cookie_lifetime', 2592000); // 30 days
         
+session_start(); 
 
 use UKMNorge\OAuth2\ServerMain;
 use UKMNorge\OAuth2\User;
@@ -27,33 +28,45 @@ class UserManager {
 
     // Check if session is active
     public static function isSessionActive() {
-        session_start();
         return static::$storage->isUserLoggedin();
     }
 
-    public static function userLogout() {
-        if(!isset($_SESSION)) { 
-            session_start(); 
+    public static function getLoggedinUser() {
+        if(static::isSessionActive()) {
+            return $_SESSION['user'];
         }
+        throw new Exception('Brukeren er ikke logged inn');
+    }
 
-        // $_SESSION['user_ref'] = new User('');
-        
+    public static function userExists($tel_nr) {
+        return static::$storage->userExists($tel_nr);
+    }
+
+    public static function userLogout() {        
         // Unset all session variables
         $_SESSION = array();
         session_destroy();
     }
 
+    public static function parseTelNr(string $tel_nr) : string {
+        // Legg til +47 hvis det er ikke lagt til
+        if(substr($tel_nr, 0, 3-strlen($tel_nr)) != '+47') {
+            $tel_nr = '+47' . $tel_nr;
+        }
+        return $tel_nr;
+    }
+
     public static function userLogin(string $tel_nr, string $password) : bool {
-        if(!isset($_SESSION)) { 
-            session_start(); 
-        }        
+        $tel_nr = static::parseTelNr($tel_nr);
         
         try{
             // Logged in, save session data
             if(static::$storage->checkUserCredentials($tel_nr, $password)) {
+                // IMPORTANT: consider removing valid and tel_nr and using only user instance
                 // create Session
                 $_SESSION['valid'] = true;
                 $_SESSION['tel_nr'] = $tel_nr;
+                $_SESSION['user'] = new User($tel_nr);
                 return true;
             }
             // The user is not logged in
