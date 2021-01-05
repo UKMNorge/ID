@@ -1,0 +1,50 @@
+<h2 class="title">Heisann!</h2>
+<small class="under-title">Her kan du lage en bruker eller logg inn</small>
+
+<div class="login">
+	<button type="button" class="login-with-facebook login-input-style">
+		<img class="logo-fb" src="Images/facebook.png">
+		<span class="title">Logg inn med facebook</span>
+	</button>
+
+	<div class="separator">
+		<div class="line"></div>
+		<div class="text">
+			<span>eller</span>
+		</div>
+	</div>
+
+	<div class="tel-nr input-div login-input-style focus-style-js">
+		<div class="info">
+			<img class="tel-icon" src="Images/tel.png">
+			<p class="text">Mobilnummer</p>
+		</div>
+		<input id="loginTelNr" class="tel-input focus-style-js-input" type="tel" name="tel_nr">
+	</div>
+
+
+	<div id="telNrError" class="info-feil not-visible">
+		<p class="icon">!</p>
+		<span class="text"></span>
+	</div>
+
+	{% if errorMessage %}
+		<div id="" class="info-feil error">
+			<p class="icon">!</p>
+			<span class="text">{{errorMessage}}</span>
+		</div>
+	{% endif %}
+
+	<div id="messageError" class="info-feil error hide">
+		<p class="icon">!</p>
+		<span class="text"></span>
+	</div>
+
+	<div class="next-button">
+		<button id="loginNext" type="button" class="login-button-style-1 button">
+			<span class="text">Neste</span>
+			<img class="icon" src="Images/chevron.png">
+		</button>
+	</div>
+
+</div>
