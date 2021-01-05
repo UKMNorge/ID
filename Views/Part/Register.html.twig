@@ -1,0 +1,94 @@
+<h2 class="title">Opprett ny bruker</h2>
+<small class="under-title">Vi trenger litt mer informasjon om deg</small>
+
+<div class="login register">
+	<div class="tel-nr input-div login-input-style focus-style-js">
+		<div class="info">
+			<img class="tel-icon svg" src="Images/user.svg">
+			<p class="text">Fornavn</p>
+		</div>
+		<input id="registerName" class="tel-input focus-style-js-input" autocomplete="on" type="text" name="name">
+	</div>
+    <div id="registerNameError" class="info-feil not-visible">
+		<p class="icon">!</p>
+		<span class="text">Fornavn er ikke gyldig!</span>
+	</div>
+
+    <div class="tel-nr input-div login-input-style focus-style-js">
+		<div class="info">
+			<img class="tel-icon svg" src="Images/user.svg">
+			<p class="text">Etternavn</p>
+		</div>
+		<input id="registerSurname" class="tel-input focus-style-js-input" autocomplete="on" type="text" name="surname">
+	</div>
+    <div id="registerSurnameError" class="info-feil not-visible">
+		<p class="icon">!</p>
+		<span class="text">Etternavn er ikke gyldig!</span>
+	</div>
+
+    <div class="tel-nr input-div login-input-style focus-style-js">
+		<div class="info">
+            <object class="tel-icon svg" data="Images/cake.svg" width="15" height="15"> </object>
+			<p class="text">Alder</p>
+		</div>
+		<input id="registerAge" class="tel-input focus-style-js-input" autocomplete="on" type="number" name="age">
+	</div>
+    <div class="select-value not-visible">
+        <a id="selectAge">
+            Here we go
+        </a>
+    </div>
+
+    <div class="tel-nr input-div login-input-style focus-style-js">
+		<div class="info">
+            <object class="tel-icon svg" data="Images/lock-closed.svg" width="15" height="15"> </object>
+
+			<p class="text">Passord</p>
+		</div>
+		<input id="registerPassword" class="tel-input show-hide-input focus-style-js-input" type="password" name="password">
+		<div class="show-hide">
+			<button id="showHidePassword" type="button" class="show-hide-password mini-round-style">vis</button>
+		</div>
+	</div>
+    <div id="registerSurnameError" class="info-feil not-visible">
+		<p class="icon">!</p>
+		<span class="text"></span>
+	</div>
+    
+</div>
+
+<div class="next-button">
+	<button type="button" class="login-button-style-1 button half-color left render-page-click" to-page="0">
+		<img class="icon" src="Images/chevron-back.png">
+	</button>
+
+	<button class="login-button-style-1 button right render-page-click" to-page="vilkaar">
+		<span class="text">Neste</span>
+		<img class="icon" src="Images/chevron.png">
+	</button>
+</div>
+
+
+<script>
+    // Validate empty input
+    var verifyEmpty = (inputId, errorId) => {
+        $(inputId).blur(() => {
+            if($(inputId).val().length > 0) {
+                $(errorId).addClass('not-visible');
+                return;
+            }
+            $(errorId).removeClass('not-visible');
+        });
+        $(inputId).on('input', () => {
+            $(errorId).addClass('not-visible');
+        });
+    }
+
+    // Validate name field
+    verifyEmpty('#registerName', '#registerNameError');
+
+    // Validate surname field
+    verifyEmpty('#registerSurname', '#registerSurnameError');
+
+
+</script>

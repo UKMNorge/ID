@@ -7,9 +7,6 @@
 .hide {
     display: none !important;
 }
-.show {
-    display: inline !important;
-}
 
 .top-background .div-radius {
     position: absolute;
@@ -64,18 +61,24 @@
     height: 10px;
     width: 10px;
 }
+.login-box-style .progress-steps .progress-div .step.next {
+    background: #edf2f7;
+}
 .login-box-style .progress-steps .progress-div .step .icon {
     display: none;
 }
 .login-box-style .progress-steps .progress-div .step.active .icon{
-    display: inline;
+    display: block;
 }
 .login-box-style .progress-steps .progress-div .space {
     background: #cbd5e0;
     height: 2px;
-    width: 10px;
+    width: 8px;
     margin: auto 0;
-    margin-left: -1px;
+    margin-left: 0px;
+}
+.login-box-style .progress-steps .progress-div .space.next {
+    background: #edf2f7;
 }
 .login-box-style .progress-steps .progress-div .step .icon {
     padding: 3px 2px;
@@ -179,6 +182,9 @@
     position: relative;
     overflow: hidden;
 }
+.login-box-style .login .input-div.register-field {
+    margin-bottom: 30px;
+}
 .login-box-style .login .input-div .info {
     background: #edf2f7;
     position: absolute;
@@ -201,14 +207,23 @@
     font-size: 1vh;
     margin-left: 6px;
 }
-.login-box-style .login .input-div .info img.tel-icon {
+.login-box-style .login .input-div .info .tel-icon {
     width: auto;
     height: 100%;
     margin: auto 0;
     max-height: 17px;
 }
-.login-box-style .login .input-div .info.focused img.tel-icon {
+.login-box-style .login .input-div .info .svg {
+    max-height: 20px;
+    width: 20px;
+}
+
+.login-box-style .login .input-div .info.focused .tel-icon {
     max-height: 8px;
+}
+.login-box-style .login .input-div .info.focused .svg {
+    max-height: 10px;
+    width: 10px;
 }
 .login-box-style .login .input-div .info .text {
     margin: auto;
@@ -333,6 +348,30 @@
     color: #a0aec0;
 }
 
+.login-box-style .register .info-feil {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+.login-box-style .register .select-value {
+    display: flex;
+}
+.login-box-style .register .select-value {
+    background: #edf2f7;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    padding: 17px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    visibility: visible;
+    transition: all .2s;
+}
+.login-box-style .register .select-value.not-visible {
+    height: 0;
+    visibility: hidden;
+    transition: all .2s;
+}
+
 
 /* General */
 .login-message {
@@ -364,4 +403,34 @@
     margin: 0;
     font-size: 14px;
     color: #edf2f7;
+}
+
+/* Vilkaar */
+.vilkaar-item .text {
+    text-align: left;
+}
+.vilkaar-header {
+    display: flex;
+}
+.vilkaar-header .img {
+    background: #edf2f7;
+    border-radius: 50%;
+    min-width: 70px;
+    width: 70px;
+    height: 70px;
+    display: flex;
+    margin-right: 40px;
+}
+.vilkaar-header .img object {
+    margin: auto;
+}
+.vilkaar-header .info {
+    text-align: left;
+}
+.vilkaar-header .info .text {
+    color: #a0aec0;
+    font-size: 14px;
+}
+.vilkaar-item .text {
+    font-size: 13px;
 }

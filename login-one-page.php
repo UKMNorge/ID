@@ -46,9 +46,9 @@ if(UserManager::isSessionActive()) {
     Vanilla::addViewData('ukmHostname', UKM_HOSTNAME);
     echo Vanilla::render('LoginInfo');
 // It is post
-} else if (isset($_POST['login']) && !empty($_POST['tel_nr']) && !empty($_POST['password'])) {
+} else if (isset($_POST['login']) && !empty($_POST['username']) && !empty($_POST['password'])) {
     // User credentials are correct
-    if (UserManager::userLogin($_POST['tel_nr'], $_POST['password'])) {                    
+    if (UserManager::userLogin($_POST['username'], $_POST['password'])) {                    
         Vanilla::addViewData('user', UserManager::getLoggedinUser());
         Vanilla::addViewData('ukmHostname', UKM_HOSTNAME);
         echo Vanilla::render('LoginInfo');

@@ -32,8 +32,17 @@
 		<img class="icon" src="Images/chevron-back.png">
 	</button>
 
-	<button id="loginSend" type="submit" name="login" class="login-button-style-1 button right">
+	<button id="loginSend" onclick="onePage.render('{{nextPage}}')" class="login-sms-next login-button-style-1 button right">
 		<span class="text">Logg Inn</span>
 		<img class="icon" src="Images/chevron.png">
 	</button>
 </div>
+
+<script>
+// setTimeout(() => {
+// 	$('.login-sms-next').click(()=> {
+// 		// onePage.render(nextPage);
+// 		alert('a');
+// 	})
+// }, 4000);
+</script>

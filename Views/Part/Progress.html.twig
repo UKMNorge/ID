@@ -1,11 +1,15 @@
 <div class="progress-steps">
+
 	<div class="progress-div">
-		<div class="step active">
-			<img class="icon" src="Images/correct-xs.png">
-		</div>
-		<div class="space"></div>
-		<div class="step">
-			<img class="icon" src="Images/correct-xs.png">
-		</div>
+		{% for i in 0..totalSteps-1 %}
+			{% if i > 0 %}
+			<div class="space {{ i < currentStep-1 ? 'active' : (i == currentStep-1 ? 'current' : 'next')}}"></div>
+			{% endif %}
+
+			<div class="step {{ i < currentStep-1 ? 'active' : (i == currentStep-1 ? 'current' : 'next')}}">
+				<img class="icon" src="Images/correct-xs.png">
+			</div>
+		{% endfor %}
 	</div>
+
 </div>
