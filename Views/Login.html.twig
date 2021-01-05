@@ -1,4 +1,4 @@
-{% extends ("Layout.html.twig")|UKMpath %}
+{% extends "Layout.html.twig"|UKMpath %}
 
 {% block content %}
 <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -19,7 +19,6 @@
 
 	<div class="col-xs-12 login">
 		<form class="form-signin" role="form" action="/login-one-page.php" method="post">
-
 		<!-- PAGE 0 -->	
 			<div class="login-box-style col-xs-12 one-page-page" page-id="0">
 				{% include "Part/Hello.html.twig" %}
@@ -27,68 +26,17 @@
 
 		<!-- PAGE 0 -->
 			<div class="login-box-style password col-xs-12 one-page-page" page-id="1">
+				{% include "Part/Progress.html.twig" %}
 				{% include "Part/Passord.html.twig" %}
 			</div>
-
 		</form>
 	</div>
 
 <!-- PAGE 2 -->
 	<div class="login-box-style password col-xs-12 one-page-page" page-id="2">
-		<div class="progress-steps">
-			<div class="progress-div">
-				<div class="step active">
-					<img class="icon" src="Images/correct-xs.png">
-				</div>
-				<div class="space"></div>
-				<div class="step">
-					<img class="icon" src="Images/correct-xs.png">
-				</div>
-			</div>
-		</div>
-
-		<h2 class="title">Du får snart en SMS!</h2>
-		<small class="under-title">Skriv inn koden du får fra oss på telefonen din</small>
-
-		<div class="login">
-			<div class="input-chain">
-				<div class="inputs">
-					<input class="tel-input focus-style-js-input" type="text" maxlength="1">
-					<input class="tel-input focus-style-js-input" type="text" maxlength="1">
-					<input class="tel-input focus-style-js-input" type="text" maxlength="1">
-					<button class="icon" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-						<span>?</button>
-					</button>
-				</div>
-			</div>
-
-			{# <div class="buttons-div">
-				<button id="sendNewPassword" type="button" class="send-new-password">Send nytt passord</button>
-			</div> #}
-		</div>
-
-		<div class="login-message collapse" id="collapseExample">
-			<p class="text">
-				Vi har send deg en engangskode på SMS som må fylles in over for å lage bruker hos UKM. Dette er viktig siden vi sender ut informasjon om arrangementene våre på SMS og kan da være sikre på at du har mottat den informasjonen du har behov for.
-			</p>
-			<div class="icon">
-				<p class="char">i</p>
-			</div>
-		</div>
-
-		<div class="next-button">
-			<button id="" type="button" class="login-button-style-1 button half-color left render-page-click" to-page="0">
-				<img class="icon" src="Images/chevron-back.png">
-			</button>
-
-			<button id="loginSend" type="submit" name="login" class="login-button-style-1 button right">
-				<span class="text">Logg Inn</span>
-				<img class="icon" src="Images/chevron.png">
-			</button>
-		</div>
+		{% include "Part/Progress.html.twig" %}
+		{% include "Part/Sms.html.twig" %}
 	</div>
-	
-
 </div>
 <script src="Js/one-page.js"></script>
 
