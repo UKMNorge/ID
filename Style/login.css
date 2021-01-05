@@ -7,6 +7,9 @@
 .hide {
     display: none !important;
 }
+.show {
+    display: inline !important;
+}
 
 .top-background .div-radius {
     position: absolute;

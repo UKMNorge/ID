@@ -4,13 +4,14 @@ ini_set("display_errors", 1);
 
 include_once('../content/userManager.php');
 
-// required headers
-header("Access-Control-Allow-Methods: GET");
-header('Content-Type: application/json');
-  
-$tel_nr = isset($_GET['tel_nr']) ? $_GET['tel_nr'] : die();
+// IMPORTANT
+// $tel_nr = isset($_GET['tel_nr']) ? $_GET['tel_nr'] : die();
 
-$tel_nr = UserManager::parseTelNr($tel_nr);
+$request = OAuth2\Request::createFromGlobals();
+
+$tel_nr = $request->request['tel_nr'];
+
+$result = UserManager::parseTelNr($tel_nr);
 
 if(UserManager::userExists($tel_nr)){
     http_response_code(200);
@@ -18,7 +19,6 @@ if(UserManager::userExists($tel_nr)){
 }
   
 else{
-    http_response_code(404);
+    http_response_code(200);
+    echo json_encode(array("result" => false));
 }
-
-?>

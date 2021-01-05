@@ -62,7 +62,7 @@ class UserManager {
         try{
             // Logged in, save session data
             if(static::$storage->checkUserCredentials($tel_nr, $password)) {
-                // IMPORTANT: consider removing valid and tel_nr and using only user instance
+                // IMPORTANT: consider removing valid and tel_nr and using only User instance
                 // create Session
                 $_SESSION['valid'] = true;
                 $_SESSION['tel_nr'] = $tel_nr;

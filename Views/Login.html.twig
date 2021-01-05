@@ -1,5 +1,15 @@
 {% extends ("UKMDesign/Layout/base.html.twig")|UKMpath %}
 
+{% block css %}
+  {{ parent() }}
+  <link rel="stylesheet" href='../Style/login.css' />
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+
+<script>...</script>
+{% endblock %}
 
 {% block content %}
 <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -55,11 +65,16 @@
 					</div>
 
 					{% if errorMessage %}
-					<div id="messageError" class="info-feil error">
+					<div id="" class="info-feil error">
 						<p class="icon">!</p>
 						<span class="text">{{errorMessage}}</span>
 					</div>
 					{% endif %}
+
+					<div id="messageError" class="info-feil error hide">
+						<p class="icon">!</p>
+						<span class="text"></span>
+					</div>
 
 					<div class="next-button">
 						<button id="loginNext" type="button" class="login-button-style-1 button">
@@ -205,9 +220,33 @@
 	// Login next, verifying tel nr
 	$('#loginNext').click(() => {
 		if(verifyTelNr()) {
-			onePage.render(1);
+			var tel_nr = $('#loginTelNr').val();
+
+			$.ajax({			
+				"url": "https://id.ukm.dev/api/user-exists.php",
+				"method": "POST",
+				"timeout": 0,
+				"data": {
+					"tel_nr": $('#loginTelNr').val()
+				},
+				success: (data) => {
+					data = JSON.parse(data);
+					if(data.result == true) {
+						onePage.render(1);
+					}
+					else {
+						showErrorMessage('Brukeren eksisterer ikke, vil du registrere deg?');
+					}
+                }
+            });
+			
 		}
 	});
+
+	function showErrorMessage(msg) {
+		$('#messageError').removeClass('hide');
+		$('#messageError .text').html(msg);
+	}
 
 	$('.render-page-click').click((e) => {
 		onePage.render($(e.currentTarget).attr('to-page'));

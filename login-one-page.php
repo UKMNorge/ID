@@ -20,9 +20,9 @@ include_once('content/userManager.php');
 
 
 // Midlertidig (Må legges til på head)
-echo '<style>';
-include 'style/login.css';
-echo '</style>';
+// echo '<style>';
+// include 'style/login.css';
+// echo '</style>';
 
 
 /**
