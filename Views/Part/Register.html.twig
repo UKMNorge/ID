@@ -19,7 +19,7 @@
 			<img class="tel-icon svg" src="Images/user.svg">
 			<p class="text">Etternavn</p>
 		</div>
-		<input id="registerSurname" class="tel-input focus-style-js-input" autocomplete="on" type="text" name="surname">
+		<input id="registerLastname" class="tel-input focus-style-js-input" autocomplete="on" type="text" name="surname">
 	</div>
     <div id="registerSurnameError" class="info-feil not-visible">
 		<p class="icon">!</p>
@@ -31,13 +31,24 @@
             <object class="tel-icon svg" data="Images/cake.svg" width="15" height="15"> </object>
 			<p class="text">Alder</p>
 		</div>
-		<input id="registerAge" class="tel-input focus-style-js-input" autocomplete="on" type="number" name="age">
+		<input id="registerBirthday" class="tel-input focus-style-js-input" type="text" name="age">
 	</div>
-    <div class="select-value not-visible">
-        <a id="selectAge">
-            Here we go
-        </a>
-    </div>
+	<div id="registerAgeError" class="info-feil not-visible">
+		<p class="icon">!</p>
+		<span class="text">Alder er ikke gyldig, skriv tall!</span>
+	</div>
+	<div id="chooseAge" class="choose-age not-visible" year="">
+		<div class="choose">
+			<button class="select-value select-age">
+				<span class="text first"></span>
+			</button>
+
+			<button class="select-value select-age">
+				<span class="text second"></span>
+			</button>
+		</div>
+
+	</div>
 
     <div class="tel-nr input-div login-input-style focus-style-js">
 		<div class="info">
@@ -50,10 +61,10 @@
 			<button id="showHidePassword" type="button" class="show-hide-password mini-round-style">vis</button>
 		</div>
 	</div>
-    <div id="registerSurnameError" class="info-feil not-visible">
-		<p class="icon">!</p>
-		<span class="text"></span>
+	<div id="registerPasswordError">
+		
 	</div>
+    
     
 </div>
 
@@ -62,7 +73,7 @@
 		<img class="icon" src="Images/chevron-back.png">
 	</button>
 
-	<button class="login-button-style-1 button right render-page-click" to-page="vilkaar">
+	<button class="login-button-style-1 button right render-page-click" to-page="registerNewUserSms">
 		<span class="text">Neste</span>
 		<img class="icon" src="Images/chevron.png">
 	</button>
@@ -83,12 +94,93 @@
             $(errorId).addClass('not-visible');
         });
     }
-
     // Validate name field
     verifyEmpty('#registerName', '#registerNameError');
-
     // Validate surname field
-    verifyEmpty('#registerSurname', '#registerSurnameError');
+    verifyEmpty('#registerLastname', '#registerSurnameError');
+
+	// Validate age
+	$('#registerAge').on('input', (e) => {
+		var val = $(e.currentTarget).val();
+		var chooseArr = [];
+		var el = $('.choose-age');
+		var year = new Date().getFullYear();
+		
+		el.attr('year', 'null');
+		el.addClass('not-visible');
+		$('#registerAgeError').addClass('not-visible');
+
+		if(val.length < 1) {
+			return;
+		}
+		
+		if(isNaN(val) || val > 150) {
+			$('#registerAgeError').removeClass('not-visible');
+			return;
+		}
+		
+		chooseArr[0] = val + ' år ' + `<span class="under current-age">(født i ${year-val})</span>`;
+		chooseArr[1] = val + ' år ' + `<span class="under current-age">(født i ${year-val-1})</span>`;
+		
+		console.log(el);
+
+		el.removeClass('not-visible');
+		el.find('.text.first').html(chooseArr[0]).parent().attr({'year': year-val, 'age': val})
+		el.find('.text.second').html(chooseArr[1]).parent().attr({'year': year-val-1, 'age': val});
+	});
+
+	$('#chooseAge .choose button').click((e) => {
+		var year = $(e.currentTarget).attr('year');
+		var age = $(e.currentTarget).attr('age');
+
+		$('.choose-age').attr({'year': year, 'age': age}).addClass('not-visible');
+	});
+
+	// Password validation
+	$('#registerPassword').on('input', (e) => {
+		console.log(validatePassword($(e.currentTarget).val()));
+	});
+
+	// Dette sjekkes også i backend (file: )
+	function validatePassword(p, show) {
+		errors = [];
+		$('#registerPasswordError *').detach();
+		
+		if(p.length < 6 && show != true) {
+			$('#registerPasswordError *').detach();
+			return;
+		}
+		if(p.length < 8) {
+			errors.push("Passordet må inneholde minst 8 tegn");
+		}
+		if(p.search(/[a-z]/i) < 0) {
+			errors.push("Passordet må inneholde minst 1 bokstav");
+		}
+		if(p.search(/^(?=.*[A-Z])/) < 0) {
+			errors.push("Passordet må inneholde minst 1 stor bokstav");
+		}
+		if(p.search(/(?=.*[0-9])/) < 0) {
+			errors.push("Passordet må inneholde minst 1 tall"); 
+		}
+		if(p.search(/(?=.*[%@$])/) > -1) {
+			errors.push("Passordet kan ikke inneholde symbolene %@$"); 
+		}
+		if (errors.length > 0) {
+			// console.error(errors.join("\n"));
+
+			for(var err of errors) {
+				$('#registerPasswordError').append(`
+					<div id="registerPasswordError" class="info-feil">
+						<p class="icon">!</p>
+						<span class="text">${err}</span>
+					</div>`
+				);
+			}
+			
+			return false;
+		}
+		return true;
+	}
 
 
 </script>

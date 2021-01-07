@@ -32,16 +32,16 @@
 		{% include "Part/Sms.html.twig" with {'nextPage': '-1'} %}
 	</div>
 
-	<!-- PAGE 3 - SMS Verification - register new user -->
-	<div class="login-box-style password col-xs-12 one-page-page" page-id="registerNewUserSms">
-		{% include "Part/Progress.html.twig" %}
-		{% include "Part/Sms.html.twig" with {'nextPage': 'registerNewUser'} %}
-	</div>
-
 	<!-- Register new user -->
 	<div class="login-box-style password col-xs-12 one-page-page" page-id="registerNewUser">
-		{% include "Part/Progress.html.twig" with {'totalSteps': 3, 'currentStep': 2} %}
+		{% include "Part/Progress.html.twig" with {'totalSteps': 3, 'currentStep': 1} %}
 		{% include "Part/Register.html.twig" with {'nextPage': '-1'} %}
+	</div>
+
+	<!-- PAGE 3 - SMS Verification - register new user -->
+	<div class="login-box-style password col-xs-12 one-page-page" page-id="registerNewUserSms">
+		{% include "Part/Progress.html.twig" with {'totalSteps': 3, 'currentStep': 2} %}
+		{% include "Part/Sms.html.twig" with {'nextPage': 'vilkaar'} %}
 	</div>
 
 	<!-- Register new user -->
@@ -56,7 +56,7 @@
 <script>
 	var onePage = new OnePage();
 
-	// onePage.render('0');
+	onePage.render('registerNewUser');
 	
 	// Add focus on click of the field (div)
 	$('.focus-style-js').click((e) => {
@@ -85,7 +85,6 @@
 			$.ajax({			
 				"url": "https://id.ukm.dev/api/user-exists.php",
 				"method": "POST",
-				"timeout": 0,
 				"data": {
 					"tel_nr": $('#loginTelNr').val()
 				},
@@ -96,10 +95,10 @@
 					}
 					else {
 						// Render SMS page for registration
-						onePage.render("registerNewUserSms");
+						onePage.render("registerNewUser");
 					}
-                }
-            });
+				}
+			});
 			
 		}
 	});

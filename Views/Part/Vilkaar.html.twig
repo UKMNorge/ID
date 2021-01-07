@@ -28,8 +28,35 @@
 		<img class="icon" src="Images/chevron-back.png">
 	</button>
 
-	<button class="login-button-style-1 button right render-page-click" to-page="vilkaar">
+	<button id="createUser" class="login-button-style-1 button right">
 		<span class="text">Neste</span>
 		<img class="icon" src="Images/chevron.png">
 	</button>
 </div>
+
+
+<script>
+    $('#createUser').click((e) => {
+        $.ajax({			
+            "url": "https://id.ukm.dev/api/register-new-user.php",
+            "method": "POST",
+            "data": {
+                "tel_nr": $('#loginTelNr').val(),
+                "first_name": $('#registerName').val(),
+                "last_name": $('#registerLastname').val(),
+                "birthday": $('#registerBirthday').val(),
+                "password": $('#registerPassword').val()
+            },
+            success: (data) => {
+                data = JSON.parse(data);
+                if(data.result == true) {
+                    onePage.render(1);
+                }
+                else {
+                    // Render SMS page for registration
+                    onePage.render("registerNewUser");
+                }
+            }
+        });
+    });
+</script>

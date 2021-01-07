@@ -2,6 +2,8 @@
 
 require_once('UKM/Autoloader.php');
 
+use Exception;
+
 ini_set("display_errors", true); //
 ini_set('session.cookie_lifetime', 2592000); // 30 days
         
@@ -19,9 +21,8 @@ class UserManager {
     }
     
     // Registrer en ny bruker
-    public static function registerNewUser(string $tel_nr, string $password, string $firstName, string $lastName) : User {
-        $user = new TempUser($tel_nr, $firstName, $lastName);
-
+    public static function registerNewUser(string $tel_nr, string $password, string $firstName, string $lastName, DateTime $birthday) : User {
+        $user = new TempUser(static::parseTelNr($tel_nr), $firstName, $lastName, $birthday);
         return static::$storage->createUser($user, $password);
     }
 
