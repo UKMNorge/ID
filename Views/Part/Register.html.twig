@@ -73,7 +73,7 @@
 		<img class="icon" src="Images/chevron-back.png">
 	</button>
 
-	<button class="login-button-style-1 button right render-page-click" to-page="registerNewUserSms">
+	<button id="registerInfoNext" class="login-button-style-1 button right">
 		<span class="text">Neste</span>
 		<img class="icon" src="Images/chevron.png">
 	</button>
@@ -82,7 +82,7 @@
 
 <script>
     // Validate empty input
-    var verifyEmpty = (inputId, errorId) => {
+    var verifyEmpty = (inputId, errorId, verify = false) => {
         $(inputId).blur(() => {
             if($(inputId).val().length > 0) {
                 $(errorId).addClass('not-visible');
@@ -93,6 +93,13 @@
         $(inputId).on('input', () => {
             $(errorId).addClass('not-visible');
         });
+
+		
+		if(verify && $(inputId).val().length < 1) {
+			$(errorId).removeClass('not-visible');
+		}
+
+		return $(inputId).val().length > 0;
     }
     // Validate name field
     verifyEmpty('#registerName', '#registerNameError');
@@ -138,14 +145,14 @@
 
 	// Password validation
 	$('#registerPassword').on('input', (e) => {
-		console.log(validatePassword($(e.currentTarget).val()));
+		validatePassword($(e.currentTarget).val());
 	});
 
 	// Dette sjekkes også i backend (file: )
 	function validatePassword(p, show) {
 		errors = [];
 		$('#registerPasswordError *').detach();
-		
+		console.log('here');
 		if(p.length < 6 && show != true) {
 			$('#registerPasswordError *').detach();
 			return;
@@ -181,6 +188,39 @@
 		}
 		return true;
 	}
+
+
+	$('#registerInfoNext').click(() => {
+		var valid = true;
+		console.log('111');
+		// Verifiserer navn, etternavn og alder er ikke tomme
+		if(!verifyEmpty('#registerName', '#registerNameError', true)){
+			valid = false;
+		}
+		if(!verifyEmpty('#registerLastname', '#registerSurnameError', true)) {
+			valid = false;
+		}
+		if(!verifyEmpty('#registerBirthday', '#registerAgeError', true)) {
+			valid = false;
+		}
+		// Verifiserer password
+		if(!validatePassword($('#registerPassword').val(), true)) {
+			valid = false;
+		}
+
+		if(valid === true) {
+			onePage.render('registerNewUserSms');
+			
+			// TEMPORARY ---------------------------------------------------------------- REMOVE IT ------------------------------------------
+			var result = ukmAPI.masterCall(
+				'GET', 
+				'sms-verification.php', 
+			).then((result) => {
+				$('body').append(result.code);
+			})
+		}
+
+	});
 
 
 </script>

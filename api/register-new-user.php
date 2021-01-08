@@ -30,26 +30,8 @@ try {
 
 try{
     $user = UserManager::registerNewUser($tel_nr, $password, $firstName, $lastName, $birthday);
-    var_dump($user);
+    http_response_code(200);
 }catch(Exception $e) {
     if($debug) echo $e->getMessage();
     http_response_code(403);
 }
-
-        // echo json_encode(array("result" => UserVerification::verify($code)));
-    
-// } catch(Exception $e) {
-//     http_response_code(405);
-//     echo json_encode(array("result" => false));
-//     echo 'aa';
-// }
-
-
-// if(UserManager::userExists($tel_nr)){
-//     http_response_code(200);
-// }
-  
-// else{
-//     http_response_code(200);
-//     echo json_encode(array("result" => false));
-// }

@@ -36,27 +36,23 @@
 
 
 <script>
-    $('#createUser').click((e) => {
-        $.ajax({			
-            "url": "https://id.ukm.dev/api/register-new-user.php",
-            "method": "POST",
-            "data": {
-                "tel_nr": $('#loginTelNr').val(),
-                "first_name": $('#registerName').val(),
-                "last_name": $('#registerLastname').val(),
-                "birthday": $('#registerBirthday').val(),
-                "password": $('#registerPassword').val()
-            },
-            success: (data) => {
-                data = JSON.parse(data);
-                if(data.result == true) {
-                    onePage.render(1);
+    // Create user
+    $('#createUser').click(async (e) => {
+        try{
+            var result = await ukmAPI.masterCall(
+                'POST', 
+                'register-new-user.php', 
+                {
+                    "tel_nr": $('#loginTelNr').val(),
+                    "first_name": $('#registerName').val(),
+                    "last_name": $('#registerLastname').val(),
+                    "birthday": $('#registerBirthday').val(),
+                    "password": $('#registerPassword').val()
                 }
-                else {
-                    // Render SMS page for registration
-                    onePage.render("registerNewUser");
-                }
-            }
-        });
+            );
+        }catch(err) {
+            console.error(err);
+        }
+
     });
 </script>

@@ -29,7 +29,7 @@
 	<!-- PAGE 2 - SMS Verification - forgot password -->
 	<div class="login-box-style password col-xs-12 one-page-page" page-id="2">
 		{% include "Part/Progress.html.twig" %}
-		{% include "Part/Sms.html.twig" with {'nextPage': '-1'} %}
+		{% include "Part/Sms.html.twig" with {'renderId': 'forgotPassword', 'nextPage': '-1'} %}
 	</div>
 
 	<!-- Register new user -->
@@ -41,7 +41,7 @@
 	<!-- PAGE 3 - SMS Verification - register new user -->
 	<div class="login-box-style password col-xs-12 one-page-page" page-id="registerNewUserSms">
 		{% include "Part/Progress.html.twig" with {'totalSteps': 3, 'currentStep': 2} %}
-		{% include "Part/Sms.html.twig" with {'nextPage': 'vilkaar'} %}
+		{% include "Part/Sms.html.twig" with {'renderId': 'verifyUser', 'nextPage': 'vilkaar'} %}
 	</div>
 
 	<!-- Register new user -->
@@ -55,8 +55,10 @@
 
 <script>
 	var onePage = new OnePage();
+	var ukmAPI = new UkmAPI();
+	console.warn(ukmAPI);
 
-	onePage.render('registerNewUser');
+	// onePage.render('registerNewUser');
 	
 	// Add focus on click of the field (div)
 	$('.focus-style-js').click((e) => {

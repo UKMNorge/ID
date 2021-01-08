@@ -1,11 +1,11 @@
 <?php
 
-require_once('UKM/Autoloader.php');
-
-use Exception;
-
 ini_set("display_errors", true); //
 ini_set('session.cookie_lifetime', 2592000); // 30 days
+
+require_once('UKM/Autoloader.php');
+
+// use Exception;
         
 session_start();
 
@@ -22,6 +22,9 @@ class UserManager {
     
     // Registrer en ny bruker
     public static function registerNewUser(string $tel_nr, string $password, string $firstName, string $lastName, DateTime $birthday) : User {
+        // Register new user only if the sms validation is finished !!!
+        // UserVerification->isVerificationCompleted()...
+        
         $user = new TempUser(static::parseTelNr($tel_nr), $firstName, $lastName, $birthday);
         return static::$storage->createUser($user, $password);
     }
@@ -50,9 +53,9 @@ class UserManager {
     }
 
     public static function parseTelNr(string $tel_nr) : string {
-        // Legg til +47 hvis det er ikke lagt til
-        if(substr($tel_nr, 0, 3-strlen($tel_nr)) != '+47') {
-            $tel_nr = '+47' . $tel_nr;
+        // Fjern +47 hvis det er lagt til
+        if(substr($tel_nr, 0, 3-strlen($tel_nr)) == '+47') {
+            $tel_nr = substr($tel_nr, 3);
         }
         return $tel_nr;
     }

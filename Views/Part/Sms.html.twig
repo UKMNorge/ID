@@ -4,9 +4,9 @@
 <div class="login">
 	<div class="input-chain">
 		<div class="inputs">
-			<input class="tel-input focus-style-js-input" type="text" maxlength="1">
-			<input class="tel-input focus-style-js-input" type="text" maxlength="1">
-			<input class="tel-input focus-style-js-input" type="text" maxlength="1">
+			<input pos='0' class="{{renderId}} code-0 sms-code tel-input focus-style-js-input" type="text" maxlength="1" style="text-transform:uppercase">
+			<input pos='1' class="{{renderId}} code-1 sms-code tel-input focus-style-js-input" type="text" maxlength="1" style="text-transform:uppercase">
+			<input pos='2' class="{{renderId}} code-2 sms-code tel-input focus-style-js-input" type="text" maxlength="1" style="text-transform:uppercase">
 			<button class="icon" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
 				<span>?</button>
 			</button>
@@ -32,17 +32,45 @@
 		<img class="icon" src="Images/chevron-back.png">
 	</button>
 
-	<button id="loginSend" onclick="onePage.render('{{nextPage}}')" class="login-sms-next login-button-style-1 button right">
+	<button render-id="{{renderId}}" next-page="{{nextPage}}" class="login-sms-next login-button-style-1 button right">
 		<span class="text">Logg Inn</span>
 		<img class="icon" src="Images/chevron.png">
 	</button>
 </div>
 
 <script>
-// setTimeout(() => {
-// 	$('.login-sms-next').click(()=> {
-// 		// onePage.render(nextPage);
-// 		alert('a');
-// 	})
-// }, 4000);
+	$('button.login-sms-next').click(async (e) => {
+		var renderId = $(e.currentTarget).attr('render-id');
+		var nextPage = $(e.currentTarget).attr('next-page');
+		
+		var code = ($('input.sms-code.code-0.'+renderId).val() + $('input.sms-code.code-1.'+renderId).val() + $('input.sms-code.code-2.'+renderId).val()).toUpperCase();
+
+		try{
+            var data = await ukmAPI.masterCall(
+                'POST', 
+                'sms-verification.php',
+                {
+                    "code": code
+				}
+			);
+			if(data.result == true){
+				onePage.render(nextPage);
+			}
+			else{
+				console.log('fail code');
+			}
+        }catch(err) {
+            console.error(err);
+        }
+	});
+
+	// Go to next input (SMS 3 inputs)
+	$('input.sms-code').keyup((e) => {
+		var el = $(e.currentTarget);
+		var pos = parseInt(el.attr('pos'));
+		if(pos < 3 && el.val().length == 1) {
+			$(e.currentTarget).siblings('.code-'+(pos+1)).focus();		
+		}
+	})
+
 </script>

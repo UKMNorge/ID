@@ -23,21 +23,55 @@ class UserVerification {
     public static function startVerification() : string {
         $vCode = static::generateVerificationCode();
         $_SESSION['verification_code'] = $vCode;
+        // Hvor mange ganger bruker kan prøve koden
+        $_SESSION['verification_code_count'] = 3;
 
         return $vCode;
     }
 
+    public static function triesLeft() : int {
+        if(isset($_SESSION['verification_code_count'])) {
+            return $_SESSION['verification_code_count'];
+        }
+        return -1;
+    }
+
+    public static function useTry() : int {
+        if(isset($_SESSION['verification_code_count'])) {
+            $_SESSION['verification_code_count'] = $_SESSION['verification_code_count'] - 1;
+            return $_SESSION['verification_code_count'];
+        }
+        return -1;
+    }
+
     // Verify the code
     public static function verify(string $userCode) : bool {
+        if(static::triesLeft() == 0) {
+            throw new Exception('Brukeren har prøvd å verifisere sms-koden 3 ganger');
+        }
+        // var_dump($_SESSION['verification_code'] == $userCode);
         // Check if verification_code exists, userCode has 3 chars and is equals to verification_code
-        if (isset($_SESSION['verification_code']) && strlen($userCode) === 3 && $_SESSION['verification_code'] === $userCode) {
+        if (isset($_SESSION['verification_code']) && strlen($userCode) > 2 && $_SESSION['verification_code'] == $userCode) {
             // Remove the verification_code from session
             unset($_SESSION["verification_code"]);
+            unset($_SESSION['verification_code_count']);
             return true;
         }
-        // Remove the verification_code from session, so trying the code again is impossible
-        // 3 times
-        unset($_SESSION["verification_code"]);
+        
+        // If there are tries
+        if(static::triesLeft() > 0) {
+            static::useTry();
+        }
+        // If there are no tries, remove the code and count
+        else {
+            unset($_SESSION["verification_code"]);
+            unset($_SESSION['verification_code_count']);
+        }
+
+        return false;
+    }
+
+    public static function isVerificationCompleted() : bool {
         return false;
     }
 
