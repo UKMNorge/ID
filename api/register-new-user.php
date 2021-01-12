@@ -26,11 +26,22 @@ try {
     return;
 }
 
-// var_dump($request->request);
-
 try{
     $user = UserManager::registerNewUser($tel_nr, $password, $firstName, $lastName, $birthday);
-    http_response_code(200);
+    // The user is registered and logged in
+    if($user) {
+        http_response_code(200);
+        echo json_encode(array(
+            "result" => true
+        ));
+    }
+    // The user has not been registered
+    else {
+        http_response_code(403);
+        echo json_encode(array(
+            "result" => false
+        ));
+    }
 }catch(Exception $e) {
     if($debug) echo $e->getMessage();
     http_response_code(403);

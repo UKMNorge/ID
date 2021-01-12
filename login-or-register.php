@@ -41,7 +41,7 @@ UKMDesign::setCurrentSection(
 );
 
 // The user is logged in
-if(UserManager::isSessionActive()) {
+if(UserManager::isUserLoggedin()) {
     Vanilla::addViewData('user', UserManager::getLoggedinUser());
     Vanilla::addViewData('ukmHostname', UKM_HOSTNAME);
     echo Vanilla::render('LoginInfo');

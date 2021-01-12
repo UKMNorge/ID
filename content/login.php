@@ -34,7 +34,7 @@
             $msg = '';
 
             // There is an active session
-            if (UserManager::isSessionActive()) {
+            if (UserManager::isUserLoggedin()) {
                 echo '<h2>Logged in!</h2>';
                 echo '<a href = "logout.php" tite = "Logout">Logout</a>';
                 exit;

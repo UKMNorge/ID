@@ -11,7 +11,7 @@ class UkmAPI {
                 "method": method,
                 "data": args ? args : {},
                 success: (data) => {
-                    resolve(JSON.parse(data ? data : {}));
+                    resolve(JSON.parse(data ? data : '{}'));
                 },
                 error: (err) => {
                     reject(err);
@@ -19,6 +19,4 @@ class UkmAPI {
             });
         })
     }
-
-
 }

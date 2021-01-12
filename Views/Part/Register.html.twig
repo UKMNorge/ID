@@ -26,17 +26,65 @@
 		<span class="text">Etternavn er ikke gyldig!</span>
 	</div>
 
-    <div class="tel-nr input-div login-input-style focus-style-js">
-		<div class="info">
-            <object class="tel-icon svg" data="Images/cake.svg" width="15" height="15"> </object>
-			<p class="text">Alder</p>
+	<div class="group-inputs-horizontal">
+		<div class="item-of-group">
+			<div class="tel-nr input-div login-input-style focus-style-js">
+				<div class="info">
+					<object class="tel-icon svg" data="Images/cake.svg" width="15" height="15"> </object>
+					<p class="text">Dag</p>
+				</div>
+				<input id="registerDay" class="tel-input focus-style-js-input" type="tel" maxlength="2">
+			</div>
+			<div id="registerDayError" class="info-feil not-visible">
+				<p class="icon">!</p>
+				<span class="text">Dag er ikke gyldig, skriv tall!</span>
+			</div>
 		</div>
-		<input id="registerBirthday" class="tel-input focus-style-js-input" type="text" name="age">
+
+		<div class="item-of-group">
+			<div class="tel-nr input-div login-input-style focus-style-js">
+				<div class="info">
+					<object class="tel-icon svg" data="Images/cake.svg" width="15" height="15"> </object>
+					<p class="text">Måned</p>
+				</div>
+				<select id="registerMonth" class="tel-input focus-style-js-input">
+					<option>01</option>
+					<option>02</option>
+					<option>03</option>
+					<option>04</option>
+					<option>05</option>
+					<option>06</option>
+					<option>07</option>
+					<option>08</option>
+					<option>09</option>
+					<option>10</option>
+					<option>11</option>
+					<option>12</option>
+				</select>
+			</div>
+			<div id="registerMonthError" class="info-feil not-visible">
+				<p class="icon">!</p>
+				<span class="text">Måned er ikke gyldig, skriv tall!</span>
+			</div>
+		</div>
+
+		<div class="item-of-group">
+			<div class="tel-nr input-div login-input-style focus-style-js">
+				<div class="info">
+					<object class="tel-icon svg" data="Images/cake.svg" width="15" height="15"> </object>
+					<p class="text">År</p>
+				</div>
+				<input id="registerYear" class="tel-input focus-style-js-input" type="text" name="age" maxlength="4">
+			</div>
+			<div id="registerYearError" class="info-feil not-visible">
+				<p class="icon">!</p>
+				<span class="text">År er ikke gyldig, skriv tall!</span>
+			</div>
+		</div>
+
 	</div>
-	<div id="registerAgeError" class="info-feil not-visible">
-		<p class="icon">!</p>
-		<span class="text">Alder er ikke gyldig, skriv tall!</span>
-	</div>
+
+
 	<div id="chooseAge" class="choose-age not-visible" year="">
 		<div class="choose">
 			<button class="select-value select-age">
@@ -105,6 +153,11 @@
     verifyEmpty('#registerName', '#registerNameError');
     // Validate surname field
     verifyEmpty('#registerLastname', '#registerSurnameError');
+	// Validate day field
+	verifyEmpty('#registerDay', '#registerDayError');
+	// Validate year field
+	verifyEmpty('#registerYear', '#registerYearError');
+
 
 	// Validate age
 	$('#registerAge').on('input', (e) => {
@@ -148,8 +201,9 @@
 		validatePassword($(e.currentTarget).val());
 	});
 
-	// Dette sjekkes også i backend (file: )
+	// Dette sjekkes også i backend (file: UserPdo.php)
 	function validatePassword(p, show) {
+		console.log('Hello');
 		errors = [];
 		$('#registerPasswordError *').detach();
 		console.log('here');
@@ -173,8 +227,6 @@
 			errors.push("Passordet kan ikke inneholde symbolene %@$"); 
 		}
 		if (errors.length > 0) {
-			// console.error(errors.join("\n"));
-
 			for(var err of errors) {
 				$('#registerPasswordError').append(`
 					<div id="registerPasswordError" class="info-feil">
@@ -192,7 +244,6 @@
 
 	$('#registerInfoNext').click(() => {
 		var valid = true;
-		console.log('111');
 		// Verifiserer navn, etternavn og alder er ikke tomme
 		if(!verifyEmpty('#registerName', '#registerNameError', true)){
 			valid = false;
@@ -200,7 +251,10 @@
 		if(!verifyEmpty('#registerLastname', '#registerSurnameError', true)) {
 			valid = false;
 		}
-		if(!verifyEmpty('#registerBirthday', '#registerAgeError', true)) {
+		if(!verifyEmpty('#registerDay', '#registerDayError', true)) {
+			valid = false;
+		}
+		if(!verifyEmpty('#registerYear', '#registerYearError', true)) {
 			valid = false;
 		}
 		// Verifiserer password

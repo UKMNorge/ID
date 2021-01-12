@@ -26,17 +26,24 @@ class UserManager {
         // UserVerification->isVerificationCompleted()...
         
         $user = new TempUser(static::parseTelNr($tel_nr), $firstName, $lastName, $birthday);
-        return static::$storage->createUser($user, $password);
+        $createdUser = static::$storage->createUser($user, $password);
+
+        // If the user is created, login 
+        if($createdUser) {
+            static::userLogin($tel_nr, $password);
+            return $createdUser;
+        }
+        return null;
     }
 
 
     // Check if session is active
-    public static function isSessionActive() {
+    public static function isUserLoggedin() {
         return static::$storage->isUserLoggedin();
     }
 
     public static function getLoggedinUser() {
-        if(static::isSessionActive()) {
+        if(static::isUserLoggedin()) {
             return $_SESSION['user'];
         }
         throw new Exception('Brukeren er ikke logged inn');

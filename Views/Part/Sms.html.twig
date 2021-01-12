@@ -12,10 +12,6 @@
 			</button>
 		</div>
 	</div>
-
-	{# <div class="buttons-div">
-					<button id="sendNewPassword" type="button" class="send-new-password">Send nytt passord</button>
-				</div> #}
 </div>
 
 <div class="login-message collapse" id="collapseExample">
@@ -25,6 +21,10 @@
 	<div class="icon">
 		<p class="char">i</p>
 	</div>
+</div>
+
+<div class="buttons-div">
+	<button id="forwardNewCode" class="send-new-password small-button-nobo">Send ny engagskode</button>
 </div>
 
 <div class="next-button">
@@ -71,6 +71,14 @@
 		if(pos < 3 && el.val().length == 1) {
 			$(e.currentTarget).siblings('.code-'+(pos+1)).focus();		
 		}
-	})
+	});
+
+	$('#forwardNewCode').off('click').click((e) => {
+		onePage.render('smsForward');
+		// var codeForward = await new CodeForward();
+
+		// alert('Koden er mottatt!');
+
+	});
 
 </script>

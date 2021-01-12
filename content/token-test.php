@@ -18,7 +18,7 @@
         var getToken = () => {
             $.ajax({
                 method: 'POST',
-                url: "token.php",
+                url: "/api/auth.php",
                 data: {
                         grant_type : "password",
                         client_id : 'testclient',

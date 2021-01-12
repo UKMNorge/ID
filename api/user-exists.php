@@ -17,7 +17,7 @@ if(UserManager::userExists($tel_nr)){
     http_response_code(200);
     echo json_encode(array("result" => true));
 }
-  
+
 else{
     http_response_code(200);
     echo json_encode(array("result" => false));

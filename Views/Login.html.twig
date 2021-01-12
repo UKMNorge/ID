@@ -12,7 +12,7 @@
 <div class="container one-page-container">
 
 	<div class="col-xs-12 login">
-		<form class="form-signin" role="form" autocomplete="on" action="/login-one-page.php" method="post">
+		<form class="form-signin" role="form" autocomplete="on" action="/login-or-register.php" method="post">
 		<!-- PAGE 0 Telephone Number - Username  -->	
 			<div class="login-box-style col-xs-12 one-page-page" page-id="0">
 				{% include "Part/Username.html.twig" %}
@@ -27,8 +27,8 @@
 	</div>
 
 	<!-- PAGE 2 - SMS Verification - forgot password -->
-	<div class="login-box-style password col-xs-12 one-page-page" page-id="2">
-		{% include "Part/Progress.html.twig" %}
+	<div class="login-box-style password col-xs-12 one-page-page" page-id="smsForgotPassword">
+		{% include "Part/Progress.html.twig" with {'totalSteps': 2, 'currentStep': 2} %}
 		{% include "Part/Sms.html.twig" with {'renderId': 'forgotPassword', 'nextPage': '-1'} %}
 	</div>
 
@@ -40,7 +40,7 @@
 
 	<!-- PAGE 3 - SMS Verification - register new user -->
 	<div class="login-box-style password col-xs-12 one-page-page" page-id="registerNewUserSms">
-		{% include "Part/Progress.html.twig" with {'totalSteps': 3, 'currentStep': 2} %}
+		{% include "Part/Progress.html.twig" with {'totalSteps': 2, 'currentStep': 2} %}
 		{% include "Part/Sms.html.twig" with {'renderId': 'verifyUser', 'nextPage': 'vilkaar'} %}
 	</div>
 
@@ -48,6 +48,12 @@
 	<div class="login-box-style password col-xs-12 one-page-page" page-id="vilkaar">
 		{% include "Part/Progress.html.twig" with {'totalSteps': 3, 'currentStep': 3} %}
 		{% include "Part/Vilkaar.html.twig" with {'nextPage': '-1'} %}
+	</div>
+
+	<!-- SMS Forward -->
+	<div class="login-box-style password col-xs-12 one-page-page" page-id="smsForward">
+		{% include "Part/Progress.html.twig" with {'totalSteps': 2, 'currentStep': 2} %}
+		{% include "Part/SMSForward.html.twig" with {'nextPage': '-1'} %}
 	</div>
 
 </div>
@@ -74,10 +80,10 @@
 		}
 	});
 
-	// Login next, verifying tel nr
-	$('#loginNext').click(() => {
-		verifyTelNr();
-	});
+	// // Login next, verifying tel nr
+	// $('#loginNext').click(() => {
+	// 	verifyTelNr();
+	// });
 
 	// Login next, verifying tel nr
 	$('#loginNext').click(() => {
