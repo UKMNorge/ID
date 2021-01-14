@@ -198,17 +198,17 @@
 
 	// Password validation
 	$('#registerPassword').on('input', (e) => {
-		validatePassword($(e.currentTarget).val());
+		validatePassword($(e.currentTarget).val(), $('#registerPasswordError'));
 	});
 
 	// Dette sjekkes også i backend (file: UserPdo.php)
-	function validatePassword(p, show) {
-		console.log('Hello');
+	function validatePassword(p, errorEl, show) {
 		errors = [];
-		$('#registerPasswordError *').detach();
-		console.log('here');
+
+		errorEl.children('*').detach();
+		
 		if(p.length < 6 && show != true) {
-			$('#registerPasswordError *').detach();
+			errorEl.children('*').detach();
 			return;
 		}
 		if(p.length < 8) {
@@ -228,8 +228,8 @@
 		}
 		if (errors.length > 0) {
 			for(var err of errors) {
-				$('#registerPasswordError').append(`
-					<div id="registerPasswordError" class="info-feil">
+				errorEl.append(`
+					<div class="info-feil">
 						<p class="icon">!</p>
 						<span class="text">${err}</span>
 					</div>`
@@ -258,23 +258,53 @@
 			valid = false;
 		}
 		// Verifiserer password
-		if(!validatePassword($('#registerPassword').val(), true)) {
+		if(!validatePassword($('#registerPassword').val(), $('#registerPasswordError'), true)) {
 			valid = false;
 		}
 
 		if(valid === true) {
-			onePage.render('registerNewUserSms');
+			createUser();
 			
 			// TEMPORARY ---------------------------------------------------------------- REMOVE IT ------------------------------------------
 			var result = ukmAPI.masterCall(
-				'GET', 
-				'sms-verification.php', 
+				'POST', 
+				'start-sms-verification.php',
+				{
+					'tel_nr' : $('#loginTelNr').val()
+				}
 			).then((result) => {
 				$('body').append(result.code);
 			})
 		}
 
 	});
+
+	 // Create user
+    var createUser = async (e) => {
+        try{
+            var data = await ukmAPI.masterCall(
+                'POST', 
+                'register-new-user.php', 
+                {
+                    "tel_nr": $('#loginTelNr').val(),
+                    "first_name": $('#registerName').val(),
+                    "last_name": $('#registerLastname').val(),
+                    "birthday": ($('#registerYear').val() + '-' + $('#registerMonth').val() + '-' + $('#registerDay').val()),
+                    "password": $('#registerPassword').val()
+                }
+            );
+        }catch(err) {
+            console.error(err);
+        }
+
+        if(data.result == true) {
+            // window.location.href = "/login-or-register.php";
+			onePage.render('registerNewUserSms');
+		}
+        else {
+            alert('Something went wrong!');
+        }
+    };
 
 
 </script>

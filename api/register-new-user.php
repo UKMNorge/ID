@@ -29,7 +29,7 @@ try {
 try{
     $user = UserManager::registerNewUser($tel_nr, $password, $firstName, $lastName, $birthday);
     // The user is registered and logged in
-    if($user) {
+    if($user === true) {
         http_response_code(200);
         echo json_encode(array(
             "result" => true

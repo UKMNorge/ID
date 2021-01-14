@@ -24,7 +24,7 @@
 </div>
 
 <div class="buttons-div">
-	<button id="forwardNewCode" class="send-new-password small-button-nobo">Send ny engagskode</button>
+	<button id="forwardNewCode" render-id="{{renderId}}" class="send-new-password forward-new-code small-button-nobo">Send ny engagskode</button>
 </div>
 
 <div class="next-button">
@@ -48,11 +48,12 @@
 		try{
             var data = await ukmAPI.masterCall(
                 'POST', 
-                'sms-verification.php',
+                'finish-sms-verification.php',
                 {
-                    "code": code
+                    'code' : code
 				}
 			);
+			
 			if(data.result == true){
 				onePage.render(nextPage);
 			}
@@ -73,7 +74,7 @@
 		}
 	});
 
-	$('#forwardNewCode').off('click').click((e) => {
+	$('.send-new-password.forward-new-code').click((e) => {
 		onePage.render('smsForward');
 		// var codeForward = await new CodeForward();
 

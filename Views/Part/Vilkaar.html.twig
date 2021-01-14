@@ -36,29 +36,5 @@
 
 
 <script>
-    // Create user
-    $('#createUser').click(async (e) => {
-        try{
-            var data = await ukmAPI.masterCall(
-                'POST', 
-                'register-new-user.php', 
-                {
-                    "tel_nr": $('#loginTelNr').val(),
-                    "first_name": $('#registerName').val(),
-                    "last_name": $('#registerLastname').val(),
-                    "birthday": ($('#registerYear').val() + '-' + $('#registerMonth').val() + '-' + $('#registerDay').val()),
-                    "password": $('#registerPassword').val()
-                }
-            );
-        }catch(err) {
-            console.error(err);
-        }
-
-        if(data.result == true) {
-            window.location.href = "/login-or-register.php";
-        }
-        else {
-            alert('Somthineg went wrong!');
-        }
-    });
+   
 </script>

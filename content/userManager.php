@@ -21,21 +21,20 @@ class UserManager {
     }
     
     // Registrer en ny bruker
-    public static function registerNewUser(string $tel_nr, string $password, string $firstName, string $lastName, DateTime $birthday) : User {
-        // Register new user only if the sms validation is finished !!!
-        // UserVerification->isVerificationCompleted()...
-        
+    public static function registerNewUser(string $tel_nr, string $password, string $firstName, string $lastName, DateTime $birthday) : bool {  
         $user = new TempUser(static::parseTelNr($tel_nr), $firstName, $lastName, $birthday);
-        $createdUser = static::$storage->createUser($user, $password);
+        $isUserCreated = static::$storage->createUser($user, $password);
 
         // If the user is created, login 
-        if($createdUser) {
-            static::userLogin($tel_nr, $password);
-            return $createdUser;
+        if($isUserCreated === true) {
+            return true;
         }
         return null;
     }
-
+    
+    public static function setUserVerify(string $tel_nr) {
+        static::$storage->setUserToVerified($tel_nr);
+    }
 
     // Check if session is active
     public static function isUserLoggedin() {

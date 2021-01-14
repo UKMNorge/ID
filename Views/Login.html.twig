@@ -29,7 +29,7 @@
 	<!-- PAGE 2 - SMS Verification - forgot password -->
 	<div class="login-box-style password col-xs-12 one-page-page" page-id="smsForgotPassword">
 		{% include "Part/Progress.html.twig" with {'totalSteps': 2, 'currentStep': 2} %}
-		{% include "Part/Sms.html.twig" with {'renderId': 'forgotPassword', 'nextPage': '-1'} %}
+		{% include "Part/Sms.html.twig" with {'renderId': 'forgotPassword', 'nextPage': '-1', 'prevPage' : 'smsForgotPassword'} %}
 	</div>
 
 	<!-- Register new user -->
@@ -41,7 +41,7 @@
 	<!-- PAGE 3 - SMS Verification - register new user -->
 	<div class="login-box-style password col-xs-12 one-page-page" page-id="registerNewUserSms">
 		{% include "Part/Progress.html.twig" with {'totalSteps': 2, 'currentStep': 2} %}
-		{% include "Part/Sms.html.twig" with {'renderId': 'verifyUser', 'nextPage': 'vilkaar'} %}
+		{% include "Part/Sms.html.twig" with {'renderId': 'verifyUser', 'nextPage': 'vilkaar', 'prevPage' : 'registerNewUserSms'} %}
 	</div>
 
 	<!-- Register new user -->
