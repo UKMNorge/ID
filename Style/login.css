@@ -8,6 +8,11 @@
     display: none !important;
 }
 
+.top-background {
+    overflow: hidden;
+    position: relative;
+    height: 200px;
+}
 .top-background .div-radius {
     position: absolute;
     width: 150%;
@@ -20,15 +25,16 @@
 
 .top-background .div-radius,
 .top-background .background-space {
-    height: 265px;
+    height: 200px;
 }
 .top-background .background-space {
-    height: calc(256px - 50px);
+    height: calc(214px - 50px);
 }
 
-/* .one-page-container {
-    position: relative;
+.one-page-container {
+    margin-top: -50px;
 }
+/*
 .one-page-container .login {
     position: relative;
 }
@@ -178,19 +184,19 @@
     font-size: 11px;
 }
 
-.login-box-style .login .input-div {
+.ukm-input-covered {
     background: #edf2f7;
     position: relative;
     overflow: hidden;
     min-height: 56px;
 }
-.login-box-style .register .input-div {
+.login-box-style .register .ukm-input-covered {
     margin-bottom: 20px;
 }
-.login-box-style .login .input-div.register-field {
+.ukm-input-covered.register-field {
     margin-bottom: 30px;
 }
-.login-box-style .login .input-div .info {
+.ukm-input-covered .info {
     background: #edf2f7;
     position: absolute;
     display: flex;
@@ -201,43 +207,43 @@
     padding: 17px;
     transition: all .2s;
 }
-.login-box-style .login .input-div .info.focused {
+.ukm-input-covered .info.focused {
     height: 21px;
     padding: 0 16px;
     padding-top: 5px;
     padding-bottom: 3px;
     transition: all .2s;
 }
-.login-box-style .login .input-div .info.focused .text {
+.ukm-input-covered .info.focused .text {
     font-size: 1vh;
     margin-left: 6px;
 }
-.login-box-style .login .input-div .info .tel-icon {
+.ukm-input-covered .info .tel-icon {
     width: auto;
     height: 100%;
     margin: auto 0;
     max-height: 17px;
 }
-.login-box-style .login .input-div .info .svg {
+.ukm-input-covered .info .svg {
     max-height: 20px;
     width: 20px;
 }
 
-.login-box-style .login .input-div .info.focused .tel-icon {
+.ukm-input-covered .info.focused .tel-icon {
     max-height: 8px;
 }
-.login-box-style .login .input-div .info.focused .svg {
+.ukm-input-covered .info.focused .svg {
     max-height: 10px;
     width: 10px;
 }
-.login-box-style .login .input-div .info .text {
+.ukm-input-covered .info .text {
     margin: auto;
     margin-left: 15px;
     color: #a0aec0;
     font-size: 15px;
 }
-.login-box-style .login .input-div select,
-.login-box-style .login .input-div input {
+.ukm-input-covered select,
+.ukm-input-covered input {
     background: transparent;
     width: 100%;
     border: none;
@@ -357,7 +363,7 @@
     font-size: 12px;
 }
 
-.login-button-style-1 {
+.ukm-button-primary {
     color: #fff;
     background: #a0aec0;
     font-size: 20px;
@@ -366,10 +372,10 @@
     border-radius: 40px;
 }
 
-.login-button-style-1 .text {
+.ukm-button-primary .text {
     color: #fff;
 }
-.login-button-style-1.half-color {
+.ukm-button-primary.half-color {
     background: #cbd5e0;
 }
 

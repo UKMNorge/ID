@@ -19,12 +19,6 @@ include_once('content/userManager.php');
 
 
 
-// Midlertidig (Må legges til på head)
-// echo '<style>';
-// include 'style/login.css';
-// echo '</style>';
-
-
 /**
  * Init Vanilla
  */
@@ -42,9 +36,19 @@ UKMDesign::setCurrentSection(
 
 // The user is logged in
 if(UserManager::isUserLoggedin()) {
-    Vanilla::addViewData('user', UserManager::getLoggedinUser());
-    Vanilla::addViewData('ukmHostname', UKM_HOSTNAME);
-    echo Vanilla::render('LoginInfo');
+    $user = UserManager::getLoggedinUser();
+
+    if($user->isVilkaarAccepted()) {
+        Vanilla::addViewData('user', $user);
+        Vanilla::addViewData('ukmHostname', UKM_HOSTNAME);
+        echo Vanilla::render('LoginInfo');
+    }
+    // Vilkaar er ikke godtatt
+    else {
+        Vanilla::addViewData('viewId', 'vilkaar');
+        echo Vanilla::render('Login');
+    }
+    
 // It is post
 } else if (isset($_POST['login']) && !empty($_POST['username']) && !empty($_POST['password'])) {
     // User credentials are correct
@@ -60,6 +64,7 @@ if(UserManager::isUserLoggedin()) {
 }
 // Not logged in, not post
 else {
+    Vanilla::addViewData('viewId', '0');
     Vanilla::addViewData('ukmHostname', UKM_HOSTNAME);
     echo Vanilla::render('Login');
 }

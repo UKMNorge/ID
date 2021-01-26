@@ -27,6 +27,7 @@ class UserManager {
 
         // If the user is created, login 
         if($isUserCreated === true) {
+            static::userLogin($tel_nr, $password);
             return true;
         }
         return null;
@@ -34,6 +35,15 @@ class UserManager {
     
     public static function setUserVerify(string $tel_nr) {
         static::$storage->setUserToVerified($tel_nr);
+    }
+
+    public static function setVilkaarToAccepted() : bool {
+        if(static::isUserLoggedin()) {
+            $user = static::getLoggedinUser();
+            return static::$storage->setVilkaarToAccepted($user);
+        }
+
+        throw new Exception("Brukeren er ikke logged inn derfor vilkaar kan ikke settes");
     }
 
     // Check if session is active

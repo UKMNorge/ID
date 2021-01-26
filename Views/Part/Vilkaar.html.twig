@@ -24,17 +24,32 @@
 </div>
 
 <div class="next-button">
-	<button type="button" class="login-button-style-1 button half-color left render-page-click" to-page="0">
-		<img class="icon" src="Images/chevron-back.png">
-	</button>
 
-	<button id="createUser" class="login-button-style-1 button right">
-		<span class="text">Neste</span>
+	<button id="acceptVilkaar" class="ukm-button-primary button">
+		<span class="text">Godta</span>
 		<img class="icon" src="Images/chevron.png">
 	</button>
 </div>
 
 
 <script>
-   
+
+    $('#acceptVilkaar').click(() => {
+        try{
+            var data = await ukmAPI.masterCall(
+                'POST', 
+                'accept-vilkaar.php',
+			);
+			
+			if(data.result == true){
+				
+			}
+			else{
+				console.error('Vilkaar ble ikke lagret');
+			}
+        }catch(err) {
+            console.error(err);
+        }
+    });
+
 </script>
