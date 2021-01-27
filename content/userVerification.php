@@ -50,7 +50,7 @@ class UserVerification {
     }
 
     // Verify the code
-    public static function verify(string $userCode) : bool {
+    public static function verify(string $userCode, string $password) : bool {
         if(static::triesLeft() == 0) {
             throw new Exception('Brukeren har prøvd å verifisere sms-koden 3 ganger');
             static::cleanSession();
@@ -58,8 +58,9 @@ class UserVerification {
 
         // Check if verification_code exists, userCode has 3 chars and is equals to verification_code
         if (isset($_SESSION['verification_code']) && strlen($userCode) > 2 && $_SESSION['verification_code'] == $userCode) {
-            UserManager::setUserVerify($_SESSION['verification_tel_nr']);
+            UserManager::setUserVerifyAndLogin($_SESSION['verification_tel_nr'], $password);
             static::cleanSession();
+            // Login
             return true;
         }
         

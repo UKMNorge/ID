@@ -6,6 +6,7 @@ ini_set("display_errors", true);
 
 include_once('../content/userManager.php');
 
+$debug = true;
 // Check if verification code is correct
 try {
     http_response_code(200);

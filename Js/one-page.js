@@ -3,8 +3,9 @@ class OnePage {
     constructor() {
         this.pageId;
 
-        // var pageId = this.getArgument('pageId');
-        this.render(0);
+        var pageId = this.getArgument('pageId');
+        // alert(pageId);
+        this.render(pageId ? pageId : 0);
     }
 
     // Add argument to url
@@ -17,7 +18,7 @@ class OnePage {
         var urlHref = window.location.href
         var url = new URL(urlHref);
         var val = url.searchParams.get(arg);
-        return val.length > 0 ? val : null;
+        return val != null && val.length > 0 ? val : null;
     }
 
     // Remove argument from url

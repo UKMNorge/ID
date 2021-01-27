@@ -2,10 +2,10 @@
 <small class="under-title">Her kan du lage en bruker eller logg inn</small>
 
 <div class="login">
-	<button type="button" class="login-with-facebook login-input-style">
-		<img class="logo-fb" src="Images/facebook.png">
-		<span class="title">Logg inn med facebook</span>
-	</button>
+	<div id="fb-root">
+		<div class="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="false">
+		</div>
+	</div>
 
 	<div class="separator">
 		<div class="line"></div>
@@ -14,7 +14,7 @@
 		</div>
 	</div>
 
-	<div class="tel-nr ukm-input-covered login-input-style focus-style-js">
+	<div class="tel-nr ukm-input login-input-style focus-style-js">
 		<div class="info">
 			<img class="tel-icon" src="Images/tel.png">
 			<p class="text">Mobilnummer</p>
@@ -48,3 +48,4 @@
 	</div>
 
 </div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v9.0" nonce="7A1rQmZR"></script>

@@ -25,7 +25,7 @@
 
 <div class="next-button">
 
-	<button id="acceptVilkaar" class="ukm-button-primary button">
+	<button id="godtaVilkaar" class="ukm-button-primary button">
 		<span class="text">Godta</span>
 		<img class="icon" src="Images/chevron.png">
 	</button>
@@ -34,7 +34,8 @@
 
 <script>
 
-    $('#acceptVilkaar').click(() => {
+    $('#godtaVilkaar').click(async () => {
+        alert('aaa');
         try{
             var data = await ukmAPI.masterCall(
                 'POST', 
@@ -42,7 +43,7 @@
 			);
 			
 			if(data.result == true){
-				
+				window.location.href = '/login-or-register.php';
 			}
 			else{
 				console.error('Vilkaar ble ikke lagret');

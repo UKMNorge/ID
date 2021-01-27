@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<div class="container-fluid top-background nop">
+<div class="container-fluid ukm-bolge nop">
 	<div class="div-radius"></div>
 	<div class="background-space">
 		
@@ -14,12 +14,12 @@
 	<div class="col-xs-12 login">
 		<form class="form-signin" role="form" autocomplete="on" action="/login-or-register.php" method="post">
 		<!-- PAGE 0 Telephone Number - Username  -->	
-			<div class="login-box-style col-xs-12 one-page-page" page-id="0">
+			<div class="ukm-card col-xs-12 one-page-page" page-id="0">
 				{% include "Part/Username.html.twig" %}
 			</div>
 
 		<!-- PAGE 1 - Password -->
-			<div class="login-box-style password col-xs-12 one-page-page" page-id="1">
+			<div class="ukm-card password col-xs-12 one-page-page" page-id="1">
 				{% include "Part/Progress.html.twig" %}
 				{% include "Part/Passord.html.twig" %}
 			</div>
@@ -27,31 +27,31 @@
 	</div>
 
 	<!-- PAGE 2 - SMS Verification - forgot password -->
-	<div class="login-box-style password col-xs-12 one-page-page" page-id="smsForgotPassword">
+	<div class="ukm-card password col-xs-12 one-page-page" page-id="smsForgotPassword">
 		{% include "Part/Progress.html.twig" with {'totalSteps': 2, 'currentStep': 2} %}
 		{% include "Part/Sms.html.twig" with {'renderId': 'forgotPassword', 'nextPage': '-1', 'prevPage' : 'smsForgotPassword'} %}
 	</div>
 
 	<!-- Register new user -->
-	<div class="login-box-style password col-xs-12 one-page-page" page-id="registerNewUser">
-		{% include "Part/Progress.html.twig" with {'totalSteps': 3, 'currentStep': 1} %}
+	<div class="ukm-card password col-xs-12 one-page-page" page-id="registerNewUser">
+		{% include "Part/Progress.html.twig" with {'totalSteps': 4, 'currentStep': 2} %}
 		{% include "Part/Register.html.twig" with {'nextPage': '-1'} %}
 	</div>
 
 	<!-- PAGE 3 - SMS Verification - register new user -->
-	<div class="login-box-style password col-xs-12 one-page-page" page-id="registerNewUserSms">
-		{% include "Part/Progress.html.twig" with {'totalSteps': 2, 'currentStep': 2} %}
+	<div class="ukm-card password col-xs-12 one-page-page" page-id="registerNewUserSms">
+		{% include "Part/Progress.html.twig" with {'totalSteps': 4, 'currentStep': 3} %}
 		{% include "Part/Sms.html.twig" with {'renderId': 'verifyUser', 'nextPage': 'vilkaar', 'prevPage' : 'registerNewUserSms'} %}
 	</div>
 
 	<!-- Register new user -->
-	<div class="login-box-style password col-xs-12 one-page-page" page-id="vilkaar">
-		{% include "Part/Progress.html.twig" with {'totalSteps': 3, 'currentStep': 3} %}
+	<div class="ukm-card password col-xs-12 one-page-page" page-id="vilkaar">
+		{% include "Part/Progress.html.twig" with {'totalSteps': 4, 'currentStep': 4} %}
 		{% include "Part/Vilkaar.html.twig" with {'nextPage': '-1'} %}
 	</div>
 
 	<!-- SMS Forward -->
-	<div class="login-box-style password col-xs-12 one-page-page" page-id="smsForward">
+	<div class="ukm-card password col-xs-12 one-page-page" page-id="smsForward">
 		{% include "Part/Progress.html.twig" with {'totalSteps': 2, 'currentStep': 2} %}
 		{% include "Part/SMSForward.html.twig" with {'nextPage': '-1'} %}
 	</div>
@@ -63,7 +63,13 @@
 	var onePage = new OnePage();
 	var ukmAPI = new UkmAPI();
 
-	// onePage.render('registerNewUser');
+	var viewId = '{{ viewId }}';
+
+
+	if(viewId && viewId.length > 0) {
+		onePage.render(viewId);
+	}
+
 	
 	// Add focus on click of the field (div)
 	$('.focus-style-js').click((e) => {
@@ -169,7 +175,6 @@
 	console.log(onePage);
 
 </script>
-
 
 
 {% endblock %}

@@ -27,19 +27,23 @@ class UserManager {
 
         // If the user is created, login 
         if($isUserCreated === true) {
-            static::userLogin($tel_nr, $password);
             return true;
         }
         return null;
     }
     
-    public static function setUserVerify(string $tel_nr) {
-        static::$storage->setUserToVerified($tel_nr);
+    public static function setUserVerifyAndLogin(string $tel_nr, string $password) {
+        $res = static::$storage->setUserToVerified($tel_nr);
+
+        if($res) {
+            static::userLogin($tel_nr, $password);
+        }
     }
 
     public static function setVilkaarToAccepted() : bool {
         if(static::isUserLoggedin()) {
             $user = static::getLoggedinUser();
+            $user->setVilkaarToAccepted();
             return static::$storage->setVilkaarToAccepted($user);
         }
 

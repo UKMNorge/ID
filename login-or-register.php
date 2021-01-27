@@ -46,6 +46,7 @@ if(UserManager::isUserLoggedin()) {
     // Vilkaar er ikke godtatt
     else {
         Vanilla::addViewData('viewId', 'vilkaar');
+        Vanilla::addViewData('user', $user);
         echo Vanilla::render('Login');
     }
     
@@ -53,9 +54,17 @@ if(UserManager::isUserLoggedin()) {
 } else if (isset($_POST['login']) && !empty($_POST['username']) && !empty($_POST['password'])) {
     // User credentials are correct
     if (UserManager::userLogin($_POST['username'], $_POST['password'])) {                    
-        Vanilla::addViewData('user', UserManager::getLoggedinUser());
+        $user = UserManager::getLoggedinUser();
+        Vanilla::addViewData('user', $user);
         Vanilla::addViewData('ukmHostname', UKM_HOSTNAME);
-        echo Vanilla::render('LoginInfo');
+        if($user->isVilkaarAccepted()) {
+            echo Vanilla::render('LoginInfo');
+        }
+        else {
+            Vanilla::addViewData('viewId', 'vilkaar');
+            Vanilla::addViewData('user', $user);
+            echo Vanilla::render('Login');
+        }
     // User credentials are not correct
     }else {
         Vanilla::addViewData('errorMessage', "Wrong username or password!");
@@ -64,7 +73,6 @@ if(UserManager::isUserLoggedin()) {
 }
 // Not logged in, not post
 else {
-    Vanilla::addViewData('viewId', '0');
     Vanilla::addViewData('ukmHostname', UKM_HOSTNAME);
     echo Vanilla::render('Login');
 }

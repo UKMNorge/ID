@@ -2,7 +2,7 @@
 <small class="under-title">Vi trenger litt mer informasjon om deg</small>
 
 <div class="login register">
-	<div class="tel-nr ukm-input-covered login-input-style focus-style-js">
+	<div class="tel-nr ukm-input login-input-style focus-style-js">
 		<div class="info">
 			<img class="tel-icon svg" src="Images/user.svg">
 			<p class="text">Fornavn</p>
@@ -14,7 +14,7 @@
 		<span class="text">Fornavn er ikke gyldig!</span>
 	</div>
 
-    <div class="tel-nr ukm-input-covered login-input-style focus-style-js">
+    <div class="tel-nr ukm-input login-input-style focus-style-js">
 		<div class="info">
 			<img class="tel-icon svg" src="Images/user.svg">
 			<p class="text">Etternavn</p>
@@ -28,7 +28,7 @@
 
 	<div class="group-inputs-horizontal">
 		<div class="item-of-group">
-			<div class="tel-nr ukm-input-covered login-input-style focus-style-js">
+			<div class="tel-nr ukm-input login-input-style focus-style-js">
 				<div class="info">
 					<object class="tel-icon svg" data="Images/cake.svg" width="15" height="15"> </object>
 					<p class="text">Dag</p>
@@ -42,24 +42,24 @@
 		</div>
 
 		<div class="item-of-group">
-			<div class="tel-nr ukm-input-covered login-input-style focus-style-js">
+			<div class="tel-nr ukm-input login-input-style focus-style-js">
 				<div class="info">
 					<object class="tel-icon svg" data="Images/cake.svg" width="15" height="15"> </object>
 					<p class="text">Måned</p>
 				</div>
 				<select id="registerMonth" class="tel-input focus-style-js-input">
-					<option>01</option>
-					<option>02</option>
-					<option>03</option>
-					<option>04</option>
-					<option>05</option>
-					<option>06</option>
-					<option>07</option>
-					<option>08</option>
-					<option>09</option>
-					<option>10</option>
-					<option>11</option>
-					<option>12</option>
+					<option month="01">Januar</option>
+					<option month="02">Februar</option>
+					<option month="03">Mars</option>
+					<option month="04">April</option>
+					<option month="05">Mai</option>
+					<option month="06">Juni</option>
+					<option month="07">Juli</option>
+					<option month="08">August</option>
+					<option month="09">September</option>
+					<option month="10">Oktober</option>
+					<option month="11">November</option>
+					<option month="12">Desember</option>
 				</select>
 			</div>
 			<div id="registerMonthError" class="info-feil not-visible">
@@ -69,7 +69,7 @@
 		</div>
 
 		<div class="item-of-group">
-			<div class="tel-nr ukm-input-covered login-input-style focus-style-js">
+			<div class="tel-nr ukm-input login-input-style focus-style-js">
 				<div class="info">
 					<object class="tel-icon svg" data="Images/cake.svg" width="15" height="15"> </object>
 					<p class="text">År</p>
@@ -98,7 +98,7 @@
 
 	</div>
 
-    <div class="tel-nr ukm-input-covered login-input-style focus-style-js">
+    <div class="tel-nr ukm-input login-input-style focus-style-js">
 		<div class="info">
             <object class="tel-icon svg" data="Images/lock-closed.svg" width="15" height="15"> </object>
 
@@ -289,7 +289,7 @@
                     "tel_nr": $('#loginTelNr').val(),
                     "first_name": $('#registerName').val(),
                     "last_name": $('#registerLastname').val(),
-                    "birthday": ($('#registerYear').val() + '-' + $('#registerMonth').val() + '-' + $('#registerDay').val()),
+                    "birthday": ($('#registerYear').val() + '-' + $('#registerMonth').find(":selected").attr('month') + '-' + $('#registerDay').val()),
                     "password": $('#registerPassword').val()
                 }
             );

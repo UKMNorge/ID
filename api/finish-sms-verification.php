@@ -12,8 +12,10 @@ $debug = true;
 // Check if verification code is correct
 if($method === "POST") {
     $code = $request->requestRequired('code');
+    $password = $request->requestRequired('password');
+
     echo json_encode(array(
-        "result" => UserVerification::verify($code),
+        "result" => UserVerification::verify($code, $password),
         "left" => UserVerification::triesLeft()
     ));
 }
