@@ -13,13 +13,30 @@ use UKMNorge\OAuth2\ServerMain;
 use UKMNorge\OAuth2\User;
 use UKMNorge\OAuth2\TempUser;
 
-class UserManager {
+class ClientManager {
     private static $storage;
 
     public function __construct() {
         static::$storage = ServerMain::getStorage();
     }
     
-    public function clientExists
+    public static function clientExists($clientId) {
+        $client = static::getClient($clientId);
+        return $client ? true : false;
+    }
 
+    public static function getClient($clientId) {
+        return static::$storage->getClientDetails($clientId);
+    }
+
+    public static function getClientSecret($clientId) {
+        $client = static::getClient($clientId);
+        
+        if($client) {
+            return $client['client_secret'];
+        }
+        return null;
+    }
 }
+
+$clientManager = new ClientManager();

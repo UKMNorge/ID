@@ -4,40 +4,47 @@
 
 ini_set("display_errors", true);
 require_once('UKM/Autoloader.php');
+include_once('../content/ClientManager.php');
+
 
 use OAuth2\Response;
 use UKMNorge\OAuth2\ServerMain;
 header('Content-Type: application/json');
 
 
+
 # THIS IS THE CALL FROM USER TO START THE AUTHORIZATION PROCESS
 # 
-
 
 $server = ServerMain::getServer();
 $storage = ServerMain::getStorage();
 
+$client = ClientManager::getClient('testClient');
 
-print_r($storage->getClientDetails('testclient'));
+// Check if the client exists
+if(!$client) {
+    http_response_code(403);
+    die;
+}
 
-// Handle a request for an OAuth2.0 Access Token and send the response to the client
-// $request = UKMNorge\OAuth2\Request::createFromGlobals();
+// Request
+$request = UKMNorge\OAuth2\Request::createFromGlobals();
 
-// // Legger til client_secret
-// $request->addRequestItem('client_secret', 'testpass');
+// Arguments from request
+$clientId = $request->requestRequired('client_id');
+$returnTo = $request->requestRequired('return_to');
+
+// Legger til client_secret
+$request->addRequestItem('client_secret', ClientManager::getClientSecret($clientId));
+$response = $server->handleTokenRequest($request);
+
+// Get access_token
+$accessToken = $response->getParameter('access_token');
+// Get request_token
+$requestToken = $storage->getAccessToken($accessToken)['request_token'];
+
+// Return request_token
+var_dump($requestToken);
 
 
-// $response = $server->handleTokenRequest($request);
 
-// $returnTo = $request->requestRequired('return_to');
-// $response->setParameter('returnTo', $returnTo);
-
-// Oppretter og lagrer request_token i tabllen
-
-// Returner request_token til brukeren
-
-
-
-
-
-// $response->send();
