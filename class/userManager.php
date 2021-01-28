@@ -10,6 +10,7 @@ use UKMNorge\OAuth2\TempUser;
 
 class UserManager {
     private static $storage;
+    private static $user;
 
     public function __construct() {
         static::$storage = ServerMain::getStorage();
@@ -50,9 +51,18 @@ class UserManager {
         return static::$storage->isUserLoggedin();
     }
 
+    /**
+     * Get currently logged in user
+     * 
+     * @return User
+     * @throws Exception
+     */
     public static function getLoggedinUser() {
         if(static::isUserLoggedin()) {
-            return $_SESSION['user'];
+            if( is_null(static::$user)) {
+                static::$user = User::getById($_SESSION['user_id']);
+            }
+            return static::$user;
         }
         throw new Exception('Brukeren er ikke logged inn');
     }
@@ -85,7 +95,7 @@ class UserManager {
                 // create Session
                 $_SESSION['valid'] = true;
                 $_SESSION['tel_nr'] = $tel_nr;
-                $_SESSION['user'] = new User($tel_nr);
+                $_SESSION['user_id'] = $tel_nr;
                 return true;
             }
             // The user is not logged in
