@@ -6,9 +6,7 @@ use UKMNorge\OAuth2\ID\UserVerification;
 use UKMNorge\OAuth2\Request;
 
 ini_set("display_errors", true);
-
 include_once('../../autoload.php');
-include_once('../content/userVerification.php');
 
 $request = Request::createFromGlobals();
 $debug = true;
