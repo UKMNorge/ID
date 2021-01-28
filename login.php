@@ -1,5 +1,8 @@
 <?php
-    include_once('userManager.php');
+
+use UKMNorge\OAuth2\ID\UserManager;
+
+include_once('autoload.php');
 
     error_reporting(E_ALL);
     ini_set("display_errors", 1);

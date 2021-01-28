@@ -1,13 +1,6 @@
 <?php
 
-ini_set("display_errors", true); //
-ini_set('session.cookie_lifetime', 2592000); // 30 days
-
-require_once('UKM/Autoloader.php');
-
-// use Exception;
-        
-session_start();
+namespace UKMNorge\OAuth2\ID;
 
 use UKMNorge\OAuth2\ServerMain;
 use UKMNorge\OAuth2\User;

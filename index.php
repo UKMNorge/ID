@@ -1,23 +1,15 @@
 <?php
 
-ini_set('display_errors',true);
 
-
-use UKMNorge\Database\SQL\Query;
 use UKMNorge\Design\UKMDesign;
 use UKMNorge\Design\Sitemap\Section;
-use UKMNorge\TemplateEngine\Proxy\Twig;
+use UKMNorge\OAuth2\ID\UserManager;
 use UKMNorge\TemplateEngine\Vanilla;
 
 error_reporting(E_ALL);
 ini_set('display_errors',true);
 
-require_once('vendor/autoload.php');
-require_once('UKMconfig.inc.php');
-require_once('UKM/Autoloader.php');
-include_once('content/userManager.php');
-
-
+require_once('autoload.php');
 
 /**
  * Init Vanilla
@@ -40,7 +32,6 @@ if(UserManager::isUserLoggedin()) {
 
     if($user->isVilkaarAccepted()) {
         Vanilla::addViewData('user', $user);
-        Vanilla::addViewData('ukmHostname', UKM_HOSTNAME);
         echo Vanilla::render('LoginInfo');
     }
     // Vilkaar er ikke godtatt
@@ -56,7 +47,6 @@ if(UserManager::isUserLoggedin()) {
     if (UserManager::userLogin($_POST['username'], $_POST['password'])) {                    
         $user = UserManager::getLoggedinUser();
         Vanilla::addViewData('user', $user);
-        Vanilla::addViewData('ukmHostname', UKM_HOSTNAME);
         if($user->isVilkaarAccepted()) {
             echo Vanilla::render('LoginInfo');
         }
@@ -73,7 +63,6 @@ if(UserManager::isUserLoggedin()) {
 }
 // Not logged in, not post
 else {
-    Vanilla::addViewData('ukmHostname', UKM_HOSTNAME);
     echo Vanilla::render('Login');
 }
 

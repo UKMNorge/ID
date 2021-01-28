@@ -1,6 +1,6 @@
 <?php
 
-require_once('UKM/Autoloader.php');
+namespace UKMNorge\OAuth2\ID;
 
 use Exception;
 
