@@ -10,11 +10,22 @@ $server = ServerMain::getServer();
 $request = OAuth2\Request::createFromGlobals();
 
 
-// Handle a request to a resource and authenticate the access token
-if (!$server->verifyResourceRequest($request)) {
-    $server->getResponse()->send();
-    die;
-}
-echo json_encode(array('result' => true));
+// // Handle a request to a resource and authenticate the access token
+// if (!$server->verifyResourceRequest($request)) {
+//     $server->getResponse()->send();
+//     die;
+// }
+// echo json_encode(array('result' => true));
+
+
+# ARGS:
+# client_id: testclient
+# client_secret : testpass
+
+// Check the client credentials
+// Check the request_token
+// Get access_token by providing request_token
+
+// return access_token
 
 ?>

@@ -22,7 +22,7 @@
                 data: {
                         grant_type : "password",
                         client_id : 'testclient',
-                        client_secret : 'testpass',
+                        return_to : 'delta.ukm.no',
                 },
                 success: (data) => {
                     console.log(data);
