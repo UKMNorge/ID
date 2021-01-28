@@ -41,7 +41,7 @@ POST /api/auth.php
 `expires_in` how much time the authorization is available\
 `refresh_token`\
 `scope`\
-`token_type`\
+`token_type`
 
 
 
