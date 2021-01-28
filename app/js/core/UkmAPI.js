@@ -1,5 +1,5 @@
 class UkmAPI {
-    path = 'https://id.ukm.dev/api/';
+    path = 'https://id.ukm.dev/app/api/';
     constructor() {
 
     }

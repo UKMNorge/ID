@@ -1,10 +1,11 @@
 <?php
 
 use Exception;
+use UKMNorge\OAuth2\ID\UserManager;
 
 ini_set("display_errors", true);
 
-include_once('../content/userManager.php');
+include_once('../../autoload.php');
 
 $debug = true;
 // Check if verification code is correct

@@ -57,7 +57,7 @@
 	</div>
 
 </div>
-<script src="Js/one-page.js"></script>
+<script src="app/js/one-page.js"></script>
 
 <script>
 	var onePage = new OnePage();
@@ -96,7 +96,7 @@
 			var tel_nr = $('#loginTelNr').val();
 
 			$.ajax({			
-				"url": "https://id.ukm.dev/api/user-exists.php",
+				"url": "https://id.ukm.dev/app/api/user-exists.php",
 				"method": "POST",
 				"data": {
 					"tel_nr": $('#loginTelNr').val()

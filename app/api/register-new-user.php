@@ -2,13 +2,15 @@
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
-include_once('../content/userManager.php');
+include_once('../../autoload.php');
 
 use Datetime;
+use UKMNorge\OAuth2\ID\UserManager;
+use UKMNorge\OAuth2\Request;
 
 // IMPORTANT
 // $tel_nr = isset($_GET['tel_nr']) ? $_GET['tel_nr'] : die();
-$request = UKMNorge\OAuth2\Request::createFromGlobals();
+$request = Request::createFromGlobals();
 $method = $request->server['REQUEST_METHOD'];
 $arguments = $request->request;
 $debug = true;

@@ -1,13 +1,17 @@
 <?php
+
+use UKMNorge\OAuth2\ID\UserManager;
+use UKMNorge\OAuth2\Request;
+
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
-include_once('../content/userManager.php');
+include_once('../../autoload.php');
 
 // IMPORTANT
 // $tel_nr = isset($_GET['tel_nr']) ? $_GET['tel_nr'] : die();
 
-$request = OAuth2\Request::createFromGlobals();
+$request = Request::createFromGlobals();
 
 $tel_nr = $request->request['tel_nr'];
 

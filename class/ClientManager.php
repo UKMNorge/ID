@@ -6,13 +6,13 @@ use UKMNorge\OAuth2\ServerMain;
 use UKMNorge\OAuth2\User;
 use UKMNorge\OAuth2\TempUser;
 
-class UserManager {
+class ClientManager {
     private static $storage;
 
     public function __construct() {
         static::$storage = ServerMain::getStorage();
     }
     
-    public function clientExists
+    //public function clientExists
 
 }

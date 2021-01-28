@@ -2,6 +2,8 @@
 
 namespace UKMNorge\OAuth2\ID;
 
+use DateTime;
+use Exception;
 use UKMNorge\OAuth2\ServerMain;
 use UKMNorge\OAuth2\User;
 use UKMNorge\OAuth2\TempUser;

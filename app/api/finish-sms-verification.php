@@ -1,11 +1,13 @@
 <?php
 
+use UKMNorge\OAuth2\ID\UserVerification;
+use UKMNorge\OAuth2\Request;
+
 ini_set("display_errors", true);
 
-include_once('../content/userManager.php');
-include_once('../content/userVerification.php');
+include_once('../../autoload.php');
 
-$request = UKMNorge\OAuth2\Request::createFromGlobals();
+$request = Request::createFromGlobals();
 $method = $request->server['REQUEST_METHOD'];
 $debug = true;
 
