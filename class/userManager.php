@@ -39,8 +39,11 @@ class UserManager {
     public static function setVilkaarToAccepted() : bool {
         if(static::isUserLoggedin()) {
             $user = static::getLoggedinUser();
+            
+            $status = static::$storage->setVilkaarToAccepted($user);
             $user->setVilkaarToAccepted();
-            return static::$storage->setVilkaarToAccepted($user);
+
+            return $status;
         }
 
         throw new Exception("Brukeren er ikke logged inn derfor vilkaar kan ikke settes");
