@@ -9,7 +9,7 @@ use UKMNorge\OAuth2\ServerMain;
 $server = ServerMain::getServer();
 $request = OAuth2\Request::createFromGlobals();
 
-
+echo 'Dette skulle vært en accessToken for '. var_export($_POST, true);
 // // Handle a request to a resource and authenticate the access token
 // if (!$server->verifyResourceRequest($request)) {
 //     $server->getResponse()->send();

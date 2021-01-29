@@ -3,7 +3,7 @@
 // ADD ARGUMENTS state and return_to
 
 ini_set("display_errors", true);
-require_once('UKM/Autoloader.php');
+require_once('autoload.php');
 
 use OAuth2\Response;
 use UKMNorge\OAuth2\ServerMain;
@@ -18,7 +18,14 @@ $server = ServerMain::getServer();
 $storage = ServerMain::getStorage();
 
 
-print_r($storage->getClientDetails('testclient'));
+//print_r($storage->getClientDetails('testclient'));
+
+if( isset($_GET['redirect_uri']) && !empty($_GET['redirect_uri']) && isset($_GET['client_id']) && !empty($_GET['client_id'])) {
+    $returnUrl = urldecode($_GET['redirect_uri']).'?code='. sha1(rand(1000,2000));
+    header("Location: $returnUrl");
+} else {
+    echo 'Missing parameters';
+}
 
 // Handle a request for an OAuth2.0 Access Token and send the response to the client
 // $request = UKMNorge\OAuth2\Request::createFromGlobals();
