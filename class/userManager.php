@@ -36,18 +36,57 @@ class UserManager {
         }
     }
 
+    // Add URI to session and bind it with an id
+    // Returns id
+    public static function addCallbackURIToSession(string $uri) : string {
+        $id = static::$storage::generateRandomToken();
+        // Validate URI with client URI IMPORTANT:::::::::IMPORTANT::::::::::IMPORTANT
+
+        $_SESSION['callback_uri'] = array(
+            // NOTE: token is used as id
+            'id' => $id,
+            'uri' => $uri
+        );
+        
+        return $id;
+    }
+
+    // Redirect to callback URI if it exists
+    // This method will clean the session callback_uri if the redirection is fulfilled
+    public static function redirectCallbackURI(string $id, bool $getUri = false) {
+        if (isset($_SESSION['callback_uri'])) {
+            $callbackUri = $_SESSION['callback_uri'];
+            if(!empty($callbackUri) && $callbackUri['id'] == $id) {
+                unset($_SESSION["callback_uri"]);
+                if($getUri) {
+                    return $callbackUri['uri'];
+                }
+                else{
+                    header('Location: ' . $callbackUri['uri']);
+                }
+            }
+        }
+        return null;
+    }
+
     public static function setVilkaarToAccepted() : bool {
         if(static::isUserLoggedin()) {
             $user = static::getLoggedinUser();
-            
+
             $status = static::$storage->setVilkaarToAccepted($user);
             $user->setVilkaarToAccepted();
 
             return $status;
         }
 
-        throw new Exception("Brukeren er ikke logged inn derfor vilkaar kan ikke settes");
+        throw new Exception("Brukeren er ikke logged inn derfor vilkaar kan ikke lagres");
     }
+
+    // Get user by providing access token
+    public static function getUserByAccessToken(string $accessToken, string $scope) {
+        return static::$storage->getUserByAccessToken($accessToken, $scope);
+        
+    } 
 
     // Check if session is active
     public static function isUserLoggedin() {

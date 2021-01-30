@@ -40,14 +40,19 @@ if(UserManager::isUserLoggedin()) {
         Vanilla::addViewData('user', $user);
         echo Vanilla::render('Login');
     }
-    
+
 // It is post
 } else if (isset($_POST['login']) && !empty($_POST['username']) && !empty($_POST['password'])) {
-    // User credentials are correct
+    // User credentials are correct    
     if (UserManager::userLogin($_POST['username'], $_POST['password'])) {                    
         $user = UserManager::getLoggedinUser();
         Vanilla::addViewData('user', $user);
         if($user->isVilkaarAccepted()) {
+            // Is it redirectId and the use has accepted the vilkaar
+            $redirectId = !empty($_POST['redirectId']) ? $_POST['redirectId'] : null;
+            if($redirectId != null) {
+                UserManager::redirectCallbackURI($redirectId);
+            }
             echo Vanilla::render('LoginInfo');
         }
         else {

@@ -35,15 +35,21 @@
 <script>
 
     $('#godtaVilkaar').click(async () => {
-        alert('aaa');
         try{
             var data = await ukmAPI.masterCall(
                 'POST', 
                 'accept-vilkaar.php',
+                {
+                    'redirectId' : onePage.getArgument('redirectId')
+                }
 			);
-			
 			if(data.result == true){
-				window.location.href = '/';
+                if(data.uri != null) {
+                    window.location.href = data.uri;
+                }
+                else {
+                    window.location.href = '/';
+                }
 			}
 			else{
 				console.error('Vilkaar ble ikke lagret');

@@ -63,6 +63,10 @@
 	var onePage = new OnePage();
 	var ukmAPI = new UkmAPI();
 
+	// Append redirectedId to input element if it exists
+	$('#redirectIdInput').val(onePage.getArgument('redirectId'));
+
+
 	var viewId = '{{ viewId }}';
 
 

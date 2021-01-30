@@ -6,6 +6,7 @@ class OnePage {
         var pageId = this.getArgument('pageId');
         // alert(pageId);
         this.render(pageId ? pageId : 0);
+        console.log(this);
     }
 
     // Add argument to url

@@ -1,8 +1,11 @@
 <?php
 
 ini_set("display_errors", true);
-require_once('UKM/Autoloader.php');
 
+require_once('autoload.php');
+
+use Entities\User;
+use UKMNorge\OAuth2\ID\UserManager;
 use UKMNorge\OAuth2\ServerMain;
 // use \OAuth2\Request;
 use UKMNorge\OAuth2\Request;
@@ -14,11 +17,20 @@ $server = ServerMain::getServer();
 $request = Request::createFromGlobals();
 $response = new Response();
 
-// Sjekk hvis brukeren er logged inn
+$queryParams = $request->getAllQueryParameters();
 
+// Sjekk hvis brukeren er logged inn eller brukeren har ikke godtatt vilkaar
+if(!UserManager::isUserLoggedin() || !UserManager::getLoggedinUser()->isVilkaarAccepted()) {
+  $uriId = UserManager::addCallbackURIToSession($queryParams['redirect_uri']);
+  header('Location: /?redirectId=' . $uriId);
+  die;
+}
+
+// Logged in user
+$user = UserManager::getLoggedinUser();
 
 // bruk klassen Request 
-$clientId = $request->getAllQueryParameters()['client_id']; // User requestRequired()...
+$clientId = $queryParams['client_id']; // Use requestRequired()...
 $request->addRequestItem('response_type', 'code');
 
 // validate the authorize request
@@ -38,7 +50,7 @@ if (empty($_POST) && $clientId != 'delta') {
 
 // print the authorization code if the user has authorized your client
 $is_authorized = ($_POST['authorized'] === 'yes') || $clientId == 'delta';
-$server->handleAuthorizeRequest($request, $response, $is_authorized, '1234');
+$server->handleAuthorizeRequest($request, $response, $is_authorized, $user->getTelNr());
 if ($is_authorized) {
   // this is only here so that you get to see your code in the cURL request. Otherwise, we'd redirect back to the client
   $code = substr($response->getHttpHeader('Location'), strpos($response->getHttpHeader('Location'), 'code=')+5, 40);

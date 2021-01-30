@@ -6,6 +6,7 @@ class UkmAPI {
 
     async masterCall(method, subPath, args) {
         return new Promise((resolve, reject) =>{
+            console.log('here');
             $.ajax({			
                 "url": this.path + subPath,
                 "method": method,
