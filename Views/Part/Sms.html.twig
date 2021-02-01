@@ -6,7 +6,7 @@
 		<div class="inputs">
 			<input pos='0' class="{{renderId}} code-0 sms-code tel-input focus-style-js-input" type="text" maxlength="1" style="text-transform:uppercase">
 			<input pos='1' class="{{renderId}} code-1 sms-code tel-input focus-style-js-input" type="text" maxlength="1" style="text-transform:uppercase">
-			<input pos='2' class="{{renderId}} code-2 sms-code tel-input focus-style-js-input" type="text" maxlength="1" style="text-transform:uppercase">
+			<input id="lastSmsChar" pos='2' class="{{renderId}} code-2 sms-code tel-input focus-style-js-input" type="text" maxlength="1" style="text-transform:uppercase">
 			<button class="icon" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
 				<span>?</button>
 			</button>
@@ -28,7 +28,7 @@
 </div>
 
 <div class="next-button">
-	<button id="" type="button" class="ukm-button-primary button half-color left render-page-click" to-page="0">
+	<button type="button" onclick="window.history.back();" class="ukm-button-primary button half-color left">
 		<img class="icon" src="/app/img/chevron-back.png">
 	</button>
 
@@ -66,13 +66,22 @@
         }
 	});
 
-	// Go to next input (SMS 3 inputs)
+	// Go to next input (SMS 3 inputs) and send sms
 	$('input.sms-code').keyup((e) => {
+		var renderId = $(e.currentTarget).attr('render-id');
 		var el = $(e.currentTarget);
 		var pos = parseInt(el.attr('pos'));
-		if(pos < 3 && el.val().length == 1) {
+
+		// var allField = $('input.sms-code.code-0.'+renderId).val().length > 0 && $('input.sms-code.code-1.'+renderId).val().length > 0 && $('input.sms-code.code-2.'+renderId).val().length > 0;
+		
+
+		console.log('here');
+		if(pos < 2 && el.val().length == 1) {
 			$(e.currentTarget).siblings('.code-'+(pos+1)).focus();		
 		}
+		// else if(allFields) {
+		// 	alert('send');
+		// }
 	});
 
 	$('.send-new-password.forward-new-code').click((e) => {

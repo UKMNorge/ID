@@ -22,6 +22,8 @@ class OnePage {
         
         params.set(key, value);
 
+        console.warn(pushState);
+
         if(pushState) {
             window.history.pushState({
                 path: '',
@@ -52,7 +54,7 @@ class OnePage {
     }
 
     // Render the page based on argument
-    render(pageId, pushState) {
+    render(pageId, pushState = true) {
         this.pageId = pageId;
 
         this._hideAllPages();
