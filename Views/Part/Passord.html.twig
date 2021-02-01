@@ -18,6 +18,12 @@
 		<button id="sendNewPassword" type="button" class="send-new-password small-button-nobo render-page-click" to-page="smsForgotPassword">Send nytt passord</button>
 	</div>
 
+	{% if errorMessage and telNr %}
+		<div id="wrongPassword" class="info-feil error">
+			<p class="icon">!</p>
+			<span class="text">{{errorMessage}}</span>
+		</div>
+	{% endif %}
 </div>
 <div id="loginPasswordError">
 	
@@ -33,3 +39,11 @@
 		<img class="icon" src="/app/img/chevron.png">
 	</button>
 </div>
+
+
+
+<script>
+	$('#loginPassword').on('input', ()=> {
+		$('#wrongPassword').detach();
+	});
+</script>

@@ -63,6 +63,8 @@ if(UserManager::isUserLoggedin()) {
     // User credentials are not correct
     }else {
         Vanilla::addViewData('errorMessage', "Wrong username or password!");
+        Vanilla::addViewData('telNr', $_POST['username']);
+        Vanilla::addViewData('viewId', 'password');
         echo Vanilla::render('Login');
     }
 }

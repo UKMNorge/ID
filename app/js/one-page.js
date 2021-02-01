@@ -33,6 +33,7 @@ class OnePage {
 
         this._hideAllPages();
         this._showPage(this.pageId);
+        // this.addArgument('pageId', pageId);
     }
 
     // Hide page with id

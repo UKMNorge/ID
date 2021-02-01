@@ -19,8 +19,8 @@
 			</div>
 
 		<!-- PAGE 1 - Password -->
-			<div class="ukm-card password col-xs-12 one-page-page" page-id="1">
-				{% include "Part/Progress.html.twig" %}
+			<div class="ukm-card password col-xs-12 one-page-page" page-id="password">
+				{% include "Part/Progress.html.twig" with {'totalSteps': 2, 'currentStep': 2} %}
 				{% include "Part/Passord.html.twig" %}
 			</div>
 		</form>
@@ -89,34 +89,27 @@
 		}
 	});
 
-	// // Login next, verifying tel nr
-	// $('#loginNext').click(() => {
-	// 	verifyTelNr();
-	// });
 
 	// Login next, verifying tel nr
-	$('#loginNext').click(() => {
+	$('#loginNext').click(async () => {
 		if(verifyTelNr()) {
 			var tel_nr = $('#loginTelNr').val();
 
-			$.ajax({			
-				"url": "https://id.ukm.dev/app/api/user-exists.php",
-				"method": "POST",
-				"data": {
+			var data = await ukmAPI.masterCall(
+				'POST',
+				'user-exists.php',
+				{
 					"tel_nr": $('#loginTelNr').val()
-				},
-				success: (data) => {
-					data = JSON.parse(data);
-					if(data.result == true) {
-						onePage.render(1);
-					}
-					else {
-						// Render SMS page for registration
-						onePage.render("registerNewUser");
-					}
 				}
-			});
+			);
 			
+			if(data.result == true) {
+				onePage.render('password');
+			}
+			else {
+				// Render SMS page for registration
+				onePage.render("registerNewUser");
+			}
 		}
 	});
 

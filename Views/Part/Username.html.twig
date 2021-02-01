@@ -16,11 +16,11 @@
 
 	<input id="redirectIdInput" class="hide" name="redirectId">
 	<div class="tel-nr ukm-input login-input-style focus-style-js">
-		<div class="info">
+		<div class="info {{telNr ? 'focused' : ''}}">
 			<img class="tel-icon" src="/app/img/tel.png">
 			<p class="text">Mobilnummer</p>
 		</div>
-		<input id="loginTelNr" class="tel-input focus-style-js-input" autocomplete="on" type="tel" name="username">
+		<input id="loginTelNr" value="{{telNr ? telNr : ''}}" class="tel-input focus-style-js-input" autocomplete="on" type="tel" name="username">
 	</div>
 
 
@@ -28,13 +28,6 @@
 		<p class="icon">!</p>
 		<span class="text"></span>
 	</div>
-
-	{% if errorMessage %}
-		<div id="" class="info-feil error">
-			<p class="icon">!</p>
-			<span class="text">{{errorMessage}}</span>
-		</div>
-	{% endif %}
 
 	<div id="messageError" class="info-feil error hide">
 		<p class="icon">!</p>
