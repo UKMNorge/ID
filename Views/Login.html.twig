@@ -75,12 +75,20 @@
 	}
 
 	
-	// Add focus on click of the field (div)
-	$('.focus-style-js').click((e) => {
+	var openInput = (e) => {
 		$(e.currentTarget).children('.info').addClass('focused');
 		$(e.currentTarget).children('.tel-input').focus();
+	}
 
+	// Add focus on focus of the field (
+	$('.focus-style-js-input').focus((e) =>{
+		$(e.currentTarget).parent().children('.info').addClass('focused');
+		
 	});
+
+	// Add focus on click of the field (div)
+	$('.focus-style-js').on('click', openInput);
+
 	// On blur remove the focus if input length is 0
 	$('.focus-style-js-input').on('blur', (e) => {
 		var el = $(e.currentTarget);

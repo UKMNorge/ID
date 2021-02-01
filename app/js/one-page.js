@@ -3,15 +3,39 @@ class OnePage {
     constructor() {
         this.pageId;
 
-        var pageId = this.getArgument('pageId');
+        this._events();
+        this._changeState('0');
+    }
+
+    _changeState(pageId, pushState = true) {
+        var pageId = pageId ? pageId :  this.getArgument('pageId');
         // alert(pageId);
-        this.render(pageId ? pageId : 0);
+        this.render((pageId ? pageId : 0), pushState);
         console.log(this);
     }
 
     // Add argument to url
-    addArgument() {
+    addArgument(key, value, pushState) {
+        var urlHref = window.location.href
+        var url = new URL(urlHref);
+        var params = new URLSearchParams(url.search);
+        
+        params.set(key, value);
 
+        if(pushState) {
+            window.history.pushState({
+                path: '',
+                hash: ''
+              }, '',
+               '/' + '?' + params);
+        }
+        else {
+            window.history.replaceState({
+              path: '',
+              hash: ''
+            }, '',
+             '/' + '?' + params);
+        }
     }
     
     // Get argument from url
@@ -28,12 +52,12 @@ class OnePage {
     }
 
     // Render the page based on argument
-    render(pageId) {
+    render(pageId, pushState) {
         this.pageId = pageId;
 
         this._hideAllPages();
         this._showPage(this.pageId);
-        // this.addArgument('pageId', pageId);
+        this.addArgument('pageId', pageId, pushState);
     }
 
     // Hide page with id
@@ -44,5 +68,11 @@ class OnePage {
     // Show page with id
     _showPage(id) {
         $(`.one-page-page[page-id=${id}]`).show();
+    }
+
+    _events() {
+        window.onpopstate = (event) => {
+            this._changeState(null, false);
+        }
     }
 }
