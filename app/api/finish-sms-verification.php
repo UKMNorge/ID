@@ -17,7 +17,7 @@ if($method === "POST") {
     $password = $request->requestRequired('password');
 
     echo json_encode(array(
-        "result" => UserVerification::verify($code, $password),
+        "result" => UserVerification::verify($code, $password, true),
         "left" => UserVerification::triesLeft()
     ));
 }

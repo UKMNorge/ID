@@ -84,9 +84,8 @@ class UserManager {
 
     // Get user by providing access token
     public static function getUserByAccessToken(string $accessToken, string $scope) {
-        return static::$storage->getUserByAccessToken($accessToken, $scope);
-        
-    } 
+        return static::$storage->getUserByAccessToken($accessToken, $scope);   
+    }
 
     // Check if session is active
     public static function isUserLoggedin() {
@@ -163,7 +162,7 @@ class UserManager {
         $user->save();
     }
 
-    public static function changePassword($tel_nr, string $password) : bool {
+    public static function changePassword(string $tel_nr, string $password) : bool {
         $user = new User($tel_nr);
         return $user->changePassword($password);
     }

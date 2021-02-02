@@ -26,6 +26,11 @@
 		</form>
 	</div>
 
+	<div class="ukm-card password col-xs-12 one-page-page" page-id="newPassword">
+		{% include "Part/Progress.html.twig" with {'totalSteps': 2, 'currentStep': 2} %}
+		{% include "Part/newPassword.html.twig" %}
+	</div>
+
 	<!-- PAGE 2 - SMS Verification - forgot password -->
 	<div class="ukm-card password col-xs-12 one-page-page" page-id="smsForgotPassword">
 		{% include "Part/Progress.html.twig" with {'totalSteps': 2, 'currentStep': 2} %}

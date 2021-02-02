@@ -33,13 +33,13 @@
 	</button>
 
 	<button render-id="{{renderId}}" next-page="{{nextPage}}" class="login-sms-next ukm-button-primary button right">
-		<span class="text">Logg Inn</span>
+		<span class="text">{{renderId == 'forgotPassword' ? 'Neste' : 'Logg Inn'}}</span>
 		<img class="icon" src="/app/img/chevron.png">
 	</button>
 </div>
 
 <script>
-	$('button.login-sms-next').click(async (e) => {
+	$('button.login-sms-next[render-id="verifyUser"]').click(async (e) => {
 		var renderId = $(e.currentTarget).attr('render-id');
 		var nextPage = $(e.currentTarget).attr('next-page');
 		
@@ -86,10 +86,23 @@
 
 	$('.send-new-password.forward-new-code').click((e) => {
 		onePage.render('smsForward');
-		// var codeForward = await new CodeForward();
+	});
 
-		// alert('Koden er mottatt!');
-
+	$('.login-sms-next[render-id="forgotPassword"]').off('click').click(async (e) => {
+		var renderId = 'forgotPassword';
+		var code = ($('input.sms-code.code-0.'+renderId).val() + $('input.sms-code.code-1.'+renderId).val() + $('input.sms-code.code-2.'+renderId).val()).toUpperCase();
+		
+		var data = await ukmAPI.masterCall(
+			'POST', 
+			'start-change-password.php',
+			{
+				'code' : code
+			}
+		);
+		
+		if(data.result == true) {
+			onePage.render('newPassword');
+		}
 	});
 
 </script>
