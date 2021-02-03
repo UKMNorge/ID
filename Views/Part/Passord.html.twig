@@ -48,6 +48,10 @@
 	});
 
 	$('#sendNewPassword').click(() => {
+		startSmsVerification();
+	});
+
+	startSmsVerification = () => {
 		var result = ukmAPI.masterCall(
 			'POST',
 			'start-sms-verification.php',
@@ -56,6 +60,7 @@
 			}
 		)
 
+		$('input.sms-code').val('');
 		onePage.render("smsForgotPassword");
-	});
+	}
 </script>

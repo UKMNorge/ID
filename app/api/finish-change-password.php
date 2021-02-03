@@ -8,6 +8,7 @@ use UKMNorge\OAuth2\ID\SessionManager;
 use UKMNorge\OAuth2\ID\UserVerification;
 use UKMNorge\OAuth2\ID\UserManager;
 use UKMNorge\OAuth2\Request;
+use Exception;
 
 
 $request = Request::createFromGlobals();
@@ -16,15 +17,29 @@ $telNr = SessionManager::get('changeUserPassword')['value'];
 
 // Verify that changeUserPassword is in time
 if(SessionManager::verify('changeUserPassword', $telNr, true)) {
-   
+    $changePassword = false;
+    $msg = null;
+
+    try {
+        $changePassword = UserManager::changePassword($telNr, $newPassword);
+    }
+    catch(Exception $e){
+        $msg = $e->getMessage();
+    }
 
     // Password change and return
     echo json_encode(array(
-        "result" => UserManager::changePassword($telNr, $newPassword),
+        "result" => $changePassword,
+        'timeout' => false,
+        "msg" => $msg
     ));
     
     SessionManager::remove('changeUserPassword');
     die;
 }
 
-http_response_code(405);
+echo json_encode(array(
+    "result" => false,
+    'timeout' => true,
+    "msg" => 'Du har brukt lang tid for å verifisere deg, prøv igjen!'
+));
