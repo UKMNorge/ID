@@ -12,6 +12,10 @@
 			</button>
 		</div>
 	</div>
+	<div id="smsCodeErrorChain" render-id="{{renderId}}" class="info-feil hide">
+		<p class="icon">!</p>
+		<span class="text">Feil kode, prøv igjen!</span>
+	</div>
 </div>
 
 <div class="login-message collapse" id="collapseExample">
@@ -54,12 +58,21 @@
 					'password' : $('#registerPassword').val()
 				}
 			);
-			
+
 			if(data.result == true){
 				onePage.render(nextPage);
+				return;
+			}
+			else if(data.timeout) {
+				alert('timeout');
 			}
 			else{
-				console.log('fail code');
+				$('#smsCodeErrorChain[render-id="verifyUser"]').removeClass('hide');
+			}
+
+			if(data.left == null || data.left < 1) {
+				cleanSMSChain();
+				onePage.render('registerNewUser');
 			}
         }catch(err) {
             console.error(err);
@@ -72,10 +85,12 @@
 		var el = $(e.currentTarget);
 		var pos = parseInt(el.attr('pos'));
 
+		$('#smsCodeErrorChain[render-id="verifyUser"]').addClass('hide');
+
 		// var allField = $('input.sms-code.code-0.'+renderId).val().length > 0 && $('input.sms-code.code-1.'+renderId).val().length > 0 && $('input.sms-code.code-2.'+renderId).val().length > 0;
 		
 
-		console.log('here');
+		// console.log('here');
 		if(pos < 2 && el.val().length == 1) {
 			$(e.currentTarget).siblings('.code-'+(pos+1)).focus();		
 		}
@@ -104,5 +119,9 @@
 			onePage.render('newPassword');
 		}
 	});
+
+	var cleanSMSChain = () => {
+		$('input.sms-code').val('');
+	}
 
 </script>

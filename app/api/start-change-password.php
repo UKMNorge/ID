@@ -33,7 +33,7 @@ try {
 
 if($telNr) {
     // Set waiting time to 5 min for password change
-    SessionManager::setWithTimeout('changeUserPassword', $telNr, 1*60);
+    SessionManager::setWithTimeout('changeUserPassword', $telNr, 5*60);
 
     echo json_encode(array(
         "result" => true,

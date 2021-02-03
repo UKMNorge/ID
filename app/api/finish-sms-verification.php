@@ -16,10 +16,18 @@ if($method === "POST") {
     $code = $request->requestRequired('code');
     $password = $request->requestRequired('password');
 
-    echo json_encode(array(
-        "result" => UserVerification::verify($code, $password, true),
-        "left" => UserVerification::triesLeft()
-    ));
+    try{
+        echo json_encode(array(
+            "result" => UserVerification::verify($code, $password, true) != false,
+            "left" => UserVerification::triesLeft()
+        ));
+    }catch(Exception $e) {
+        echo json_encode(array(
+            "result" => false,
+            'msg' => $e->getCode(),
+            "left" => UserVerification::triesLeft()
+        ));
+    }
 }
 // Method is not supported
 else {

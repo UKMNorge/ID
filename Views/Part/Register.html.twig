@@ -78,7 +78,7 @@
 			</div>
 			<div id="registerYearError" class="info-feil not-visible">
 				<p class="icon">!</p>
-				<span class="text">År er ikke gyldig, skriv tall!</span>
+				<span class="text">År er ikke gyldig (skriv f.eks. 1999)</span>
 			</div>
 		</div>
 
@@ -148,7 +148,19 @@
 		}
 
 		return $(inputId).val().length > 0;
-    }
+	}
+	
+	var verifyLength = (inputId, errorId, length) => {
+		if($(inputId).val().length < length) {
+			$(errorId).removeClass('not-visible');
+			return false;
+		}
+		else {
+			$(errorId).addClass('not-visible');
+			return true;
+		}
+	}
+
     // Validate name field
     verifyEmpty('#registerName', '#registerNameError');
     // Validate surname field
@@ -259,6 +271,11 @@
 			valid = false;
 		}
 		if(!verifyEmpty('#registerYear', '#registerYearError', true)) {
+			valid = false;
+		}
+
+		// year length must be 4
+		if(!verifyLength('#registerYear', '#registerYearError', 4)) {
 			valid = false;
 		}
 		// Verifiserer password
