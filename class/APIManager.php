@@ -1,5 +1,7 @@
 <?php
 
+# THIS CLASS MUST EXTEND Request.php
+
 namespace UKMNorge\OAuth2\ID;
 
 use Exception;
@@ -30,5 +32,10 @@ class APIManager {
     private function initOptionalArgs() {
 
     }
+
+    public function sendToClient() : void {
+
+    }
+    
     
 }

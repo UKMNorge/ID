@@ -13,12 +13,13 @@ $debug = true;
 
 // Check if verification code is correct
 if($method === "POST") {
+    $telNr = $request->requestRequired('tel_nr');
     $code = $request->requestRequired('code');
     $password = $request->requestRequired('password');
 
     try{
         echo json_encode(array(
-            "result" => UserVerification::verify($code, $password, true) != false,
+            "result" => UserVerification::verify($telNr, $code, $password, true) != false,
             "left" => UserVerification::triesLeft()
         ));
     }catch(Exception $e) {

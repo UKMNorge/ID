@@ -15,6 +15,9 @@ $method = $request->server['REQUEST_METHOD'];
 $arguments = $request->request;
 $debug = true;
 
+// MyClass([], [], ["POST", "PATCH"], false);
+
+
 // constructor? with method
 try {
     $tel_nr = $request->requestRequired('tel_nr');

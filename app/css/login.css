@@ -242,6 +242,9 @@
     color: #a0aec0;
     font-size: 15px;
 }
+._8jan {
+    min-width: 600px;
+}
 .ukm-input select,
 .ukm-input input {
     background: transparent;
@@ -249,6 +252,21 @@
     border: none;
     margin-top: 10px;
     outline: none;
+}
+.ukm-input select.input-center,
+.ukm-input input.input-center {
+    text-align: center;
+}
+
+.item-of-group.register-month {
+    margin: 0 25px;
+}
+.group-inputs-horizontal .group-inputs-separator {
+    height: 14px;
+    width: 10px;
+    background: #e1e8ee;
+    margin-top: 17px;
+    border-radius: 15px;
 }
 
 .ukm-card .login .info-feil {

@@ -31,17 +31,55 @@
 			<div class="tel-nr ukm-input login-input-style focus-style-js">
 				<div class="info">
 					<object class="tel-icon svg" data="/app/img/cake.svg" width="15" height="15"> </object>
-					<p class="text">Dag</p>
+					<p class="text">Fødselsdato</p>
 				</div>
-				<input id="registerDay" class="tel-input focus-style-js-input" type="tel" maxlength="2">
+
+				<div class="group-inputs-horizontal">
+					<div class="item-of-group">
+						<input id="registerDay" class="tel-input input-center focus-style-js-input" type="tel" maxlength="2">
+					</div>
+
+					<div class="group-inputs-separator"></div>
+					
+					<div class="item-of-group register-month">
+						<select id="registerMonth" class="tel-input focus-style-js-input">
+							<option month="01">Januar</option>
+							<option month="02">Februar</option>
+							<option month="03">Mars</option>
+							<option month="04">April</option>
+							<option month="05">Mai</option>
+							<option month="06">Juni</option>
+							<option month="07">Juli</option>
+							<option month="08">August</option>
+							<option month="09">September</option>
+							<option month="10">Oktober</option>
+							<option month="11">November</option>
+							<option month="12">Desember</option>
+						</select>
+					</div>
+
+					<div class="group-inputs-separator"></div>
+
+					<div class="item-of-group">
+						<input id="registerYear" class="tel-input input-center focus-style-js-input" type="text" name="age" maxlength="4">
+					</div>
+				</div>
 			</div>
 			<div id="registerDayError" class="info-feil not-visible">
 				<p class="icon">!</p>
 				<span class="text">Dag er ikke gyldig, skriv tall!</span>
 			</div>
+			<div id="registerMonthError" class="info-feil not-visible">
+				<p class="icon">!</p>
+				<span class="text">Måned er ikke gyldig, skriv tall!</span>
+			</div>
+			<div id="registerYearError" class="info-feil not-visible">
+				<p class="icon">!</p>
+				<span class="text">År er ikke gyldig (skriv f.eks. 1999)</span>
+			</div>
 		</div>
 
-		<div class="item-of-group">
+		{# <div class="item-of-group">
 			<div class="tel-nr ukm-input login-input-style focus-style-js">
 				<div class="info focused">
 					<object class="tel-icon svg" data="/app/img/cake.svg" width="15" height="15"> </object>
@@ -66,9 +104,9 @@
 				<p class="icon">!</p>
 				<span class="text">Måned er ikke gyldig, skriv tall!</span>
 			</div>
-		</div>
+		</div> #}
 
-		<div class="item-of-group">
+		{# <div class="item-of-group">
 			<div class="tel-nr ukm-input login-input-style focus-style-js">
 				<div class="info">
 					<object class="tel-icon svg" data="/app/img/cake.svg" width="15" height="15"> </object>
@@ -80,7 +118,7 @@
 				<p class="icon">!</p>
 				<span class="text">År er ikke gyldig (skriv f.eks. 1999)</span>
 			</div>
-		</div>
+		</div> #}
 
 	</div>
 
