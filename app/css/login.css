@@ -382,7 +382,6 @@
 }
 .ukm-button-primary .text {
     color: #fff;
-    margin-right: 10px;
     font-size: 15px;
 }
 .ukm-button-primary.half-color {
@@ -392,6 +391,7 @@
 .ukm-button-primary .icon {
     width: 8px;
     margin: auto;
+    margin-left: 10px;
 }
 
 .ukm-card .next-button .button {

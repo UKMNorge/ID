@@ -251,41 +251,6 @@
 		validatePassword($(e.currentTarget).val(), $('#registerPasswordError'));
 	});
 
-	// Dette sjekkes også i backend (file: UserPdo.php)
-	function validatePassword(p, errorEl, show) {
-		errors = [];
-
-		errorEl.children('*').detach();
-		
-		if(p.length < 6 && show != true) {
-			errorEl.children('*').detach();
-			return;
-		}
-		if(p.length < 8) {
-			errors.push("Passordet må inneholde minst 8 tegn");
-		}
-		if(p.search(/[a-z]/i) < 0) {
-			errors.push("Passordet må inneholde minst 1 bokstav");
-		}
-		if(p.search(/^(?=.*[A-Z])/) < 0) {
-			errors.push("Passordet må inneholde minst 1 stor bokstav");
-		}
-		if(p.search(/(?=.*[0-9])/) < 0) {
-			errors.push("Passordet må inneholde minst 1 tall"); 
-		}
-		if(p.search(/(?=.*[%@$])/) > -1) {
-			errors.push("Passordet kan ikke inneholde symbolene %@$"); 
-		}
-		if (errors.length > 0) {
-			for(var err of errors) {
-				addErrorMessage(errorEl, err);
-			}
-			
-			return false;
-		}
-		return true;
-	}
-
 	var addErrorMessage = (errorEl, message, error = false) => {
 		errorEl.append(`
 			<div class="info-feil ${error ? ' error' : ''}">

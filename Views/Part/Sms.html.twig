@@ -127,4 +127,17 @@
 		$('input.sms-code').val('');
 	}
 
+	var startSmsVerification = () => {
+		var result = ukmAPI.masterCall(
+			'POST',
+			'start-sms-verification.php',
+			{
+				'tel_nr' : $('#loginTelNr').val()
+			}
+		)
+
+		$('input.sms-code').val('');
+		onePage.render("smsForgotPassword");
+	}
+
 </script>

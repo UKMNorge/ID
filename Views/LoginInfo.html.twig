@@ -17,19 +17,81 @@
 		<div class="ukm-card col-xs-12 one-page-page" page-id="0">
 			<h2 class="title">Hei, {{user.getFirstName()}}!</h2>
 
-			<div class="login">
-				<div class="next-button">
-					<a href="/logout.php" type="button" class="button ukm-button-primary">
-						<span class="text">Logg ut</span>
-						<img class="icon" src="/app/img/chevron.png">
-					</a>
+			<div class="login register">
+				<div class="tel-nr ukm-input login-input-style focus-style-js">
+					<div class="info focused">
+						<img class="tel-icon svg" src="/app/img/user.svg">
+						<p class="text">Telefonnummer</p>
+					</div>
+					<input id="loginTelNr" disabled value="{{user.getTelNr()}}" class="tel-input focus-style-js-input" autocomplete="on" type="text" name="name">
 				</div>
+
+				<div class="tel-nr ukm-input login-input-style focus-style-js">
+					<div class="info focused">
+						<img class="tel-icon svg" src="/app/img/user.svg">
+						<p class="text">Fornavn</p>
+					</div>
+					<input id="registerName" value="{{user.getFirstName()}}" class="tel-input focus-style-js-input" autocomplete="on" type="text" name="name">
+				</div>
+
+				<div class="tel-nr ukm-input login-input-style focus-style-js">
+					<div class="info focused">
+						<img class="tel-icon svg" src="/app/img/user.svg">
+						<p class="text">Etternavn</p>
+					</div>
+					<input id="registerLastname" value="{{user.getLastName()}}" class="tel-input focus-style-js-input" autocomplete="on" type="text" name="surname">
+				</div>
+
+				
+				<div id="registerSurnameError" class="info-feil not-visible">
+					<p class="icon">!</p>
+					<span class="text">Etternavn er ikke gyldig!</span>
+				</div>
+				
+				<div class="next-button">
+					<button id="profileChangePassword" type="button" class="button ukm-button-primary">
+						<span class="text">Bytt passord</span>
+					</button>
+				</div>
+				
 			</div>
+			
+			<!-- Logout button -->
+			<div class="next-button">
+				<a href="/logout.php" type="button" class="button ukm-button-primary">
+					<span class="text">Logg ut</span>
+					<img class="icon" src="/app/img/chevron.png">
+				</a>
+			</div>
+		
 		</div>
+	</div>
+	<!-- PAGE 2 - SMS Verification - forgot password -->
+	<div class="ukm-card password col-xs-12 one-page-page" page-id="smsForgotPassword">
+		{% include "Part/Progress.html.twig" with {'totalSteps': 2, 'currentStep': 2} %}
+		{% include "Part/Sms.html.twig" with {'renderId': 'forgotPassword', 'nextPage': '-1', 'prevPage' : 'smsForgotPassword'} %}
+	</div>
+
+	<!-- new password -->
+	<div class="ukm-card password col-xs-12 one-page-page" page-id="newPassword">
+		{% include "Part/Progress.html.twig" with {'totalSteps': 2, 'currentStep': 2} %}
+		{% include "Part/newPassword.html.twig" %}
 	</div>
 
 </div>
 
+<script src="app/js/one-page.js"></script>
+<script src="app/js/login-functions.js"></script>
 
+
+<script>
+	var onePage = new OnePage();
+	var ukmAPI = new UkmAPI();
+
+	$('#profileChangePassword').click(() => {
+		startSmsVerification();
+		onePage.render('smsForgotPassword');
+	});
+</script>	
 
 {% endblock %}
