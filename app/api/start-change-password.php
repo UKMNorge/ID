@@ -12,15 +12,18 @@ use Exception;
 
 $request = Request::createFromGlobals();
 $code = $request->requestRequired('code');
+$telNrUser = $request->requestRequired('tel_nr');
 
 
 ## NOTE: start-sms-verification must be called before calling this file.
+
 
 $telNr = false;
 
 
 try {
-    $telNr = UserVerification::verify($code, null, false);
+    // Returns tel_nr if the verification is successful
+    $telNr = UserVerification::verify($telNrUser, $code, null, false);
 }catch(Exception $e) {
     echo json_encode(array(
         "result" => false,
@@ -32,8 +35,8 @@ try {
 
 
 if($telNr) {
-    // Set waiting time to 5 min for password change
-    SessionManager::setWithTimeout('changeUserPassword', $telNr, 5*60);
+    // Set change password to active (note: timeout is defined at UserVerification class)
+    UserVerification::setChangePasswordActive($telNr);
 
     echo json_encode(array(
         "result" => true,

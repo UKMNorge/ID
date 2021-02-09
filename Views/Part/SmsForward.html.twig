@@ -1,13 +1,13 @@
 <h2 class="title">Send sms til oss!</h2>
 <small class="under-title">Send koden til oss</small>
 
-<div class="code-send-via-sms">
+<div class="code-send-via-sms" task-id="changePassword">
 	<div class="login-message">
 		<p class="text">
 			Send denne koden via SMS til <span class="tel-forward">123</span>
 		</p>
-		<p class="code-forward">
-			8ZÅ
+		<p id="smsGeneratedCode" class="code-forward">
+			
 		</p>
 		<div class="icon">
 			<p class="char">i</p>
@@ -16,14 +16,83 @@
 </div>
 
 <div class="next-button">
-	<button type="button" class="ukm-button-primary button half-color" onclick="window.history.back();">
+	<button id="smsForwardBack" type="button" class="ukm-button-primary button half-color" onclick="window.history.back(); finishSmsForwardLoop = true;">
 		<img class="icon" src="/app/img/chevron-back.png">
+	</button>
+
+	<button id="smsForwardNext" class="login-sms-next ukm-button-primary button right hide">
+		<span class="text">Neste</span>
+		<img class="icon" src="/app/img/chevron.png">
 	</button>
 </div>
 
 
 
+<script>
+	finishSmsForwardLoop = false;
 
+	startSMSForwardVerification = async () => {
+		finishSmsForwardLoop = false;
+
+		$('.code-send-via-sms').removeClass('finished');
+
+		$('#smsGeneratedCode').html('...');
+
+
+		var data = await ukmAPI.masterCall(
+			'POST',
+			'start-sms-forward-verification.php',
+			{
+				"tel_nr": $('#loginTelNr').val()
+			}
+		);
+
+		$('#smsGeneratedCode').html(data.code);
+		
+		if(data) {
+			checkSMSForward();
+		}
+	};
+
+
+	checkSMSForward = async () => {
+		if(finishSmsForwardLoop) {
+			console.log('finished');
+			return;
+		}
+
+		var data = await ukmAPI.masterCall(
+			'GET',
+			'verify-sms-forward.php',
+			{
+				'task' : onePage.getArgument('smsForwardTask'),
+				'password' : $('#registerPassword').val() // Used only to verify the user and NOT to change the password
+			}
+		);
+		
+		if(data.result == true) {
+			$('#smsForwardNext').removeClass('hide');
+			$('#smsForwardBack').addClass('left');
+			$('.code-send-via-sms').addClass('finished');
+			
+			finishSmsForwardLoop = true;
+		}
+		else if(data.result != null) {
+			setTimeout(() => {
+				checkSMSForward();
+			}, 1*1000);
+		}
+		else {
+			finishSmsForwardLoop = true;
+			onePage.render('0');
+		}
+	};
+
+	$('#smsForwardNext').click(() => {
+		onePage.render(onePage.getArgument('smsForwardTask') == 'verifyUser' ? 'vilkaar' : 'newPassword');
+	});
+
+</script>
 
 
 

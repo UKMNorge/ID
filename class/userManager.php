@@ -30,10 +30,14 @@ class UserManager {
     
     public static function setUserVerifyAndLogin(string $tel_nr, string $password) {
         $res = static::$storage->setUserToVerified($tel_nr);
-
+        
+        // Login only if the user is not verified from before
         if($res) {
             static::userLogin($tel_nr, $password);
+            return true;
         }
+        
+        return false; // The user is already verified
     }
 
     // Add URI to session and bind it with an id

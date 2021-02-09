@@ -99,8 +99,10 @@
 		// }
 	});
 
-	$('.send-new-password.forward-new-code').click((e) => {
+	$('.send-new-password.forward-new-code').off('click').click((e) => {
+		onePage.addArgument('smsForwardTask', $(e.currentTarget).attr('render-id'), false);
 		onePage.render('smsForward');
+		startSMSForwardVerification();
 	});
 
 	$('.login-sms-next[render-id="forgotPassword"]').off('click').click(async (e) => {
@@ -111,6 +113,7 @@
 			'POST', 
 			'start-change-password.php',
 			{
+                "tel_nr": $('#loginTelNr').val(),
 				'code' : code
 			}
 		);

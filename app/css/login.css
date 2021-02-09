@@ -340,6 +340,10 @@
 .code-send-via-sms {
     margin-top: 30px;
 }
+.code-send-via-sms.finished {
+    opacity: .2;
+}
+
 .code-send-via-sms .login-message .text {
     font-size: 16px;
     text-align: center;

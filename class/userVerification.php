@@ -10,6 +10,7 @@ class UserVerification {
     # CONSIDER ADDING CALLBACK FUNCTION ON VERIFY!!!!!!
    
     private static $verificationTimeout = 5*60; // 5 min
+    private static $passwordChangeTimeout = 1*60; // 5 min
     private static $alphabet = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'Æ', 'Ø', 'Å'];
     
     public function __construct() {
@@ -53,6 +54,12 @@ class UserVerification {
         return SessionManager::get('verification_code_count');
     }
 
+    // Activate change password for current session with tel_nr
+    public static function setChangePasswordActive($telNr) {
+        // Set waiting time to 5 min for password change
+        SessionManager::setWithTimeout('changeUserPassword', $telNr, static::$passwordChangeTimeout);
+    }
+
     // Verify the code and login
     // Returns tel_nr if the verification is accepted or it returns false
     // In case login is provided as true, it returns nothing but the login function is triggered
@@ -73,7 +80,6 @@ class UserVerification {
             static::cleanSession();
             throw new Exception('Mobiltelefonnummber er feil!');
         }
-
         
         if (SessionManager::verify('verification_code', $userCode, true)) {
             // If login, call UserManager and login otherwise just return true

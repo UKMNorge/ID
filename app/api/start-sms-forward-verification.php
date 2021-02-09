@@ -7,23 +7,26 @@ use UKMNorge\OAuth2\ServerMain;
 use UKMNorge\OAuth2\ID\SessionManager;
 use UKMNorge\OAuth2\ID\UserVerification;
 
-
 $debug = true;
 ini_set("display_errors", true);
 
-$request = Request::createFromGlobals();
+$waitingTime = 1*60;
 
+$request = Request::createFromGlobals();
 $storage = ServerMain::getStorage();
 
 $telNr = $request->requestRequired('tel_nr');
 $generatedCode = UserVerification::generateVerificationCode();
 
-SessionManager::setWithTimeout('sms_forward_tel_nr', $telNr, 5*60);
-SessionManager::setWithTimeout('sms_forward_code', $generatedCode, 5*60);
+SessionManager::setWithTimeout('sms_forward_tel_nr', $telNr, $waitingTime);
+SessionManager::setWithTimeout('sms_forward_code', $generatedCode, $waitingTime);
 
 $storage->addSMSForward($telNr, $generatedCode);
 
-
+echo json_encode(array(
+    "result" => true,
+    "code" => $generatedCode
+));
 
 
 
