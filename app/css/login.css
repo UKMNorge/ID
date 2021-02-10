@@ -380,9 +380,16 @@
     text-decoration: none;
     box-shadow: 0px 3px 19px -5px rgb(0 0 0 / 62%);
 }
+.ukm-button-primary:disabled {
+    opacity: .5;
+}
 .ukm-button-primary .text {
     color: #fff;
     font-size: 15px;
+    margin-right: 10px;
+}
+.ukm-button-primary .text.no-icon {
+    margin-right: auto;
 }
 .ukm-button-primary.half-color {
     background: #cbd5e0;
@@ -391,7 +398,6 @@
 .ukm-button-primary .icon {
     width: 8px;
     margin: auto;
-    margin-left: 10px;
 }
 
 .ukm-card .next-button .button {

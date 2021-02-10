@@ -187,17 +187,6 @@
 
 		return $(inputId).val().length > 0;
 	}
-	
-	var verifyLength = (inputId, errorId, length) => {
-		if($(inputId).val().length < length) {
-			$(errorId).removeClass('not-visible');
-			return false;
-		}
-		else {
-			$(errorId).addClass('not-visible');
-			return true;
-		}
-	}
 
     // Validate name field
     verifyEmpty('#registerName', '#registerNameError');
@@ -250,15 +239,6 @@
 	$('#registerPassword').on('input', (e) => {
 		validatePassword($(e.currentTarget).val(), $('#registerPasswordError'));
 	});
-
-	var addErrorMessage = (errorEl, message, error = false) => {
-		errorEl.append(`
-			<div class="info-feil ${error ? ' error' : ''}">
-				<p class="icon">!</p>
-				<span class="text">${message}</span>
-			</div>`
-		);
-	}
 
 
 	$('#registerInfoNext').click(() => {

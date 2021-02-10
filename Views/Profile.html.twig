@@ -31,7 +31,14 @@
 						<img class="tel-icon svg" src="/app/img/user.svg">
 						<p class="text">Fornavn</p>
 					</div>
-					<input id="registerName" value="{{user.getFirstName()}}" class="tel-input focus-style-js-input" autocomplete="on" type="text" name="name">
+					<input id="registeredFirstName" disabled value="{{user.getFirstName()}}" class="tel-input focus-style-js-input" autocomplete="on" type="text" name="name">
+					<div class="show-hide">
+						<button type="button" class="change-disabled-input mini-round-style">Rediger</button>
+					</div>
+				</div>
+				<div id="registeredFirstNameError" class="info-feil not-visible">
+					<p class="icon">!</p>
+					<span class="text">Fornavn er ikke gyldig!</span>
 				</div>
 
 				<div class="tel-nr ukm-input login-input-style focus-style-js">
@@ -39,18 +46,25 @@
 						<img class="tel-icon svg" src="/app/img/user.svg">
 						<p class="text">Etternavn</p>
 					</div>
-					<input id="registerLastname" value="{{user.getLastName()}}" class="tel-input focus-style-js-input" autocomplete="on" type="text" name="surname">
+					<input id="registeredLastName" disabled value="{{user.getLastName()}}" class="tel-input focus-style-js-input" autocomplete="on" type="text" name="surname">
+					<div class="show-hide">
+						<button type="button" class="change-disabled-input mini-round-style">Rediger</button>
+					</div>
 				</div>
-
-				
-				<div id="registerSurnameError" class="info-feil not-visible">
+				<div id="registeredLastNameError" class="info-feil not-visible">
 					<p class="icon">!</p>
 					<span class="text">Etternavn er ikke gyldig!</span>
 				</div>
 				
+				<div>
+				
 				<div class="next-button">
-					<button id="profileChangePassword" type="button" class="button ukm-button-primary">
-						<span class="text">Bytt passord</span>
+					<button id="profileChangePassword" type="button" class="button ukm-button-primary left">
+						<span class="text no-icon">Bytt passord</span>						
+					</button>
+				
+					<button id="profileSaveChanges" type="button" disabled class="button ukm-button-primary right">
+						<span class="text no-icon">Lagre endringer</span>
 					</button>
 				</div>
 				
@@ -68,14 +82,17 @@
 	</div>
 	<!-- PAGE 2 - SMS Verification - forgot password -->
 	<div class="ukm-card password col-xs-12 one-page-page" page-id="smsForgotPassword">
-		{% include "Part/Progress.html.twig" with {'totalSteps': 2, 'currentStep': 2} %}
 		{% include "Part/Sms.html.twig" with {'renderId': 'forgotPassword', 'nextPage': '-1', 'prevPage' : 'smsForgotPassword'} %}
 	</div>
 
 	<!-- new password -->
 	<div class="ukm-card password col-xs-12 one-page-page" page-id="newPassword">
-		{% include "Part/Progress.html.twig" with {'totalSteps': 2, 'currentStep': 2} %}
 		{% include "Part/newPassword.html.twig" %}
+	</div>
+
+	<!-- SMS Forward -->
+	<div class="ukm-card password col-xs-12 one-page-page" page-id="smsForward">
+		{% include "Part/SMSForward.html.twig" with {'nextPage': '-1'} %}
 	</div>
 
 </div>
@@ -88,10 +105,55 @@
 	var onePage = new OnePage();
 	var ukmAPI = new UkmAPI();
 
-	$('#profileChangePassword').click(() => {
+	$('#profileChangePassword').off('click').click(() => {
 		startSmsVerification();
-		onePage.render('smsForgotPassword');
 	});
+
+	$('.change-disabled-input').click((e) => {
+		$(e.currentTarget).detach();
+		$('#profileSaveChanges').attr('disabled', false);
+	});
+
+	$('#profileSaveChanges').click(async () => {
+		var validation = true;
+		if(!verifyLength('#registeredFirstName', '#registeredFirstNameError', 2)) {
+			validation = false;
+		}
+	
+		if(!verifyLength('#registeredLastName', '#registeredLastNameError', 2)) {
+			validation = false;
+		}
+		
+		if(!validation) return;
+
+
+
+		try{
+			var data = await ukmAPI.masterCall(
+				'POST',
+				'change-profile-info.php',
+				{
+					'first_name' : $('#registeredFirstName').val(),
+					'last_name' : $('#registeredLastName').val() 
+				}
+			);
+
+			window.location = '/';
+
+		}catch(e) {
+			alert('something went wrong!');
+		}
+
+	});
+
+	$('#registeredFirstName, #registeredLastName').keyup(() => {
+		verifyLength('#registeredFirstName', '#registeredFirstNameError', 2);
+		verifyLength('#registeredLastName', '#registeredLastNameError', 2);
+	});
+
+	
+	
+
 </script>	
 
 {% endblock %}

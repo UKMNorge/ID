@@ -38,6 +38,17 @@ $("#loginTelNr").keyup(() => {
     }
 });
 
+var verifyLength = (inputId, errorId, length) => {
+    if($(inputId).val().length < length) {
+        $(errorId).removeClass('not-visible');
+        return false;
+    }
+    else {
+        $(errorId).addClass('not-visible');
+        return true;
+    }
+}
+
 // Returns true if the telnr is validated otherwise false
 var verifyTelNr = function() {
     var telNr = $('#loginTelNr').val();
@@ -76,6 +87,23 @@ $('.show-hide-password').click((e) => {
     }
 });
 
+
+
+$('.change-disabled-input').click((e) => {
+    var el = $(e.currentTarget);
+    var input = el.parent().parent().children('.focus-style-js-input');
+
+    input.attr('disabled', false);
+});
+
+var addErrorMessage = (errorEl, message, error = false) => {
+    errorEl.append(`
+        <div class="info-feil ${error ? ' error' : ''}">
+            <p class="icon">!</p>
+            <span class="text">${message}</span>
+        </div>`
+    );
+}
 
 // Dette sjekkes også i backend (file: UserPdo.php)
 function validatePassword(p, errorEl, show) {

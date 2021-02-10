@@ -12,7 +12,12 @@ class UkmAPI {
                 "method": method,
                 "data": args ? args : {},
                 success: (data) => {
-                    resolve(JSON.parse(data ? data : '{}'));
+                    console.log(data.length);
+                    try {
+                        resolve(JSON.parse(data));
+                    } catch(e) {
+                        resolve(JSON.parse('{}'));
+                    }
                 },
                 error: (err) => {
                     reject(err);

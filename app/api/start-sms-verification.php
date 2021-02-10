@@ -11,7 +11,7 @@ include_once('../../autoload.php');
 
 $telNr = null;
 
-// The user is logged in, use te user's number
+// The user is logged in, use te user's tel_nr
 if(UserManager::isUserLoggedin()) {
     $telNr = UserManager::getLoggedinUser()->getTelNr();
 }

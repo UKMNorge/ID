@@ -32,7 +32,7 @@ if(UserManager::isUserLoggedin()) {
 
     if($user->isVilkaarAccepted()) {
         Vanilla::addViewData('user', $user);
-        echo Vanilla::render('LoginInfo');
+        echo Vanilla::render('Profile');
     }
     // Vilkaar er ikke godtatt
     else {
@@ -53,7 +53,7 @@ if(UserManager::isUserLoggedin()) {
             if($redirectId != null) {
                 UserManager::redirectCallbackURI($redirectId);
             }
-            echo Vanilla::render('LoginInfo');
+            echo Vanilla::render('Profile');
         }
         else {
             Vanilla::addViewData('viewId', 'vilkaar');
