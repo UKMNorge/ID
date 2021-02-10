@@ -1,7 +1,7 @@
 <?php
 
-use UKMNorge\OAuth2\Request;
 use UKMNorge\OAuth2\ServerMain;
+use UKMNorge\OAuth2\HandleAPICall;
 use UKMNorge\OAuth2\ID\SessionManager;
 use UKMNorge\OAuth2\ID\UserManager;
 use UKMNorge\OAuth2\ID\UserVerification;
@@ -11,32 +11,21 @@ ini_set("display_errors", true);
 
 include_once('../../autoload.php');
 
-$request = Request::createFromGlobals();
-$method = $request->server['REQUEST_METHOD'];
-$debug = true;
-
-$storage = ServerMain::getStorage();
-$task = $request->query('task');
-
+$call = new HandleAPICall(['task'], [], ['GET'], false);
 
 if(!SessionManager::verifyTimeout('sms_forward_tel_nr') || !SessionManager::verifyTimeout('sms_forward_code')) {
-    echo json_encode(array(
-        'result' => null,
-        'error' => 'Ikke tilgjengelig (not found or timeout)'
-    ));
-    die;
+    $call->sendErrorToClient('Ikke tilgjengelig', 403);
 }
 
 $telNr = SessionManager::getWithTimeout('sms_forward_tel_nr')['value'];
 $generatedCode = SessionManager::getWithTimeout('sms_forward_code')['value'];
 
-$result = $storage->checkSMSforward($telNr, $generatedCode);
+$result = ServerMain::getStorage()->checkSMSforward($telNr, $generatedCode);
 
-echo json_encode(array(
-    "result" => $result
-));
+$call->sendToClient($result);
 
 if($result == true) {
+    $task = $call->getArgument('task');
     // Activate password change
     if($task == 'forgotPassword') {
         UserVerification::setChangePasswordActive($telNr);

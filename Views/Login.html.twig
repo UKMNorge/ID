@@ -89,7 +89,7 @@
 			var tel_nr = $('#loginTelNr').val();
 
 			var data = await ukmAPI.masterCall(
-				'POST',
+				'GET',
 				'user-exists.php',
 				{
 					"tel_nr": $('#loginTelNr').val()
