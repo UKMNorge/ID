@@ -17,7 +17,7 @@ switch ($_GET['provider']) {
         break;
     case 'facebook':
         $identity_provider = new Facebook(FACE_APP_ID, FACE_APP_SECRET);
-        $identity_provider->setScope(['public_profile,user_birthday']);
+        $identity_provider->setScope(['public_profile']);//,user_birthday']);
         break;
     default:
         throw new Exception('Unknown Identity Provider');
