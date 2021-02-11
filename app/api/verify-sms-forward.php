@@ -1,5 +1,7 @@
 <?php
 
+include_once('../../autoload.php');
+
 use UKMNorge\OAuth2\ServerMain;
 use UKMNorge\OAuth2\HandleAPICall;
 use UKMNorge\OAuth2\ID\SessionManager;
@@ -9,7 +11,6 @@ use UKMNorge\OAuth2\ID\UserVerification;
 
 ini_set("display_errors", true);
 
-include_once('../../autoload.php');
 
 $call = new HandleAPICall(['task'], [], ['GET'], false);
 
@@ -22,10 +23,9 @@ $generatedCode = SessionManager::getWithTimeout('sms_forward_code')['value'];
 
 $result = ServerMain::getStorage()->checkSMSforward($telNr, $generatedCode);
 
-$call->sendToClient($result);
-
 if($result == true) {
     $task = $call->getArgument('task');
+
     // Activate password change
     if($task == 'forgotPassword') {
         UserVerification::setChangePasswordActive($telNr);
@@ -36,3 +36,6 @@ if($result == true) {
         UserManager::setUserVerifyAndLogin($telNr, $password);
     }
 }
+
+$call->sendToClient($result);
+

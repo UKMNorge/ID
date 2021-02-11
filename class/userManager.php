@@ -27,7 +27,7 @@ class UserManager {
         }
         return null;
     }
-    
+
     public static function setUserVerifyAndLogin(string $tel_nr, string $password) {
         $res = static::$storage->setUserToVerified($tel_nr);
         
@@ -175,6 +175,18 @@ class UserManager {
         $user = new User($tel_nr);
         return $user->setTelNrVerified();
     }
+
+    public static function loginUserFromProvider($provider, $providerUserId) {
+        // ...
+    }
+
+    public static function createUserFromProvider($providerUser) {
+        // Provider user (IdentityProvider\Basic\User)
+        // Hent data fra ...Basic\User og inkluder extra data om der er nødvendig, f.eks. tel_nr
+        // Eventuelt redirect til registrering av ny bruker med utfylt informasjon from provider
+
+    }
+
 }
 
 $userManager = new UserManager();

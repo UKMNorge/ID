@@ -3,7 +3,7 @@
 namespace UKMNorge\OAuth2\ID;
 
 use Exception;
-use Symfony\Component\HttpFoundation\Session\Session;
+use UKMNorge\OAuth2\ServerMain;
 
 class UserVerification {
     # DO NOT USE STATIC HERE!!!!!!!!!!!
@@ -106,6 +106,11 @@ class UserVerification {
 
     public static function isVerificationCompleted() : bool {
         return false;
+    }
+
+    // Add sms forward verification to DB through PDO
+    public static function addSMSForwardVerification(string $telNr, string $generatedCode) : bool {
+        return ServerMain::getStorage()->addSMSForward($telNr, $generatedCode);
     }
 
 }

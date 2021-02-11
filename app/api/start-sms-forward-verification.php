@@ -7,11 +7,15 @@ use UKMNorge\OAuth2\ServerMain;
 use UKMNorge\OAuth2\ID\SessionManager;
 use UKMNorge\OAuth2\ID\UserVerification;
 use UKMNorge\OAuth2\ID\UserManager;
+use UKMNorge\OAuth2\HandleAPICall;
+
 
 $debug = true;
 ini_set("display_errors", true);
 
-$waitingTime = 1*60;
+$waitingTime = 5*60;
+
+// $call = new HandleAPICall([], [], ['POST'], false);
 
 $request = Request::createFromGlobals();
 $storage = ServerMain::getStorage();

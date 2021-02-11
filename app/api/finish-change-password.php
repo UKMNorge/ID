@@ -36,10 +36,11 @@ if(SessionManager::verify('changeUserPassword', $telNr, true)) {
     
     SessionManager::remove('changeUserPassword');
     die;
+} else {
+    echo json_encode(array(
+        "result" => false,
+        'timeout' => true,
+        "msg" => 'Du har brukt lang tid for å verifisere deg, prøv igjen!'
+    ));
 }
 
-echo json_encode(array(
-    "result" => false,
-    'timeout' => true,
-    "msg" => 'Du har brukt lang tid for å verifisere deg, prøv igjen!'
-));
