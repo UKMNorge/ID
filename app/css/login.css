@@ -380,6 +380,9 @@
     text-decoration: none;
     box-shadow: 0px 3px 19px -5px rgb(0 0 0 / 62%);
 }
+a.ukm-button-primary {
+    text-decoration: none;
+}
 .ukm-button-primary:disabled {
     opacity: .5;
 }
@@ -406,7 +409,20 @@
     min-width: 54px;
     margin-top: 22px;
 }
-
+.service-provider-button-style {
+    width: 100%;
+    background-color: #e2e8f0;
+    border-radius: 5px;
+    box-shadow: 2px 4px 6px #00000027;
+}
+.service-provider-button-style .icon {
+    width: 22px;
+    margin: auto 0;
+    margin-right: 20px;
+}
+.service-provider-button-style .text {
+    color: #718096;
+}
 
 
 .ukm-card .login .buttons-div {
