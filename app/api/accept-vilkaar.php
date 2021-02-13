@@ -10,7 +10,7 @@ ini_set("display_errors", true);
 // redirectId er et valgfritt argument som brukes for å redirecte brukeren til en Service Provider
 $call = new HandleAPICall([], ['redirectId'], ['POST'], true);
 
-$redirectId = $call->getArgument('redirectId');
+$redirectId = $call->getOptionalArgument('redirectId');
 
 // Hvis det redirectId har blitt sendt, hent redirect URI
 $uri = $redirectId ? UserManager::redirectCallbackURI($redirectId, true) : null;

@@ -11,8 +11,8 @@ use UKMNorge\OAuth2\ID\UserVerification;
 
 ini_set("display_errors", true);
 
-
-$call = new HandleAPICall(['task'], [], ['GET'], false);
+// Hvis 'task' er 'verifyUser', så trenger man password argumentet
+$call = new HandleAPICall(['task'], ['password'], ['GET'], false);
 
 if(!SessionManager::verifyTimeout('sms_forward_tel_nr') || !SessionManager::verifyTimeout('sms_forward_code')) {
     $call->sendErrorToClient('Ikke tilgjengelig', 403);
@@ -32,7 +32,7 @@ if($result == true) {
     }
     // Verify the user and login
     else if($task == 'verifyUser') {
-        $password = $request->query('password');
+        $password = $call->getOptionalArgument('password');
         UserManager::setUserVerifyAndLogin($telNr, $password);
     }
 }
