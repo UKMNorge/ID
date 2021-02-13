@@ -4,8 +4,6 @@ use UKMNorge\OAuth2\IdentityProvider\Facebook;
 use UKMNorge\OAuth2\IdentityProvider\UKMID;
 use UKMNorge\OAuth2\ID\UserManager;
 
-
-
 error_reporting(E_ALL);
 ini_set('display_errors', true);
 session_start();

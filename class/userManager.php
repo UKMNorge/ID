@@ -112,14 +112,32 @@ class UserManager {
         throw new Exception('Brukeren er ikke logged inn');
     }
 
-    public static function userExists($tel_nr) {
-        return static::$storage->userExists($tel_nr);
+    // Check if user exist by providing tel_nr
+    public static function userExistsByTelNr(string $tel_nr) {
+        $userId = static::telNrToUserId($tel_nr);
+        
+        if($userId == null) return false;
+
+        return static::userExistsById(static::telNrToUserId($tel_nr));
+    }
+    
+    // Check if user exist by providing userId
+    public static function userExistsById(string $userId) {
+        return static::$storage->userExists($userId);
     }
 
     public static function userLogout() {        
         // Unset all session variables
         $_SESSION = array();
         session_destroy();
+    }
+
+    public static function telNrToUserId($telNr) {
+        try{
+            return static::$storage->telNrToId($telNr);
+        } catch(Exception $e) {
+            return null;
+        }
     }
 
     public static function parseTelNr(string $tel_nr) : string {
@@ -130,17 +148,21 @@ class UserManager {
         return $tel_nr;
     }
 
+    // User login with tel_nr
     public static function userLogin(string $tel_nr, string $password) : bool {
         $tel_nr = static::parseTelNr($tel_nr);
-        
+        $userId = static::telNrToUserId($tel_nr);
+
+        if($userId == null) {
+            return false;
+            static::userLogout();
+        }
+
         try{
             // Logged in, save session data
-            if(static::$storage->checkUserCredentials($tel_nr, $password)) {
-                // IMPORTANT: consider removing valid and tel_nr and using only User instance
+            if(static::$storage->checkUserCredentials($userId, $password)) {
                 // create Session
-                $_SESSION['valid'] = true;
-                $_SESSION['tel_nr'] = $tel_nr;
-                $_SESSION['user_id'] = $tel_nr;
+                static::setLoginToSession($userId);
                 return true;
             }
             // The user is not logged in
@@ -152,9 +174,32 @@ class UserManager {
         }
     }
 
+    // User login through Identity Providers
+    public static function userLoginFromProvider($userIdSP, $provider, $accessToken) {
+        // Sjekk om brukeren eksisterer med provider id
+        $result = static::$storage->checkUserCredentialsWithSP($userIdSP, $provider, $accessToken);
+
+        if($result) {
+            static::setLoginToSession($userIdSP);
+        }
+        else {
+            throw new Exception('Credentials are not correct or user has not been found!');
+        }
+
+    }
+
+    private static function setLoginToSession(string $userId) : void {
+        $_SESSION['valid'] = true;
+        $_SESSION['user_id'] = $userId;
+    }
+
+    private static function getUserByTelNr($tel_nr) : User {
+        return new User(static::telNrToUserId($tel_nr));
+    }
+
     // Oppdater bruker info
     public static function updateUserInfo(string $tel_nr, string $firstName = null, string $lastName = null) {
-        $user = new User($tel_nr);
+        $user = static::getUserByTelNr($tel_nr);
 
         if($firstName) {
             $user->setFirstName($firstName);
@@ -167,18 +212,14 @@ class UserManager {
     }
 
     public static function changePassword(string $tel_nr, string $password) : bool {
-        $user = new User($tel_nr);
+        $user = static::getUserByTelNr($tel_nr);
+
         return $user->changePassword($password);
     }
 
     public static function setVerifiedUser($tel_nr) : bool {
-        $user = new User($tel_nr);
+        $user = static::getUserByTelNr($tel_nr);
         return $user->setTelNrVerified();
-    }
-
-    public static function loginUserFromProvider($provider, $providerUserId) {
-        // Sjekk om brukeren eksisterer med provider id
-        // Bruke
     }
 
     public static function createUserFromProvider($providerUser) {
@@ -191,40 +232,3 @@ class UserManager {
 }
 
 $userManager = new UserManager();
-
-// // update user info
-// try {
-//     $userManager->updateUserInfo('qwgqwwgwwehwqeqwgqwgqw1wqwq', 'Tom');
-// }
-// catch(Exception $e) {
-//     echo 'Message: ' . $e->getMessage();
-// }
-
-// // change user password
-// try {
-//     $userManager->changePassword('qwgqwwgwwehwqeqwgqwgqw1wqwq', 'hello123Hello');
-// }
-// catch(Exception $e) {
-//     echo 'Message: ' . $e->getMessage();
-// }
-
-// // Verify user mobile number
-// try {
-//     $userManager->setVerifiedUser('46516256');
-// }
-// catch(Exception $e) {
-//     echo 'Message: ' . $e->getMessage();
-// }
-
-// // Register new user
-// try{
-//     $user = $userManager->registerNewUser('+4711122444', 'hello', 'aqwg', 'bqwg');
-//     print_r($user);
-// }
-// catch(Exception $e) {
-//     echo 'Message: ' . $e->getMessage();
-// }
-
-// echo 'hello';
-// echo $userManager->userLogin('+4747854120', '123') ? 'login OK!' : 'Login error!';
-// var_dump($userManager->userLogin('+4711122444', 'hello'));
