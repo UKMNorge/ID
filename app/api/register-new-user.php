@@ -6,48 +6,27 @@ include_once('../../autoload.php');
 
 use Datetime;
 use UKMNorge\OAuth2\ID\UserManager;
-use UKMNorge\OAuth2\Request;
+use UKMNorge\OAuth2\HandleAPICall;
 
-// IMPORTANT
-// $tel_nr = isset($_GET['tel_nr']) ? $_GET['tel_nr'] : die();
-$request = Request::createFromGlobals();
-$method = $request->server['REQUEST_METHOD'];
-$arguments = $request->request;
 $debug = true;
 
-// MyClass([], [], ["POST", "PATCH"], false);
+$call = new HandleAPICall(['tel_nr', 'first_name', 'last_name', 'birthday', 'password'], [], ['POST'], false);
 
-
-// constructor? with method
-try {
-    $tel_nr = $request->requestRequired('tel_nr');
-    $firstName = $request->requestRequired('first_name');
-    $lastName = $request->requestRequired('last_name');
-    $birthday = new DateTime($request->requestRequired('birthday'));
-    $password = $request->requestRequired('password');
-}catch(Exception $e) {
-    http_response_code(400);
-    if($debug) echo $e->getMessage();
-    return;
-}
+$tel_nr = $call->getArgument('tel_nr');
+$firstName = $call->getArgument('first_name');
+$lastName = $call->getArgument('last_name');
+$birthday = new DateTime($call->getArgument('birthday'));
+$password = $call->getArgument('password');
 
 try{
     $user = UserManager::registerNewUser($tel_nr, $password, $firstName, $lastName, $birthday);
     // The user is registered and logged in
     if($user === true) {
-        http_response_code(200);
-        echo json_encode(array(
-            "result" => true
-        ));
+       $call->sendToClient(true);
     }
     // The user has not been registered
-    else {
-        http_response_code(403);
-        echo json_encode(array(
-            "result" => false
-        ));
-    }
+    $call->sendErrorToClient("Brukeren ble ikke registrert!", 403);
+    
 }catch(Exception $e) {
-    if($debug) echo $e->getMessage();
-    http_response_code(403);
+    $call->sendErrorToClient($e->getMessage(), 500);
 }

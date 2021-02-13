@@ -13,6 +13,9 @@ session_start();
 require_once('UKMconfig.inc.php');
 require_once('UKM/Autoloader.php');
 
+
+echo $_GET['code'];
+die('aa');
 switch ($_GET['provider']) {
     case 'ukmid':
         $identity_provider = new UKMID('delta', 'a42fb071e415fd9a31e7459fe51af2605c6fa04b');

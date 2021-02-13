@@ -11,7 +11,7 @@ use UKMNorge\OAuth2\User;
 use UKMNorge\OAuth2\TempUser;
 
 class APIManager {
-    private $request = UKMNorge\OAuth2\Request::createFromGlobals();
+    // private $request = UKMNorge\OAuth2\Request::createFromGlobals();
     private $method = $request->server['REQUEST_METHOD'];
     private $args;
     private $debug = true;

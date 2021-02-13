@@ -1,39 +1,26 @@
 <?php
-
-use Exception;
-
-require_once('../../autoload.php');
+include_once('../../autoload.php');
 
 use UKMNorge\OAuth2\ID\UserManager;
-use UKMNorge\OAuth2\Request;
-
+use UKMNorge\OAuth2\HandleAPICall;
+use Exception;
 
 ini_set("display_errors", true);
 
-include_once('../../autoload.php');
+// redirectId er et valgfritt argument som brukes for å redirecte brukeren til en Service Provider
+$call = new HandleAPICall([], ['redirectId'], ['POST'], true);
 
-$debug = true;
-// Check if verification code is correct
+$redirectId = $call->getArgument('redirectId');
 
-$request = Request::createFromGlobals();
-
-
-$redirectId = $request->request['redirectId'];
-
-$uri = null;
-
-if($redirectId != null) {
-    $uri = UserManager::redirectCallbackURI($redirectId, true);
-}
+// Hvis det redirectId har blitt sendt, hent redirect URI
+$uri = $redirectId ? UserManager::redirectCallbackURI($redirectId, true) : null;
 
 try {
-    http_response_code(200);
-    echo json_encode(array(
+    $call->sendToClient(array(
         "result" =>  UserManager::setVilkaarToAccepted($redirectId),
         "uri" => $uri
     ));
     
 } catch(Exception $e) {
-    if($debug) echo $e->getMessage();
-    http_response_code(403);
+    $call->sendErrorToClient($e->getMessage(), 403);
 }

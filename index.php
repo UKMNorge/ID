@@ -5,11 +5,14 @@ use UKMNorge\Design\UKMDesign;
 use UKMNorge\Design\Sitemap\Section;
 use UKMNorge\OAuth2\ID\UserManager;
 use UKMNorge\TemplateEngine\Vanilla;
+use UKMNorge\OAuth2\IdentityProvider\Facebook;
+
 
 error_reporting(E_ALL);
-ini_set('display_errors',true);
+// ini_set('display_errors',true);
 
 require_once('autoload.php');
+require_once('UKMconfig.inc.php');
 
 /**
  * Init Vanilla
@@ -25,6 +28,15 @@ UKMDesign::setCurrentSection(
         'UKM lite'
     )
 );
+
+
+$identity_provider = new Facebook(UKM_FACE_APP_ID, UKM_FACE_APP_SECRET);
+$identity_provider->setScope(['public_profile']);
+
+// echo '<a href="'. $identity_provider->getAuthUrl() .'">logg inn med facebook</a>';
+
+$facebookUrl = $identity_provider->getAuthUrl();
+Vanilla::addViewData('facebookUrl', $facebookUrl);
 
 // The user is logged in
 if(UserManager::isUserLoggedin()) {

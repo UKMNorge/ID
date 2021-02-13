@@ -177,7 +177,8 @@ class UserManager {
     }
 
     public static function loginUserFromProvider($provider, $providerUserId) {
-        // ...
+        // Sjekk om brukeren eksisterer med provider id
+        // Bruke
     }
 
     public static function createUserFromProvider($providerUser) {

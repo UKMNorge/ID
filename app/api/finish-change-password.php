@@ -5,14 +5,14 @@ include_once('../../autoload.php');
 ini_set("display_errors", true);
 
 use UKMNorge\OAuth2\ID\SessionManager;
-use UKMNorge\OAuth2\ID\UserVerification;
 use UKMNorge\OAuth2\ID\UserManager;
-use UKMNorge\OAuth2\Request;
+use UKMNorge\OAuth2\HandleAPICall;
 use Exception;
 
 
-$request = Request::createFromGlobals();
-$newPassword = $request->requestRequired('new_password');
+$call = new HandleAPICall(['new_password'], [], ['POST'], false);
+
+$newPassword = $call->getArgument('new_password');
 $telNr = SessionManager::get('changeUserPassword')['value'];
 
 // Verify that changeUserPassword is in time
@@ -27,20 +27,20 @@ if(SessionManager::verify('changeUserPassword', $telNr, true)) {
         $msg = $e->getMessage();
     }
 
-    // Password change and return
-    echo json_encode(array(
+    SessionManager::remove('changeUserPassword');
+    
+    $call->sendToClient(array(
         "result" => $changePassword,
         'timeout' => false,
-        "msg" => $msg
-    ));
+        'details' => $msg
+        
+    ), $msg == null ? 200 : 403);
     
-    SessionManager::remove('changeUserPassword');
-    die;
-} else {
-    echo json_encode(array(
-        "result" => false,
-        'timeout' => true,
-        "msg" => 'Du har brukt lang tid for å verifisere deg, prøv igjen!'
-    ));
 }
+$call->sendErrorToClient(array(
+    "result" => false,
+    'timeout' => true,
+    "details" => 'Du har brukt lang tid for å verifisere deg, prøv igjen!'
+), 403);
+
 
