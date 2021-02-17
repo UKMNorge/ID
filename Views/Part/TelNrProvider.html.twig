@@ -1,0 +1,72 @@
+<h2 class="title">Mobilnummer</h2>
+<small class="under-title">Vi trenger mobilnummeret ditt</small>
+
+<div class="login">
+
+	<div class="tel-nr ukm-input login-input-style focus-style-js">
+		<div class="info {{telNr ? 'focused' : ''}}">
+			<img class="tel-icon" src="/app/img/tel.png">
+			<p class="text">Mobilnummer</p>
+		</div>
+		<input id="providerTelNr" class="tel-input focus-style-js-input" autocomplete="on" type="tel" name="username">
+	</div>
+
+
+	<div id="providerTelNrError" class="info-feil not-visible">
+		<p class="icon">!</p>
+		<span class="text"></span>
+	</div>
+
+	<div id="messageError" class="info-feil error hide">
+		<p class="icon">!</p>
+		<span class="text"></span>
+	</div>
+
+	<div class="next-button">
+		<button id="providerTelNrNext" type="button" class="ukm-button-primary button">
+			<span class="text">Neste</span>
+			<img class="icon" src="/app/img/chevron.png">
+		</button>
+	</div>
+
+</div>
+
+
+<script>
+    $("#providerTelNr").keyup(() => {
+        var telNr = $('#providerTelNr').val();
+        $('#providerTelNrError').addClass('not-visible');
+        if(telNr.length > 5) {
+            verifyTelNr($("#providerTelNr"), $('#providerTelNrError'));
+        }
+    });
+
+	$('#providerTelNrNext').click(async () => {
+        var data = await ukmAPI.masterCall(
+            'POST',
+            'register-new-user-provider.php',
+            {
+                'tel_nr' : $('#providerTelNr').val()
+            }
+        );
+
+        if(data.result == true) {
+            onePage.addArgument('registerType', 'provider');
+            onePage.render('registerNewUserSms');
+        }
+        else {
+            alert('error!');
+        }
+
+
+    var result = ukmAPI.masterCall(
+            'POST', 
+            'start-sms-verification.php',
+            {
+                'tel_nr' : $('#providerTelNr').val()
+            }
+        );
+    });
+
+
+</script>

@@ -35,6 +35,9 @@ if($result == true) {
         $password = $call->getOptionalArgument('password');
         UserManager::setUserVerifyAndLogin($telNr, $password);
     }
+    else if($task == 'providerNewUser') {
+        
+    }
 }
 
 $call->sendToClient($result);

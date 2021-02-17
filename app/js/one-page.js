@@ -4,7 +4,7 @@ class OnePage {
         this.pageId;
 
         this._events();
-        this._changeState('0');
+        this._changeState();
     }
 
     _changeState(pageId, pushState = true) {

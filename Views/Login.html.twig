@@ -61,6 +61,9 @@
 		{% include "Part/SMSForward.html.twig" with {'nextPage': '-1'} %}
 	</div>
 
+	<div class="ukm-card col-xs-12 one-page-page" page-id="telNrProvider">
+		{% include "Part/TelNrProvider.html.twig" with {'facebookUrl' : facebookUrl} %}
+	</div>
 </div>
 <script src="app/js/one-page.js"></script>
 <script src="app/js/login-functions.js"></script>
@@ -85,7 +88,7 @@
 
 	// Login next, verifying tel nr
 	$('#loginNext').click(async () => {
-		if(verifyTelNr()) {
+		if(verifyTelNr($('#loginTelNr'), $('#telNrError'))) {
 			var tel_nr = $('#loginTelNr').val();
 
 			var data = await ukmAPI.masterCall(

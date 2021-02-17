@@ -52,6 +52,13 @@ class UserVerification {
 
         return SessionManager::get('verification_code_count');
     }
+    
+    // public static function getVerificationTelNr() {
+    //     if(!SessionManager::verifyTimeout('verification_code')) {
+    //         return SessionManager::get('verification_tel_nr');
+    //     }
+    //     throw new Exception('Timeout!');
+    // }
 
     // Activate change password for current session with tel_nr
     public static function setChangePasswordActive($telNr) {

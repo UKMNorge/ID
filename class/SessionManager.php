@@ -33,6 +33,19 @@ class SessionManager {
         return null;
     }
 
+    public static function getValueWithTimeout(string $key) {
+        // Not found
+        if(!static::isSet($key)) {
+            return null;
+        }
+
+        if(static::verifyTimeout($key)) {
+            return static::getWithTimeout($key)['value'];
+        }
+        throw new Exception('The variable is not available because of timeout');
+    }
+
+
     /**
      * Add variable to SESSION
      *

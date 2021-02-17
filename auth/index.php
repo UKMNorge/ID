@@ -1,26 +1,29 @@
 <?php
 
+include_once('../autoload.php');
+
+use Entities\User;
 use UKMNorge\OAuth2\IdentityProvider\Facebook;
 use UKMNorge\OAuth2\IdentityProvider\UKMID;
 use UKMNorge\OAuth2\ID\UserManager;
 
+
 error_reporting(E_ALL);
 ini_set('display_errors', true);
-session_start();
 
 require_once('UKMconfig.inc.php');
 require_once('UKM/Autoloader.php');
 
 
-echo $_GET['code'];
-die('aa');
+$identity_provider = null;
+
 switch ($_GET['provider']) {
     case 'ukmid':
         $identity_provider = new UKMID('delta', 'a42fb071e415fd9a31e7459fe51af2605c6fa04b');
         $identity_provider->setScope(['identify']);
         break;
     case 'facebook':
-        $identity_provider = new Facebook(FACE_APP_ID, FACE_APP_SECRET);
+        $identity_provider = new Facebook(UKM_FACE_APP_ID, UKM_FACE_APP_SECRET);
         $identity_provider->setScope(['public_profile']);//,user_birthday']);
         break;
     default:
@@ -30,20 +33,45 @@ switch ($_GET['provider']) {
 // Brukeren er ikke logget inn, men vi har fått en kode
 // tilbake fra ID
 if (isset($_GET['code'])) {
-    $token = $identity_provider->exchangeCodeForAccessToken($_GET['code']);
+    try {
+        $token = $identity_provider->exchangeCodeForAccessToken($_GET['code']);
+    } catch(Exception $e) {
+        die($e->getMessage());
+    }
 
-    // Finne igjen brukeren i vårt system
+    $identity_provider->setAccessToken($token);
+    $current_user = $identity_provider->getCurrentUser();
+
+    $userIDfromIP = $current_user->getId();
+
+    $accessToken = $token->getData()->access_token;
+    
+    if(UserManager::isUserLoggedin()) {
+        header("Location: https://id.". UKM_HOSTNAME);
+        die;
+    }
+
     try {
         // Logg inn bruker
-        $user = UserManager::loginUserFromProvider($_GET['provider'], $token->getData()->user_id);
+        $user = UserManager::userLoginFromProvider($accessToken, $_GET['provider']);
+        header("Location: https://id.". UKM_HOSTNAME);
     } catch( Exception $e ) {
+        echo 'User not found, register...';
+        // die("CREATE USER");
         // Opprett bruker
-        if( $e->getCode() == USER_DOES_NOT_EXIST_CODE ) {
+        // Bruk e->getCode() to identify the error
+        if( true /*$e->getCode() == USER_DOES_NOT_EXIST_CODE*/ ) {
             // Hent info om brukeren fra facebook
-            $identity_provider->setAccessToken($token);
-            $current_user = $identity_provider->getCurrentUser();
+            // $identity_provider->setAccessToken($token);
+            // $current_user = $identity_provider->getCurrentUser();
             
-            $user = UserBundleIsh::createUserFromProvider($current_user);
+            // $user = UserManager::createUserFromProvider($current_user->getId(), 'Facebook', $accessToken);
+
+            UserManager::startUserCreateFromProvider($_GET['provider'], $current_user->getId(), $accessToken);
+
+            header("Location: https://id.". UKM_HOSTNAME . '?pageId=telNrProvider');
+
+            // UserManager::createUserFromProvider('12345678');
             // oppretter bruker og kobler bruker og access token sammen.
             // kobler også provider_id og user_id
             // redirect til registreringssiden

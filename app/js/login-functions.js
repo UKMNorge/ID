@@ -34,7 +34,7 @@ $("#loginTelNr").keyup(() => {
     var telNr = $('#loginTelNr').val();
     $('#telNrError').addClass('not-visible');
     if(telNr.length > 5) {
-        verifyTelNr()
+        verifyTelNr($('#loginTelNr'), $('#telNrError'));
     }
 });
 
@@ -50,20 +50,20 @@ var verifyLength = (inputId, errorId, length) => {
 }
 
 // Returns true if the telnr is validated otherwise false
-var verifyTelNr = function() {
-    var telNr = $('#loginTelNr').val();
-    $('#telNrError').addClass('not-visible');
+var verifyTelNr = function(el, error) {
+    var telNr = el.val();
+    error.addClass('not-visible');
 
     // Check if the telNr contains numbers only
     if(isNaN(telNr)){
-        $('#telNrError').removeClass('not-visible').children('.text').text(`Telefonnummeret er ikke gyldig`);
+        error.removeClass('not-visible').children('.text').text(`Telefonnummeret er ikke gyldig`);
     }
     // Tel nr is not equals to 8, show error
     else if(telNr.length < 8) {
-        $('#telNrError').removeClass('not-visible').children('.text').text(`Det mangler ${8 - telNr.length} tall i telefonnummeret`);
+        error.removeClass('not-visible').children('.text').text(`Det mangler ${8 - telNr.length} tall i telefonnummeret`);
     }
     else if(telNr.length > 8) {
-        $('#telNrError').removeClass('not-visible').children('.text').text(`Det er for mange tall i telefonnummeret`);
+        error.removeClass('not-visible').children('.text').text(`Det er for mange tall i telefonnummeret`);
     }
     else {
         return true;

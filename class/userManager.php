@@ -7,6 +7,15 @@ use Exception;
 use UKMNorge\OAuth2\ServerMain;
 use UKMNorge\OAuth2\User;
 use UKMNorge\OAuth2\TempUser;
+use UKMNorge\OAuth2\ID\SessionManager;
+use UKMNorge\OAuth2\IdentityProvider\Basic\User as IPUser;
+
+use UKMNorge\OAuth2\IdentityProvider\Facebook;
+use UKMNorge\OAuth2\IdentityProvider\Basic\AccessToken;
+
+ini_set("display_errors", true);
+
+
 
 class UserManager {
     private static $storage;
@@ -84,12 +93,7 @@ class UserManager {
         }
 
         throw new Exception("Brukeren er ikke logged inn derfor vilkaar kan ikke lagres");
-    }
-
-    // Get user by providing access token
-    public static function getUserByAccessToken(string $accessToken, string $scope) {
-        return static::$storage->getUserByAccessToken($accessToken, $scope);   
-    }
+    }    
 
     // Check if session is active
     public static function isUserLoggedin() {
@@ -112,32 +116,15 @@ class UserManager {
         throw new Exception('Brukeren er ikke logged inn');
     }
 
-    // Check if user exist by providing tel_nr
-    public static function userExistsByTelNr(string $tel_nr) {
-        $userId = static::telNrToUserId($tel_nr);
-        
-        if($userId == null) return false;
-
-        return static::userExistsById(static::telNrToUserId($tel_nr));
-    }
-    
-    // Check if user exist by providing userId
-    public static function userExistsById(string $userId) {
-        return static::$storage->userExists($userId);
+    public static function userExists($tel_nr) {
+        return static::$storage->userExists($tel_nr);
     }
 
     public static function userLogout() {        
         // Unset all session variables
-        $_SESSION = array();
-        session_destroy();
-    }
-
-    public static function telNrToUserId($telNr) {
-        try{
-            return static::$storage->telNrToId($telNr);
-        } catch(Exception $e) {
-            return null;
-        }
+        unset($_SESSION['valid']);
+        unset($_SESSION['tel_nr']);
+        unset($_SESSION['user_id']);
     }
 
     public static function parseTelNr(string $tel_nr) : string {
@@ -148,21 +135,17 @@ class UserManager {
         return $tel_nr;
     }
 
-    // User login with tel_nr
     public static function userLogin(string $tel_nr, string $password) : bool {
         $tel_nr = static::parseTelNr($tel_nr);
-        $userId = static::telNrToUserId($tel_nr);
-
-        if($userId == null) {
-            return false;
-            static::userLogout();
-        }
-
+        
         try{
             // Logged in, save session data
-            if(static::$storage->checkUserCredentials($userId, $password)) {
+            if(static::$storage->checkUserCredentials($tel_nr, $password)) {
+                // IMPORTANT: consider removing valid and tel_nr and using only User instance
                 // create Session
-                static::setLoginToSession($userId);
+                $_SESSION['valid'] = true;
+                $_SESSION['tel_nr'] = $tel_nr;
+                $_SESSION['user_id'] = $tel_nr;
                 return true;
             }
             // The user is not logged in
@@ -174,32 +157,9 @@ class UserManager {
         }
     }
 
-    // User login through Identity Providers
-    public static function userLoginFromProvider($userIdSP, $provider, $accessToken) {
-        // Sjekk om brukeren eksisterer med provider id
-        $result = static::$storage->checkUserCredentialsWithSP($userIdSP, $provider, $accessToken);
-
-        if($result) {
-            static::setLoginToSession($userIdSP);
-        }
-        else {
-            throw new Exception('Credentials are not correct or user has not been found!');
-        }
-
-    }
-
-    private static function setLoginToSession(string $userId) : void {
-        $_SESSION['valid'] = true;
-        $_SESSION['user_id'] = $userId;
-    }
-
-    private static function getUserByTelNr($tel_nr) : User {
-        return new User(static::telNrToUserId($tel_nr));
-    }
-
     // Oppdater bruker info
     public static function updateUserInfo(string $tel_nr, string $firstName = null, string $lastName = null) {
-        $user = static::getUserByTelNr($tel_nr);
+        $user = new User($tel_nr);
 
         if($firstName) {
             $user->setFirstName($firstName);
@@ -212,23 +172,171 @@ class UserManager {
     }
 
     public static function changePassword(string $tel_nr, string $password) : bool {
-        $user = static::getUserByTelNr($tel_nr);
-
+        $user = new User($tel_nr);
         return $user->changePassword($password);
     }
 
     public static function setVerifiedUser($tel_nr) : bool {
-        $user = static::getUserByTelNr($tel_nr);
+        $user = new User($tel_nr);
         return $user->setTelNrVerified();
     }
 
-    public static function createUserFromProvider($providerUser) {
-        // Provider user (IdentityProvider\Basic\User)
-        // Hent data fra ...Basic\User og inkluder extra data om der er nødvendig, f.eks. tel_nr
-        // Eventuelt redirect til registrering av ny bruker med utfylt informasjon from provider
-
+    private static function generateRandomPassword() : string {
+        return static::$storage->generateRandomToken() . '9Z';
     }
 
+    private static function setLoginToSession(string $userId) : void {
+        $_SESSION['valid'] = true;
+        $_SESSION['user_id'] = $userId;
+    }
+
+    private static function setUserVerify($tel_nr) : bool {
+        return static::$storage->setUserToVerified($tel_nr);
+    }
+
+
+    /* ----------------------------- User Provider ------------------------------*/
+    
+    /**
+     * Hent bruker (User) ved å oppgi access token and provider navn
+     *
+     * @param string $accessToken - access token fra provider
+     * @param string $provider - provider navn f.eks. 'Facebook'
+     * @return User
+     */
+    public static function getUserByAccessToken(string $accessToken, $provider) : User {
+        try{
+            $userFromProvider = static::getBasicUser($accessToken, $provider);
+        } catch(Exception $e) {
+            die($e->getMessage());
+        }
+        
+        $user = static::$storage->getUserProvider($userFromProvider->getId(), $provider);
+
+        if($user == null) {
+            throw new Exception('The user for this access token has not been found!');
+        }
+
+        return $user;
+    }
+
+    /**
+     * Hent bruker Basic User (IdentityProvider\Basic\User) ved å oppgi access token and provider navn
+     *
+     * @param string $accessToken - access token fra provider
+     * @param string $provider - provider navn f.eks. 'Facebook'
+     * @return IPUser
+     */
+    private static function getBasicUser(string $accessToken, string $provider) : IPUser {
+        if($provider == 'facebook') {
+            $identityProvider = new Facebook(UKM_FACE_APP_ID, UKM_FACE_APP_SECRET);
+        }
+        else {
+            throw new Exception('Provider med navn ' . $provider . ' støttes ikke!');
+        }
+
+        $identityProvider->setAccessToken(new AccessToken($accessToken));
+        return $identityProvider->getCurrentUser();
+    }
+
+    /**
+     * Bruker login med access token og provider navn
+     *
+     * @param string $accessToken - access token fra provider
+     * @param string $provider - provider navn f.eks. 'Facebook'
+     * @return bool
+     */
+    public static function userLoginFromProvider($accessToken, $provider) : bool {
+        try {
+            $user = static::getUserByAccessToken($accessToken, $provider);
+            if($user != null) {
+                static::setLoginToSession($user->getTelNr());
+                return true;
+            }
+            static::userLogout();
+            throw new Exception('User login failed 0!');
+        } catch(Exception $e) {
+            static::userLogout();
+            throw new Exception('User login failed 1!');
+        }
+    }
+
+    /**
+     * Registrer ny bruker gjennom provider. Det betyr at en bruker i oauth_user skal opprettes. Denne brukeren skal kobles med brukeren som hentes fra user_identity_provider med access token lagret i SessionManager.
+     * NOTE: startUserCreateFromProvider() skal kalles først, før man kaller denne metoden
+     *
+     * @param string $accessToken - access token fra provider
+     * @param string $provider - provider navn f.eks. 'Facebook'
+     * @return bool
+     */
+    public static function registerNewUserProvider(string $telNr) : bool {
+        $provider = $accessToken = SessionManager::getValueWithTimeout('providerName');
+        
+        try{
+            $accessToken = SessionManager::getValueWithTimeout('providerAccessToken');
+        } catch(Exception $e) {
+            echo $e->getMessage(); // Timeout
+            return false;
+        }
+
+        if(!$accessToken) {
+            echo ' Redirect to provider login... ';
+            header('Refresh: 4; URL=https://id.'. UKM_HOSTNAME);
+            return false;
+        }
+
+        try{
+            $basicUser = static::getBasicUser($accessToken, $provider);
+        } catch(Exception $e) {
+            echo 'Basic user has not been provided by provider. Check access token';
+            return false;
+        }
+        
+        $birthday = DateTime::createFromFormat('Y-m-d', '2000-01-01');
+
+        $user = static::registerNewUser($telNr, static::generateRandomPassword(), $basicUser->getFirstName(), $basicUser->getLastName(), $birthday);
+        
+        if(!$user) return false;
+        
+        // Add telNr to the user_provider DB
+        static::$storage->addUserToProvider($telNr, $basicUser->getId(), $provider);
+
+        // Get the registered user by accessToken
+        try{
+            static::setUserVerify($telNr);
+            $user = static::getUserByAccessToken($accessToken, $provider);
+            // Login
+            static::userLoginFromProvider($accessToken, $provider);
+            return true;
+        } catch(Exception $e) {
+            echo $e->getMessage();
+            return false;
+        }
+
+        return false;
+    }
+
+    // Start user creation through provider. This will be saved into session and wait for other info from the user
+
+    /**
+     * Start brukeropprettelse gjennom provider. Denne metoden lagres provider access token og provider navn i SessionManager
+     * Denne metoden opprettes en ny bruker i user_identity_provider uten kobling med oauth_user
+     * 
+     * 
+     * @param string $provider - provider navn f.eks. 'facebook'
+     * @param string $userIdSP - bruker id fra provider
+     * @param string $accessToken - access token fra provider
+     * @return void
+     */
+    public static function startUserCreateFromProvider(string $provider, string $userIdSP, string $accessToken) {
+        $timeout = 5*60; // 5 min
+
+        SessionManager::setWithTimeout('providerAccessToken', $accessToken, $timeout);
+        SessionManager::setWithTimeout('providerName', $provider, $timeout);
+        
+        static::$storage->registerUserWithServiceProvider($userIdSP, $provider, $accessToken);
+    }
+    
 }
 
 $userManager = new UserManager();

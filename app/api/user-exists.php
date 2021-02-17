@@ -13,7 +13,7 @@ $tel_nr = $call->getArgument('tel_nr');
 
 $result = UserManager::parseTelNr($tel_nr);
 
-if(UserManager::userExistsByTelNr($tel_nr)){
+if(UserManager::userExists($tel_nr)){
     $call->sendToClient(true);
 }
 $call->sendToClient(false);
