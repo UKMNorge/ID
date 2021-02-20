@@ -1,10 +1,18 @@
 class OnePage {
-
-    constructor() {
+    
+    constructor(startPages = []) {
         this.pageId;
 
         this._events();
-        this._changeState();
+
+        var pageId = this.getArgument('pageId');
+
+        if(pageId && startPages.includes(pageId)) {
+            this._changeState(pageId);
+        }
+        else {
+            this._changeState('0');
+        }
     }
 
     _changeState(pageId, pushState = true) {

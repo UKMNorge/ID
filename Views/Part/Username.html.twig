@@ -10,6 +10,22 @@
 			</div>
 			<span class="text">Logg inn med facebook</span>
 		</a>
+
+	</div>
+	<div class="next-button">
+		<button id="signinButtonGoogle" type="button" class="ukm-button-primary service-provider-button-style button">
+			<div class="icon">
+				<img src="/app/img/google.png" />
+			</div>
+			<span class="text">Logg inn med Google</span>
+			<script>
+			$('#signinButtonGoogle').click(function() {
+				// signInCallback defined in step 6.
+				auth2.grantOfflineAccess().then(signInCallback);
+			});
+			</script>
+		</button>
+
 	</div>
 
 	<div class="separator">

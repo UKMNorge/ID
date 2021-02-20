@@ -4,6 +4,7 @@ namespace UKMNorge\OAuth2\ID;
 
 use DateTime;
 use Exception;
+use Symfony\Component\HttpFoundation\Session\Session;
 use UKMNorge\OAuth2\ServerMain;
 use UKMNorge\OAuth2\User;
 use UKMNorge\OAuth2\TempUser;
@@ -11,6 +12,7 @@ use UKMNorge\OAuth2\ID\SessionManager;
 use UKMNorge\OAuth2\IdentityProvider\Basic\User as IPUser;
 
 use UKMNorge\OAuth2\IdentityProvider\Facebook;
+use UKMNorge\OAuth2\IdentityProvider\Google;
 use UKMNorge\OAuth2\IdentityProvider\Basic\AccessToken;
 
 ini_set("display_errors", true);
@@ -204,9 +206,9 @@ class UserManager {
      * @param string $provider - provider navn f.eks. 'Facebook'
      * @return User
      */
-    public static function getUserByAccessToken(string $accessToken, $provider) : User {
+    public static function getUserByAccessToken(string $accessToken, $provider, $idToken=null) : User {
         try{
-            $userFromProvider = static::getBasicUser($accessToken, $provider);
+            $userFromProvider = static::getBasicUser($accessToken, $provider, $idToken);
         } catch(Exception $e) {
             die($e->getMessage());
         }
@@ -227,15 +229,18 @@ class UserManager {
      * @param string $provider - provider navn f.eks. 'Facebook'
      * @return IPUser
      */
-    private static function getBasicUser(string $accessToken, string $provider) : IPUser {
+    private static function getBasicUser(string $accessToken, string $provider, $idToken=null) : IPUser {
         if($provider == 'facebook') {
             $identityProvider = new Facebook(UKM_FACE_APP_ID, UKM_FACE_APP_SECRET);
+        }
+        else if($provider == 'google') {
+            $identityProvider = new Google(UKM_FACE_APP_ID, UKM_FACE_APP_SECRET);
         }
         else {
             throw new Exception('Provider med navn ' . $provider . ' støttes ikke!');
         }
 
-        $identityProvider->setAccessToken(new AccessToken($accessToken));
+        $identityProvider->setAccessToken(new AccessToken($accessToken, $idToken));
         return $identityProvider->getCurrentUser();
     }
 
@@ -246,9 +251,9 @@ class UserManager {
      * @param string $provider - provider navn f.eks. 'Facebook'
      * @return bool
      */
-    public static function userLoginFromProvider($accessToken, $provider) : bool {
+    public static function userLoginFromProvider($accessToken, $provider, $idToken=null) : bool {
         try {
-            $user = static::getUserByAccessToken($accessToken, $provider);
+            $user = static::getUserByAccessToken($accessToken, $provider, $idToken);
             if($user != null) {
                 static::setLoginToSession($user->getTelNr());
                 return true;
@@ -270,10 +275,16 @@ class UserManager {
      * @return bool
      */
     public static function registerNewUserProvider(string $telNr) : bool {
+        // Sjekk hvis brukeren med tel_nr ekisterer
+        if(static::$storage->userExists($telNr)) {
+            throw new Exception('Brukeren ' . $telNr . ' eksisterer derfor kan ikke opprettes');
+        }
+
         $provider = $accessToken = SessionManager::getValueWithTimeout('providerName');
         
         try{
             $accessToken = SessionManager::getValueWithTimeout('providerAccessToken');
+            $idToken = SessionManager::getValueWithTimeout('providerIdToken');
         } catch(Exception $e) {
             echo $e->getMessage(); // Timeout
             return false;
@@ -286,7 +297,7 @@ class UserManager {
         }
 
         try{
-            $basicUser = static::getBasicUser($accessToken, $provider);
+            $basicUser = static::getBasicUser($accessToken, $provider, $idToken);
         } catch(Exception $e) {
             echo 'Basic user has not been provided by provider. Check access token';
             return false;
@@ -304,9 +315,9 @@ class UserManager {
         // Get the registered user by accessToken
         try{
             static::setUserVerify($telNr);
-            $user = static::getUserByAccessToken($accessToken, $provider);
+            $user = static::getUserByAccessToken($accessToken, $provider, $idToken);
             // Login
-            static::userLoginFromProvider($accessToken, $provider);
+            static::userLoginFromProvider($accessToken, $provider, $idToken);
             return true;
         } catch(Exception $e) {
             echo $e->getMessage();
@@ -316,7 +327,6 @@ class UserManager {
         return false;
     }
 
-    // Start user creation through provider. This will be saved into session and wait for other info from the user
 
     /**
      * Start brukeropprettelse gjennom provider. Denne metoden lagres provider access token og provider navn i SessionManager
@@ -328,10 +338,11 @@ class UserManager {
      * @param string $accessToken - access token fra provider
      * @return void
      */
-    public static function startUserCreateFromProvider(string $provider, string $userIdSP, string $accessToken) {
-        $timeout = 5*60; // 5 min
+    public static function startUserCreateFromProvider(string $provider, string $userIdSP, string $accessToken, string $idToken=null) {
+        $timeout = 10*60; // 10 min
 
         SessionManager::setWithTimeout('providerAccessToken', $accessToken, $timeout);
+        SessionManager::setWithTimeout('providerIdToken', $idToken, $timeout);
         SessionManager::setWithTimeout('providerName', $provider, $timeout);
         
         static::$storage->registerUserWithServiceProvider($userIdSP, $provider, $accessToken);

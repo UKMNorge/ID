@@ -50,7 +50,8 @@
 		var code = ($('input.sms-code.code-0.'+renderId).val() + $('input.sms-code.code-1.'+renderId).val() + $('input.sms-code.code-2.'+renderId).val()).toUpperCase();
 
 		try{
-			var provider = onePage.getArgument('registerType') == 'provider';
+			var task = onePage.getArgument('task');
+			var provider = onePage.getArgument('task') == 'provider';
 
 			// If provider, get tel_nr from providerTelNr otherwise get it from loginTelNr
 			var telNr = $('#' + (provider ? 'providerTelNr' : 'loginTelNr') ).val()
@@ -63,7 +64,7 @@
 	                "tel_nr": telNr,
 					'code' : code,
 					'password' : provider ? -1 : $('#registerPassword').val(),
-					'provider' : provider
+					'task' : task ? task : 'not-defined'
 				}
 			);
 

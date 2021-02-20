@@ -1,6 +1,7 @@
 {
     "minimum-stability": "dev",
     "require": {
-        "ukmnorge/designvanilla": "dev-master"
+        "ukmnorge/designvanilla": "dev-master",
+        "google/apiclient": "^2.7"
     }
 }

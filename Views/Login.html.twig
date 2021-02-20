@@ -69,7 +69,7 @@
 <script src="app/js/login-functions.js"></script>
 
 <script>
-	var onePage = new OnePage();
+	var onePage = new OnePage(['telNrProvider']);
 	var ukmAPI = new UkmAPI();
 
 	// Append redirectedId to input element if it exists
@@ -110,6 +110,21 @@
 	});
 	
 	console.log(onePage);
+
+
+	// function onSignIn(googleUser) {
+	// 	var profile = googleUser.getBasicProfile();
+	// 	console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+	// 	console.log('Name: ' + profile.getName());
+	// 	console.log('Image URL: ' + profile.getImageUrl());
+	// 	console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+	// }
+
+	function signInCallback(d) {
+		// Call auth/google from here
+		console.log(d);
+		window.location.href = "/auth/?provider=google&code=" + d.code;
+	}
 
 </script>
 

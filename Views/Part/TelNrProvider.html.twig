@@ -12,14 +12,8 @@
 	</div>
 
 
-	<div id="providerTelNrError" class="info-feil not-visible">
-		<p class="icon">!</p>
-		<span class="text"></span>
-	</div>
+	<div id="providerTelNrError">
 
-	<div id="messageError" class="info-feil error hide">
-		<p class="icon">!</p>
-		<span class="text"></span>
 	</div>
 
 	<div class="next-button">
@@ -43,29 +37,32 @@
 
 	$('#providerTelNrNext').click(async () => {
         var data = await ukmAPI.masterCall(
-            'POST',
-            'register-new-user-provider.php',
+            'GET',
+            'user-exists.php',
             {
-                'tel_nr' : $('#providerTelNr').val()
+                "tel_nr": $('#providerTelNr').val()
             }
         );
-
+        
+        // User exists, stop the process
         if(data.result == true) {
-            onePage.addArgument('registerType', 'provider');
-            onePage.render('registerNewUserSms');
+            addErrorMessage($('#providerTelNrError'), 'En bruker med telefonnummer <b>' + $('#providerTelNr').val() + '</b> eksisterer allerede. <a href="/">Trykk her for å logge inn</a>', true);
+            // onePage.render('password');
         }
         else {
-            alert('error!');
+            onePage.addArgument('task', 'provider');
+            onePage.render('registerNewUserSms');
+
+            // Start sms verification
+            console.log('aa');
+            var result = ukmAPI.masterCall(
+                'POST', 
+                'start-sms-verification.php',
+                {
+                    'tel_nr' : $('#providerTelNr').val()
+                }
+            );
         }
-
-
-    var result = ukmAPI.masterCall(
-            'POST', 
-            'start-sms-verification.php',
-            {
-                'tel_nr' : $('#providerTelNr').val()
-            }
-        );
     });
 
 
