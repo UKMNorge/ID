@@ -24,7 +24,7 @@ switch ($_GET['provider']) {
         $identity_provider->setScope(['public_profile']);//,user_birthday']);
         break;
     case 'google':
-        $identity_provider = new Google(UKM_FACE_APP_ID, UKM_FACE_APP_SECRET);
+        $identity_provider = new Google(UKM_GOOGLE_APP_ID, UKM_GOOGLE_APP_SECRET);
         $identity_provider->setScope(['public_profile']);//,user_birthday']);
         break;
     default:

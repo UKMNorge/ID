@@ -7,20 +7,17 @@ require_once('../autoload.php');
 use UKMNorge\OAuth2\ID\UserManager;
 use UKMNorge\OAuth2\ServerMain as Server;
 use UKMNorge\OAuth2\Request;
+use UKMNorge\OAuth2\HandleAPICall;
 
 $server = Server::getServer();
 $request = Request::createFromGlobals();
 
-$accessToken = $request->query['access_token'];
+$call = new HandleAPICall(['access_token'], [''], ['GET'], false);
 
-// echo 'Hello I am bruker';
-
+$accessToken = $call->getArgument('access_token');
 
 // Handle a request to a resource and authenticate the access token
 if (!$server->verifyResourceRequest($request)) {
     $server->getResponse()->send();
     die;
 }
-
-// Return user info (Object)
-print_r(UserManager::getUserByAccessToken($accessToken, 'identify'));

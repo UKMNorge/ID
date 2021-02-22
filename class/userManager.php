@@ -234,7 +234,7 @@ class UserManager {
             $identityProvider = new Facebook(UKM_FACE_APP_ID, UKM_FACE_APP_SECRET);
         }
         else if($provider == 'google') {
-            $identityProvider = new Google(UKM_FACE_APP_ID, UKM_FACE_APP_SECRET);
+            $identityProvider = new Google(UKM_GOOGLE_APP_ID, UKM_GOOGLE_APP_SECRET);
         }
         else {
             throw new Exception('Provider med navn ' . $provider . ' støttes ikke!');
