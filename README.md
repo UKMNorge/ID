@@ -4,7 +4,7 @@ ID-portal for UKM.no
 ![Midlertidig flytskjema](Flytskjema.png?raw=true)
 [rediger flytskjema](https://app.diagrams.net/)
 
-
+![Class diagram](docs/20201222_190925.jpg?raw=true)
 
 # API
 
